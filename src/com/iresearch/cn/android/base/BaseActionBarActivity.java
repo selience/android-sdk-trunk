@@ -1,18 +1,23 @@
 package com.iresearch.cn.android.base;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
+import com.iresearch.cn.android.manager.ViewManager;
+import com.iresearch.cn.android.settings.Config;
 
 public class BaseActionBarActivity extends ActionBarActivity {
 	
 	private FragmentManager fm;
 	private FragmentStack mStack;
+	private ViewManager mViewManager;
 	private ActivityStack mActivityStack;
 	
 	@Override
@@ -21,13 +26,16 @@ public class BaseActionBarActivity extends ActionBarActivity {
 		XLog.d("onCreate");
 		
 		fm = getSupportFragmentManager();
-		FragmentManager.enableDebugLogging(false);
+		FragmentManager.enableDebugLogging(Config.DEBUG);
 		
-		mActivityStack = ActivityStack.getInstance();
+		mActivityStack=ActivityStack.getInstance();
 		mActivityStack.pushActivity(this);
 		
-		mStack = FragmentStack.newInstance(this, fm, 0);
+		mStack=FragmentStack.newInstance(this, fm, 0);
 		mStack.restoreState(savedInstanceState);
+		
+		mViewManager=new ViewManager(Config.DEBUG);
+		mViewManager.onAppStart(this);
 	}
 
 	@Override
@@ -46,6 +54,8 @@ public class BaseActionBarActivity extends ActionBarActivity {
 	protected void onResume() {
 		super.onResume();
 		XLog.d("onResume");
+		
+		mViewManager.onAppResume(this);
 	}
 
 	@Override
@@ -64,6 +74,8 @@ public class BaseActionBarActivity extends ActionBarActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		XLog.d("onDestroy");
+		
+		mViewManager.onAppEnd(this);
 		mActivityStack.removeActivity(this);
 	}
 	
@@ -72,6 +84,12 @@ public class BaseActionBarActivity extends ActionBarActivity {
 		XLog.d("onSaveInstanceState");
 		mStack.savedState(outState);
 		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		XLog.d("onConfigurationChanged");
+	    super.onConfigurationChanged(newConfig);
 	}
 	
 	@Override

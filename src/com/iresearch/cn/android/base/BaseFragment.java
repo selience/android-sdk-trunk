@@ -3,6 +3,7 @@ package com.iresearch.cn.android.base;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.log.XLog;
 
@@ -69,6 +71,18 @@ public class BaseFragment extends Fragment {
 		if (activity == null) return;
 		activity.unregisterReceiver(receiver);
 	}
+    
+    public void startService(Intent service) {
+    	final Activity activity = getActivity();
+		if (activity == null) return;
+		activity.startService(service);
+    }
+    
+    public void stopService(Intent name) {
+    	final Activity activity = getActivity();
+		if (activity == null) return;
+		activity.stopService(name);
+    }
     
     public void setProgressBarIndeterminateVisibility(final boolean visible) {
 		final Activity activity = getActivity();
