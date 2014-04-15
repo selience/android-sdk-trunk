@@ -77,13 +77,13 @@ public class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	public void onSupportActionModeStarted(ActionMode mode) {
 		Fragment f = getFragment();
-		if (f != null) ((XBaseFragment)f).onActionModeStarted(mode);
+		if (f != null) ((BaseActionBarFragment) f).onActionModeStarted(mode);
 	}
 	
 	@Override
 	public void onSupportActionModeFinished(ActionMode mode) {
 		Fragment f = getFragment();
-		if (f != null) ((XBaseFragment)f).onActionModeFinished(mode);
+		if (f != null) ((BaseActionBarFragment) f).onActionModeFinished(mode);
 	}
 	
 	@Override
@@ -115,10 +115,10 @@ public class BaseActionBarActivity extends ActionBarActivity {
 		super.onBackPressed();
 	}
 	
-	private XBaseFragment getFragment() {
+	private BaseActionBarFragment getFragment() {
 		Fragment f = mStack.peekFragment();
-		if (f != null && f instanceof XBaseFragment) {
-			return (XBaseFragment) f;
+		if (f != null && f instanceof BaseActionBarFragment) {
+			return (BaseActionBarFragment) f;
 		}
 		return null;
 	}

@@ -9,45 +9,44 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
 
 /**
- * @file XBaseFragment.java
+ * @file BaseActionBarFragment.java
  * @create 2012-8-20 上午11:23:16
  * @author Jacky.Lee
  * @description 增加ActionBar栏相关操作
  */
-public class XBaseFragment extends BaseFragment {
+public class BaseActionBarFragment extends BaseFragment {
 
-	public ActionBar getActionBar() {
+	protected ActionBarActivity getActionBarActivity() {
 		final Activity activity = getActivity();
-		if (activity != null) { 
-			ActionBarActivity activityImpl = ((ActionBarActivity) activity);
-			return activityImpl.getSupportActionBar();
-		}
-		return null;
-	}
-
-	public ActionMode startActionMode(Callback callback) {
-		final Activity activity = getActivity();
-		if (activity != null) {
-			ActionBarActivity activityImpl = ((ActionBarActivity) activity);
-			return activityImpl.startSupportActionMode(callback);
+		if (activity!=null && activity instanceof ActionBarActivity) {
+			return (ActionBarActivity) activity;
 		}
 		return null;
 	}
 	
-	public void onActionModeStarted(ActionMode mode) {
+	protected ActionBar getActionBar() {
+		final ActionBarActivity activity = getActionBarActivity();
+		if (activity != null) return activity.getSupportActionBar();
+		return null;
+	}
+
+	protected ActionMode startActionMode(Callback callback) {
+		final ActionBarActivity activity = getActionBarActivity();
+		if (activity != null) return activity.startSupportActionMode(callback);
+		return null;
+	}
+	
+	protected void invalidateOptionsMenu() {
+		final ActionBarActivity activity = getActionBarActivity();
+		if (activity != null) activity.supportInvalidateOptionsMenu();
+	}
+	
+	protected void onActionModeStarted(ActionMode mode) {
 		XLog.d(TAG, "onActionModeStarted");
 	}
 	
-	public void onActionModeFinished(ActionMode mode) {
+	protected void onActionModeFinished(ActionMode mode) {
 		XLog.d(TAG, "onActionModeFinished");
-	}
-
-	public void invalidateOptionsMenu() {
-		final Activity activity = getActivity();
-		if (activity != null) { 
-			ActionBarActivity activityImpl = ((ActionBarActivity) activity);
-			activityImpl.supportInvalidateOptionsMenu(); 
-		}
 	}
 	
 	@Override
