@@ -8,7 +8,7 @@ import android.os.Bundle;
  * fragments.
  */
 @SuppressWarnings("deprecation")
-public class LocalActivityManagerActivity extends BaseActivity {
+public abstract class LocalActivityManagerActivity extends BaseActivity {
 
 	private static final String KEY_STATE_BUNDLE = "LocalActivityManagerState";
 

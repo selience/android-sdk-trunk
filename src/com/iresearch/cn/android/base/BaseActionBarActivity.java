@@ -6,14 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
-
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
 import com.iresearch.cn.android.manager.ViewManager;
 import com.iresearch.cn.android.settings.Config;
 
-public class BaseActionBarActivity extends ActionBarActivity {
+public abstract class BaseActionBarActivity extends ActionBarActivity {
 	
 	private FragmentManager fm;
 	private FragmentStack mStack;
@@ -31,7 +30,7 @@ public class BaseActionBarActivity extends ActionBarActivity {
 		mActivityStack=ActivityStack.getInstance();
 		mActivityStack.pushActivity(this);
 		
-		mStack=FragmentStack.newInstance(this, fm, 0);
+		mStack=FragmentStack.newInstance(this, fm, layout());
 		mStack.restoreState(savedInstanceState);
 		
 		mViewManager=new ViewManager(Config.DEBUG);
@@ -107,7 +106,7 @@ public class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	public boolean onSupportNavigateUp() {
 		XLog.d("onSupportNavigateUp");
-		if (mStack.stackSize()>1) {
+		if (mStack.stackSize() > 1) {
 			if (getFragment().onNavigateUp()) {
 				return true;
 			} else {
@@ -122,15 +121,20 @@ public class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		XLog.d("onBackPressed");
-		if (mStack.stackSize()>1) {
-			if (mStack.peekFragment().onBackPress()) {
+		if (mStack.stackSize() > 1) {
+			if (mStack.peekFragment().onBackPressed()) {
 				return;
 			} else {
 				mStack.popFragment();
 				return;
 			}
+		} else {
+			if (mStack.peekFragment().onBackPressed()) {
+				return;
+			} else {
+				super.onBackPressed();
+			}
 		}
-		super.onBackPressed();
 	}
 	
 	private BaseActionBarFragment getFragment() {
@@ -139,5 +143,16 @@ public class BaseActionBarActivity extends ActionBarActivity {
 			return (BaseActionBarFragment) f;
 		}
 		return null;
+	}
+	
+
+	// TODO content layout resource
+	protected abstract int layout();
+	
+	/*
+	 * 装载Fragment到Activity
+	 */
+	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
+		mStack.replace(clazz, tag, args);
 	}
 }

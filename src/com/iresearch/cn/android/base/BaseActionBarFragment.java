@@ -1,7 +1,6 @@
 package com.iresearch.cn.android.base;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import com.iresearch.cn.android.log.XLog;
 import android.support.v7.app.ActionBarActivity;
@@ -14,7 +13,7 @@ import android.support.v7.view.ActionMode.Callback;
  * @author Jacky.Lee
  * @description 增加ActionBar栏相关操作
  */
-public class BaseActionBarFragment extends BaseFragment {
+public abstract class BaseActionBarFragment extends BaseFragment {
 
 	protected ActionBarActivity getActionBarActivity() {
 		final Activity activity = getActivity();
@@ -47,15 +46,6 @@ public class BaseActionBarFragment extends BaseFragment {
 	
 	protected void onActionModeFinished(ActionMode mode) {
 		XLog.d(TAG, "onActionModeFinished");
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		// ActionBar添加菜单项
-		setHasOptionsMenu(true);
-		setMenuVisibility(true);
 	}
 	
 	@Override

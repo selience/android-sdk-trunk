@@ -23,7 +23,7 @@ import com.iresearch.cn.android.log.XLog;
  * @author Jacky.Lee
  * @description Fragment基类，对Fragment栈的管理
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 	protected String TAG = "BaseFragment";
 	private static final String STATE_TITLE = "_title";
 	
@@ -109,6 +109,9 @@ public class BaseFragment extends Fragment {
 		XLog.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
+		setHasOptionsMenu(true);
+		setMenuVisibility(true);
+		
 		if (savedInstanceState!=null) {
 			restoreState(savedInstanceState); // 恢复Fragment标题
 			this.title=savedInstanceState.getCharSequence(STATE_TITLE);
@@ -253,7 +256,7 @@ public class BaseFragment extends Fragment {
 	/**
 	 * 子类back键处理方法，如需特殊处理，请覆写该方法
 	 */
-	public boolean onBackPress() {
+	public boolean onBackPressed() {
 		return false;
 	}
 }

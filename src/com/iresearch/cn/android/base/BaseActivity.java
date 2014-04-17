@@ -11,7 +11,7 @@ import com.iresearch.cn.android.manager.FragmentStack;
 import com.iresearch.cn.android.manager.ViewManager;
 import com.iresearch.cn.android.settings.Config;
 
-public class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
 
 	private FragmentManager fm;
 	private FragmentStack mStack;
@@ -29,7 +29,7 @@ public class BaseActivity extends FragmentActivity {
 		mActivityStack=ActivityStack.getInstance();
 		mActivityStack.pushActivity(this);
 		
-		mStack=FragmentStack.newInstance(this, fm, 0);
+		mStack=FragmentStack.newInstance(this, fm, layout());
 		mStack.restoreState(savedInstanceState);
 		
 		mViewManager=new ViewManager(Config.DEBUG);
@@ -94,13 +94,29 @@ public class BaseActivity extends FragmentActivity {
 	public void onBackPressed() {
 		XLog.d("onBackPressed");
 		if (mStack.stackSize()>1) {
-			if (mStack.peekFragment().onBackPress()) {
+			if (mStack.peekFragment().onBackPressed()) {
 				return;
 			} else {
 				mStack.popFragment();
 				return;
 			}
-		} 
-		super.onBackPressed();
+		} else {
+			if (mStack.peekFragment().onBackPressed()) {
+				return;
+			} else {
+				super.onBackPressed();
+			}
+		}
+	}
+	
+	
+	// TODO content layout resource
+	protected abstract int layout();
+	
+	/*
+	 * 装载Fragment到Activity
+	 */
+	public void replace(Class<BaseFragment> clazz, String tag, Bundle args) {
+		mStack.replace(clazz, tag, args);
 	}
 }

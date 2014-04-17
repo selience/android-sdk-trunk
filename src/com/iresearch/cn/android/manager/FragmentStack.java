@@ -38,7 +38,7 @@ public final class FragmentStack {
 		this.mFragmentManager=fragmentManager;
 	}
 	
-	public void replace(Class<BaseFragment> clazz, String tag, Bundle args) {
+	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		BaseFragment f = (BaseFragment) getFragment(clazz, tag, args);
 		// 清空栈顶Fragment
 		cleanBackStack(f);
@@ -50,7 +50,7 @@ public final class FragmentStack {
 		addFragment(f);
 	}
 	
-	private BaseFragment getFragment(Class<BaseFragment> clazz, String tag, Bundle args) {
+	private BaseFragment getFragment(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		BaseFragment f = (BaseFragment) mFragmentManager.findFragmentByTag(tag);
         if (f == null || !f.isSingleton()) {
             f = (BaseFragment) Fragment.instantiate(mFragmentActivity, clazz.getName(), args);
