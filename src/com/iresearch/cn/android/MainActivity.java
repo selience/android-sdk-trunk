@@ -16,6 +16,8 @@ public class MainActivity extends BaseActionBarActivity {
 		url = "http://blog.sina.com.cn/selienceblog";
 		bundle.putString(WebViewFragment.INTENT_KEY_URI, url);
 		replace(WebPageFragment.class, "WebPageFragment", bundle);
+		
+		//replace(MainFragment.class, "MainFragment", null);
 	}
 
 	@Override
