@@ -55,7 +55,7 @@ public final class FragmentStack {
         if (f == null || !f.isSingleton()) {
             f = (BaseFragment) Fragment.instantiate(mFragmentActivity, clazz.getName(), args);
         } else {
-        	resetFragment(f, tag);
+            resetFragment(f, tag);
         }
         return f;
     }
@@ -63,12 +63,14 @@ public final class FragmentStack {
 	/*
 	 * 处理栈顶Fragment
 	 */
-	private void resetFragment(Fragment f, String tag) {
+	private void resetFragment(BaseFragment f, String tag) {
 		if (mStack.size() > 0) {
 			BaseFragment element = mStack.peek();
 			// 当前Fragment位于栈顶直接返回
 			if (tag.equals(element.getTag())) {
-				return;
+			    if (element.isCleanStack() || element.isSingleton()) {
+			        return;    
+			    }
 			}
 			
 			// 当前Fragment位于栈底，则弹出上面Fragment

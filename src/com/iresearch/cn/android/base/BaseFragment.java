@@ -241,7 +241,7 @@ public abstract class BaseFragment extends Fragment {
 	 * @return true 单例；false 非单例
 	 */
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 	
 	
