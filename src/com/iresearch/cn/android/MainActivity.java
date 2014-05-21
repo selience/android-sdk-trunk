@@ -41,7 +41,8 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
         
         mTitle = mDrawerTitle = getTitle();
         mPlanetTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mPlanetTitles));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, 
+                android.R.id.text1, mPlanetTitles));
         mDrawerList.setOnItemClickListener(this);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);

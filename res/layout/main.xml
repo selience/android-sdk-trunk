@@ -26,7 +26,7 @@
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:dividerHeight="1dp"
-		android:listSelector="@drawable/nav_slide_tab_bg"
+		android:listSelector="@null"
         android:background="@drawable/nav_slide_layout_bg"
         android:divider="@drawable/nav_main_tab_divider"/>
 </android.support.v4.widget.DrawerLayout>
