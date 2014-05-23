@@ -84,6 +84,9 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
     private void onItemChanged(int position) {
         switch (position) {
             case 0:
+                replace(HomeFragment.class, "HomeFragment", null);
+                break;
+            case 1:
                 Bundle bundle = new Bundle();
                 String url = "file:///android_asset/www/info.html";
                 url = "http://blog.sina.com.cn/selienceblog";

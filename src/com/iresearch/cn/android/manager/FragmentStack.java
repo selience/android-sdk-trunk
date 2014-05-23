@@ -79,8 +79,8 @@ public final class FragmentStack {
 				while (!tag.equals(mStack.peek().getTag())) {
 					synchronized (lock) {
 						mStack.pop();						
+						mFragmentManager.popBackStack();
 					}
-					mFragmentManager.popBackStack();
 				}
 				return true;
 			}
