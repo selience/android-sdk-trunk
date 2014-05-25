@@ -1,11 +1,15 @@
 package com.iresearch.cn.android.base;
 
+import java.lang.reflect.Field;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.view.ViewConfiguration;
+
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
@@ -26,6 +30,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 		
 		fm = getSupportFragmentManager();
 		FragmentManager.enableDebugLogging(Config.DEBUG);
+		forceShowActionBarOverflowMenu();
 		
 		mActivityStack=ActivityStack.getInstance();
 		mActivityStack.pushActivity(this);
@@ -154,5 +159,19 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	 */
 	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		mStack.replace(clazz, tag, args);
+	}
+	
+	
+	/** 在有 menu按键的手机上面，ActionBar 上的 overflow menu 默认不会出现，只有当点击了 menu按键时才会显示 */
+	private void forceShowActionBarOverflowMenu() {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ignored) {
+        }
 	}
 }

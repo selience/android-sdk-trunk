@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.log.XLog;
 
@@ -143,6 +142,12 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	@Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+	    XLog.d(TAG, "setUserVisibleHint:" + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    @Override
 	public void onStart() {
 		XLog.d(TAG, "onStart");
 		super.onStart();
@@ -220,6 +225,8 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	protected void setTitle(CharSequence title) {
 		this.title = title;
+		final Activity activity = getActivity();
+		if (activity!=null) activity.setTitle(title);
 	}
 	
 	/**
@@ -241,7 +248,7 @@ public abstract class BaseFragment extends Fragment {
 	 * @return true 单例；false 非单例
 	 */
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 	
 	

@@ -39,36 +39,39 @@ public final class FragmentStack {
 	}
 	
 	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
-		BaseFragment f = (BaseFragment) getFragment(clazz, tag, args);
-		// 清空栈顶Fragment
-		cleanBackStack(f);
-		// 挂载当前Fragment
-		attachFragment(f, tag);
-		// 提交Fragment事务
-		commitTransactions();
-		// 添加Fragment到栈
-		addFragment(f);
+	    BaseFragment f = (BaseFragment) mFragmentManager.findFragmentByTag(tag);
+	    if (!resetFragment(f, tag)) {
+    		f = (BaseFragment) getFragment(clazz, tag, args);
+    		// 清空栈顶Fragment
+    		cleanBackStack(f);
+    		// 挂载当前Fragment
+    		attachFragment(f, tag);
+    		// 提交Fragment事务
+    		commitTransactions();
+    		// 添加Fragment到栈
+    		addFragment(f);
+	    }
 	}
 	
 	private BaseFragment getFragment(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		BaseFragment f = (BaseFragment) mFragmentManager.findFragmentByTag(tag);
         if (f == null || !f.isSingleton()) {
             f = (BaseFragment) Fragment.instantiate(mFragmentActivity, clazz.getName(), args);
-        } else {
-        	resetFragment(f, tag);
-        }
+        } 
         return f;
     }
 	
 	/*
 	 * 处理栈顶Fragment
 	 */
-	private void resetFragment(Fragment f, String tag) {
-		if (mStack.size() > 0) {
+	private boolean resetFragment(BaseFragment f, String tag) {
+		if (f !=null && mStack.size() > 0) {
 			BaseFragment element = mStack.peek();
 			// 当前Fragment位于栈顶直接返回
 			if (tag.equals(element.getTag())) {
-				return;
+			    if (element.isCleanStack() || element.isSingleton()) {
+			        return true;    
+			    }
 			}
 			
 			// 当前Fragment位于栈底，则弹出上面Fragment
@@ -76,12 +79,13 @@ public final class FragmentStack {
 				while (!tag.equals(mStack.peek().getTag())) {
 					synchronized (lock) {
 						mStack.pop();						
+						mFragmentManager.popBackStack();
 					}
-					mFragmentManager.popBackStack();
 				}
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	/*
@@ -119,8 +123,8 @@ public final class FragmentStack {
 			while (mStack.size() > 0) {
 				synchronized (lock) {
 					mStack.pop(); 
+					mFragmentManager.popBackStack();
 				}
-				mFragmentManager.popBackStack();
 			}
 		}
     }
@@ -219,8 +223,8 @@ public final class FragmentStack {
 		if (mStack.size() > 1) {
 			synchronized (lock) {
 				mStack.pop();
+				mFragmentManager.popBackStackImmediate();
 			}
-			mFragmentManager.popBackStackImmediate();
 			return true;
 		}
 		return false;
