@@ -12,11 +12,15 @@ import android.os.StrictMode;
 
 public class iResearch extends Application {
 
+	/**
+     * A singleton instance of the application class for easy access in other places
+     */
 	private static iResearch instance;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		// initialize the singleton
 		instance = this;
 		
 		if (needCallInit()) {
@@ -39,7 +43,10 @@ public class iResearch extends Application {
 		super.onTerminate();
 	}
 	
-	public static iResearch getInstance() {
+	/**
+     * @return iResearch singleton instance
+     */
+	public static synchronized iResearch getInstance() {
 		return instance;
 	}
 	
