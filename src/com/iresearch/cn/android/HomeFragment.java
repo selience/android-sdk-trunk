@@ -14,30 +14,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+import com.android.volley.VolleyError;
 import com.iresearch.cn.android.base.BaseFragment;
+import com.iresearch.cn.android.log.L;
+import com.iresearch.cn.android.model.request.TestRequest;
+import com.iresearch.cn.android.volley.toolbox.RequestCallback;
+import com.iresearch.cn.android.volley.toolbox.RequestManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
-public class HomeFragment extends BaseFragment implements OnRefreshListener, OnGlobalLayoutListener {
+public class HomeFragment extends BaseFragment implements 
+    OnRefreshListener, OnGlobalLayoutListener, OnItemClickListener {
 
     private ListView mListView;
     private List<String> mDataList;
     private SwipeRefreshLayout mRefreshLayout;
     private ArrayAdapter<String> mListAdapter;
 
-    private String[] values = new String[] {
-            "Android", "iPhone", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X", "Linux",
-            "OS/2"
-    };
-
     @Override
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View convertView = inflater.inflate(R.layout.home, null);
         mListView = (ListView) convertView.findViewById(android.R.id.list);
+        mListView.setOnItemClickListener(this);
         mRefreshLayout = (SwipeRefreshLayout) convertView.findViewById(R.id.swipeLayout);
         mRefreshLayout.setColorScheme(android.R.color.holo_green_dark, android.R.color.holo_orange_dark, 
                 android.R.color.holo_blue_dark, android.R.color.holo_red_dark);
@@ -46,7 +51,8 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnG
         
         // 构造数据源
         mDataList = new ArrayList<String>();
-        mDataList.addAll(Arrays.asList(values));
+        String[] mResources=getResources().getStringArray(R.array.main_list_item); 
+        mDataList.addAll(Arrays.asList(mResources));
         // 设置列表适配器
         mListAdapter=new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mDataList);
         mListView.setAdapter(mListAdapter);
@@ -60,7 +66,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnG
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mDataList.add(0, "Windows8");
                 mListAdapter.notifyDataSetChanged();
                 mRefreshLayout.setRefreshing(false);
             }
@@ -94,4 +99,33 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnG
             obs.removeGlobalOnLayoutListener(this);
         }
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0) {
+            //Queue use custom listener
+            RequestManager.queue()
+                    .useBackgroundQueue()
+                    .addRequest(new TestRequest(), mRequestCallback)
+                    .start();
+        }
+    }
+    
+    private RequestCallback<String, Void> mRequestCallback = new RequestCallback<String, Void>() {
+        @Override
+        public Void doInBackground(String response) {
+            L.e(response.toString());
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            Toast.makeText(getActivity(), "Toast from UI", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(VolleyError error) {
+            L.e(error.toString());
+        }
+    };
 }

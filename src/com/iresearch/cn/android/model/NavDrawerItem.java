@@ -1,5 +1,5 @@
 
-package com.iresearch.cn.android.bean;
+package com.iresearch.cn.android.model;
 
 public class NavDrawerItem {
 

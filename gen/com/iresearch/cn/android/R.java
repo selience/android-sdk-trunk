@@ -17,6 +17,7 @@ public final class R {
         public static final int abc_slide_out_top=0x7f040005;
     }
     public static final class array {
+        public static final int main_list_item=0x7f0c0001;
         /**  Nav Drawer Menu Items 
          */
         public static final int nav_drawer_items=0x7f0c0000;

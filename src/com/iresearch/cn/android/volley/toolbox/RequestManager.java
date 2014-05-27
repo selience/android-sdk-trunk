@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // link https://github.com/yakivmospan/volley-request-manager
+// link https://github.com/vince-styling/Netroid
 public class RequestManager {
 
     private static RequestManager instance;
@@ -54,6 +55,7 @@ public class RequestManager {
         return mImageLoaderController;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public class RequestController {
 
         private QueueBuilder mQueueBuilder;

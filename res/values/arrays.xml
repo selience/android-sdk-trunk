@@ -11,4 +11,17 @@
         <item>What\'s Hot</item>
     </string-array>
 
+    <string-array name="main_list_item">
+        <item>网络请求数据</item>
+        <item>Android</item>
+        <item>iPhone</item>
+        <item>Blackberry</item>
+        <item>WebOS</item>
+        <item>Ubuntu</item>
+        <item>Windows7</item>
+        <item>Max OS X</item>
+        <item>Linux</item>
+        <item>OS/2</item>
+    </string-array>
+    
 </resources>

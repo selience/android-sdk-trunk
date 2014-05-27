@@ -18,7 +18,7 @@ public abstract class RequestInterface<ResponseType, ResultType> {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public abstract Request create();
+    public abstract Request<ResponseType> create();
 
     private Response.Listener<ResponseType> mInterfaceListener
             = new Response.Listener<ResponseType>() {
