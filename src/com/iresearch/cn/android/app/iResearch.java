@@ -9,6 +9,7 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Build;
 import android.os.Process;
 import android.os.StrictMode;
+import com.iresearch.cn.android.volley.toolbox.RequestManager;
 
 public class iResearch extends Application {
 
@@ -28,6 +29,8 @@ public class iResearch extends Application {
 	 * 初始化操作
 	 */
 	private void initialize() {
+	    RequestManager.initializeWith(this);
+	    
 		checkStrictMode();
 	}
 	
