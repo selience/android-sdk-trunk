@@ -21,12 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
@@ -167,6 +170,7 @@ class RedirectHurlStack implements HttpStack {
         connection.setDoInput(true);
 //        connection.setInstanceFollowRedirects(true);
 
+        trustAllHttpsCertificates();
         // use caller-provided custom SslSocketFactory, if any, for HTTPS
         if ("https".equals(url.getProtocol()) && mSslSocketFactory != null) {
             ((HttpsURLConnection) connection).setSSLSocketFactory(mSslSocketFactory);
@@ -227,6 +231,31 @@ class RedirectHurlStack implements HttpStack {
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.write(body);
             out.close();
+        }
+    }
+    
+    private void trustAllHttpsCertificates() {
+        try {
+            javax.net.ssl.X509TrustManager tm = new javax.net.ssl.X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {return null;}
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain,String authType) throws CertificateException {}
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain,String authType) throws CertificateException {}
+            };
+            // Create a trust manager that does not validate certificate chains:
+            javax.net.ssl.TrustManager[] trustAllCerts = { tm };
+            javax.net.ssl.SSLContext sc = javax.net.ssl.SSLContext.getInstance("TLS"); 
+            sc.init(null, trustAllCerts, null);
+            javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            javax.net.ssl.HostnameVerifier hv = new javax.net.ssl.HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {return true;}
+            };
+            HttpsURLConnection.setDefaultHostnameVerifier(hv);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
