@@ -1,7 +1,6 @@
 package com.iresearch.cn.android.base;
 
 import java.lang.reflect.Field;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.ViewConfiguration;
-
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
