@@ -41,7 +41,7 @@ public final class FragmentStack {
 	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 	    BaseFragment f = (BaseFragment) mFragmentManager.findFragmentByTag(tag);
 	    if (!resetFragment(f, tag)) {
-    		f = (BaseFragment) getFragment(clazz, tag, args);
+    		f = getFragment(clazz, tag, args);
     		// 清空栈顶Fragment
     		cleanBackStack(f);
     		// 挂载当前Fragment
@@ -65,7 +65,7 @@ public final class FragmentStack {
 	 * 处理栈顶Fragment
 	 */
 	private boolean resetFragment(BaseFragment f, String tag) {
-		if (f !=null && mStack.size() > 0) {
+		if (f !=null && !f.isSingleton() && mStack.size() > 0) {
 			BaseFragment element = mStack.peek();
 			// 当前Fragment位于栈顶直接返回
 			if (tag.equals(element.getTag())) {

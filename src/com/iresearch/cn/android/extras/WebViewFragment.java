@@ -23,6 +23,7 @@ import com.iresearch.cn.android.utils.ReflectionUtils;
 public class WebViewFragment extends BaseFragment {
 	public static final String INTENT_KEY_URI = "uri";
 	
+	private String mWebUrl;
 	private WebView mWebView;
 	private long mZoomTimeout;
 	private Activity mActivity;
@@ -54,8 +55,13 @@ public class WebViewFragment extends BaseFragment {
 		
 		final Bundle bundle = getArguments();
 		if (bundle != null) {
-			loadUrl(bundle.getString(INTENT_KEY_URI));
+		    mWebUrl=bundle.getString(INTENT_KEY_URI);
+			loadUrl(mWebUrl);
 		}
+	}
+	
+	public final String getWebUrl() {
+	    return mWebUrl;
 	}
 	
 	public final void loadUrl(final String url) {
@@ -155,6 +161,14 @@ public class WebViewFragment extends BaseFragment {
 		}
 
 		@Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+		    view.stopLoading();
+		    view.clearView();
+		    // 显示错误页面
+		    view.loadUrl("file:///android_asset/error.html");  
+        }
+
+        @Override
 		public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
 			view.loadUrl(url);
 			return true;

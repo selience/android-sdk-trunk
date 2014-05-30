@@ -1,31 +1,54 @@
 package com.iresearch.cn.android;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebView.HitTestResult;
 import com.iresearch.cn.android.extras.WebViewFragment;
-import com.iresearch.cn.android.utils.ToastUtils;
+import com.iresearch.cn.android.log.XLog;
 
 public class WebPageFragment extends WebViewFragment {
 
+    private WebView mWebview = null;
+    
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		final WebView webview = getWebView();
-		webview.addJavascriptInterface(new JavaScriptInterface(), "android");
+		mWebview = getWebView();
+		mWebview.addJavascriptInterface(new JavaScriptInterface(), "android");
+		// 注册上下文菜单
+		registerForContextMenu(mWebview);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	    super.onCreateContextMenu(menu, v, menuInfo);
+	    
+	    WebView w = (WebView)v;
+	    HitTestResult result = w.getHitTestResult();
+	    // 检测图片格式
+	    if(result.getType() == HitTestResult.IMAGE_TYPE){
+	        menu.addSubMenu(1, 1, 1, "保存图片");
+	        //通过result.getExtra()取出URL
+	        XLog.d("webView", result.getExtra());
+	    }
 	}
 	
 	class JavaScriptInterface {
 
 		@JavascriptInterface // 4.2 version must annotation
-		public String text() { 
-			return "测试内容";
+		public void netSetting() {
+		    startActivity(new Intent("android.settings.WIRELESS_SETTINGS"));
 		}
 		
 		@JavascriptInterface // 4.2 version must annotation
-		public void test() {
-			ToastUtils.show(getActivity(), "当前内容来自本地客户端");
+		public void refresh() {
+		    loadUrl(getWebUrl());
 		}
 	}
 	

@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+*{padding:0; margin:0; font-size:12px; font-weight:bold;}
+
+body{background-color:#192f41;}
+.hei_0 img{background-color:#192f41;}
+.col_t_1{color:#FFF;}
+
+#page{width:298px; margin:0 auto;}
+
+.nrong{
+	-webkit-border-radius:8px;
+	border:1px solid #999;
+}
+p.mar{margin:8px 0;}
+
+a img{border:0;}
+
+h2,h3{font-size:12px; margin:8px 0;}
+.wenxin{background:url(../images/help_03.png) no-repeat right center; height:22px; line-height:22px;}
+.text_r{text-align:right;}
+.text_c{text-align:center;}
+
+/*m&p*/
+.pad_0{padding:0;}
+
+.bor_tab .pad_0{padding:0;}
+.bor_tab .hei_0{height:0;}
+.bor_tab .hei_td{height:35px;}
+.bor_tab .pad_l10_r0{padding:0; padding-left:10px;}
+.bor_tab .pad_l_0{padding-left:0;}
+.bor_tab .pad_r_0{padding-right:0;}
+.space_10{height:10px;}
+.space_5{height:5px;}
+.wid100{width:100%;}
+.wid80{width:80%;}
+.wid90{width:90%;}
+.wid60{width:60%;}
+
+/*color*/
+.col999{color:#999;}
+.colC00{color:#C00;}
+
+/*table*/
+.bor_tab{background:#F5F5F5;}
+.bor_tab td{height:26px; padding:0 10px;}
+.bor_t{border-top:1px solid #000;}
+.bor_b{border-bottom:1px solid #c0c0c0;}
+.bor_l{border-left:1px solid #000;}
+.bor_r{border-right:1px solid #000;}
+td{padding:0 10px;}
+
+/*2010.11.24*/
+.f16{font-size:16px;}
+.bg_err{background:url(../images/img_err.png) no-repeat 60px 0; height:65px; line-height:65px; color:#fff; font-size:22px; text-align:center; padding-left:70px; margin:20px 0 ;}
+.section ul{margin:0 20px; line-height:200%; margin-bottom:20px;}
+.section li{list-style:inside; padding-left:20px; line-height:180%; font-weight:normal;}
+.section ul p{background:#A7AEB4; padding-left:10px; color:#000; font-weight:normal; margin-bottom:2px;}
+.btn_err{display:inline-block; width:105px; height:35px; margin:0 auto 30px auto;}
+.btn_err:link{background:url(../images/refresh1.png) no-repeat;}
+.btn_err:visited{background:url(../images/refresh2.png) no-repeat;}
+.btn_net{display:inline-block; width:105px; height:35px; margin:0 auto 30px 20px;}
+.btn_net:link{background:url(../images/netsetting1.png) no-repeat;}
+.btn_net:visited{background:url(../images/netsetting2.png) no-repeat;}
+

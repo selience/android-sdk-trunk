@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>网络错误</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body{background:#0F2030;}
+		#page{
+			border:1px solid #223442; background:#223442;
+			border-radius:8px;
+			-webkit-border-radius:8px;
+			-moz-border-radius:8px;
+			-o-border-radius:8px;
+			margin-top:20px;
+			color:#fff;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+		    var btn_net=document.getElementById("btn_net");
+		    btn_net.onclick=function(){
+		       window.android.netSetting();
+		    }
+		    var btn_err=document.getElementById("btn_err");
+		    btn_err.onclick=function(){
+		       window.android.refresh();
+		    }
+		};
+	</script>
+</head>
+
+<body>
+<div id="page">
+	<div class="section">
+    	<p class="bg_err">网络出错</p>
+    </div>
+    <div class="section">
+    	<ul>
+        	<p>可能的原因有：</p>
+        	<li>无手机信号或信号太弱</li>
+        	<li>当前接入点已失效或过期</li>
+        	<li>为正确开通手机上网服务</li>
+        </ul>
+    </div>
+    <div class="section">
+    	<p style="text-align: center;">
+    		<a  id="btn_err" class="btn_err" href="#"></a>
+    		<a id="btn_net" class="btn_net" href="#"></a>
+    	</p>
+    </div>
+</div>
+</body>
+</html>
