@@ -13,6 +13,7 @@
 
     <string-array name="main_list_item">
         <item>网络请求数据</item>
+        <item>本地方法调用</item>
         <item>Android</item>
         <item>iPhone</item>
         <item>Blackberry</item>

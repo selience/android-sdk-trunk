@@ -28,6 +28,8 @@ public abstract class BaseFragment extends Fragment {
 	
 	private CharSequence title; // 设置标题
 	
+	protected Activity mActivity;
+	
 	/**
 	 * 必须有此构造方法，Layout中的静态Fragment会调用,旋转屏幕也会调用 ;
 	 */
@@ -101,6 +103,7 @@ public abstract class BaseFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		XLog.d(TAG, "onAttach");
 		super.onAttach(activity);
+		this.mActivity=activity;
 	}
 	
 	@Override
