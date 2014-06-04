@@ -2,7 +2,6 @@ package com.iresearch.cn.android.manager;
 
 import android.app.Activity;
 import android.os.Debug;
-import com.iresearch.cn.android.settings.ViewServer;
 
 public class ViewManager {
 

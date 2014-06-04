@@ -8,14 +8,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.ViewConfiguration;
+import com.iresearch.cn.android.constants.Config;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
 import com.iresearch.cn.android.manager.ViewManager;
-import com.iresearch.cn.android.settings.Config;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity {
-	
+    protected String TAG = "BaseActionBarActivity";
+    
 	private FragmentManager fm;
 	private FragmentStack mStack;
 	private ViewManager mViewManager;
@@ -24,10 +25,11 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		XLog.d("onCreate");
+		TAG = getClass().getSimpleName();
+		XLog.d(TAG, "onCreate");
 		
 		fm = getSupportFragmentManager();
-		FragmentManager.enableDebugLogging(Config.DEBUG);
+		FragmentManager.enableDebugLogging(false);
 		forceShowActionBarOverflowMenu();
 		
 		mActivityStack=ActivityStack.getInstance();
@@ -43,19 +45,19 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		XLog.d("onStart");
+		XLog.d(TAG, "onStart");
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		XLog.d("onRestart");
+		XLog.d(TAG, "onRestart");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		XLog.d("onResume");
+		XLog.d(TAG, "onResume");
 		
 		mViewManager.onAppResume(this);
 	}
@@ -63,19 +65,19 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		XLog.d("onPause");
+		XLog.d(TAG, "onPause");
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		XLog.d("onStop");
+		XLog.d(TAG, "onStop");
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		XLog.d("onDestroy");
+		XLog.d(TAG, "onDestroy");
 		
 		mViewManager.onAppEnd(this);
 		mActivityStack.removeActivity(this);
@@ -83,14 +85,14 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		XLog.d("onSaveInstanceState");
+		XLog.d(TAG, "onSaveInstanceState");
 		mStack.savedState(outState);
 		super.onSaveInstanceState(outState);
 	}
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		XLog.d("onConfigurationChanged");
+		XLog.d(TAG, "onConfigurationChanged");
 	    super.onConfigurationChanged(newConfig);
 	}
 	
@@ -108,7 +110,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	
 	@Override
 	public boolean onSupportNavigateUp() {
-		XLog.d("onSupportNavigateUp");
+		XLog.d(TAG, "onSupportNavigateUp");
 		if (mStack.stackSize() > 1) {
 			if (getFragment().onNavigateUp()) {
 				return true;
@@ -123,7 +125,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed() {
-		XLog.d("onBackPressed");
+		XLog.d(TAG, "onBackPressed");
 		if (mStack.stackSize() > 1) {
 			if (mStack.peekFragment().onBackPressed()) {
 				return;

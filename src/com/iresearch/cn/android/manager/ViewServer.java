@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.iresearch.cn.android.settings;
+package com.iresearch.cn.android.manager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

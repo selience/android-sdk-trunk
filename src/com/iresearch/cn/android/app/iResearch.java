@@ -2,6 +2,7 @@ package com.iresearch.cn.android.app;
 
 import java.util.Iterator;
 import java.util.List;
+
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.Application;
@@ -9,6 +10,9 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Build;
 import android.os.Process;
 import android.os.StrictMode;
+
+import com.iresearch.cn.android.constants.Config;
+import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
 
 public class iResearch extends Application {
@@ -33,6 +37,7 @@ public class iResearch extends Application {
 	 * 初始化操作
 	 */
 	private void initialize() {
+	    XLog.enableDebugLogging(Config.DEBUG);
 	    RequestManager.initializeWith(this);
 	    
 		checkStrictMode();

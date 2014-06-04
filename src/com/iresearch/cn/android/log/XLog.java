@@ -1,7 +1,9 @@
+
 package com.iresearch.cn.android.log;
 
 import android.util.Log;
-import com.iresearch.cn.android.BuildConfig;
+
+import java.util.Locale;
 
 /**
  * Convenience class for logging. Logs the given parameters plus the 
@@ -9,144 +11,129 @@ import com.iresearch.cn.android.BuildConfig;
  */
 public class XLog {
 
+    private static boolean DEBUG = false; 
 
-    public static void v(Throwable t) {
-        log(Log.VERBOSE, t, null);
+    /**
+     * @param enabled 是否开启打印日志
+     */
+    public static void enableDebugLogging(boolean enabled) {
+        DEBUG = enabled;
     }
 
-
-    public static void v(Object s1, Object... args) {
-        log(Log.VERBOSE, null, s1, args);
+    static public void v(String msgFormat) {
+        log(Log.VERBOSE, null, msgFormat, null);
+    }
+    
+    static public void v(String tag, String msgFormat) {
+        log(Log.VERBOSE, tag, msgFormat, null);
+    }
+    
+    static public void v(String tag, String msgFormat, Throwable t) {
+        log(Log.VERBOSE, tag, msgFormat, t);
     }
 
-
-    public static void v(Throwable t, Object s1, Object... args) {
-        log(Log.VERBOSE, t, s1, args);
+    static public void d(String msgFormat) {
+        log(Log.DEBUG, null, msgFormat, null);
     }
-
-
-    public static void d(Throwable t) {
-        log(Log.DEBUG, t, null);
+    
+    static public void d(String tag, String msgFormat) {
+        log(Log.DEBUG, tag, msgFormat, null);
     }
-
-
-    public static void d(Object s1, Object... args) {
-        log(Log.DEBUG, null, s1, args);
+    
+    static public void d(String tag, String msgFormat, Throwable t) {
+        log(Log.DEBUG, tag, msgFormat, t);
     }
-
-
-    public static void d(Throwable t, Object s1, Object... args) {
-        log(Log.DEBUG, t, s1, args);
+    
+    static public void i(String msgFormat) {
+        log(Log.INFO, null, msgFormat, null);
     }
-
-
-    public static void i(Throwable t) {
-        log(Log.INFO, t, null);
+    
+    static public void i(String tag, String msgFormat) {
+        log(Log.INFO, tag, msgFormat, null);
     }
-
-
-    public static void i(Object s1, Object... args) {
-        log(Log.INFO, null, s1, args);
+    
+    static public void i(String tag, String msgFormat, Throwable t) {
+        log(Log.INFO, tag, msgFormat, t);
     }
-
-
-    public static void i(Throwable t, Object s1, Object... args) {
-        log(Log.INFO, t, s1, args);
+    
+    static public void w(String msgFormat) {
+        log(Log.WARN, null, msgFormat, null);
     }
-
-
-    public static void w(Throwable t) {
-        log(Log.WARN, t, null);
+    
+    static public void w(String tag, String msgFormat) {
+        log(Log.WARN, tag, msgFormat, null);
     }
-
-
-    public static void w(Object s1, Object... args) {
-        log(Log.WARN, null, s1, args);
+    
+    static public void w(String tag, String msgFormat, Throwable t) {
+        log(Log.WARN, tag, msgFormat, t);
     }
-
-
-    public static void w(Throwable t, Object s1, Object... args) {
-        log(Log.WARN, t, s1, args);
+    
+    static public void e(String msgFormat) {
+        log(Log.ERROR, null, msgFormat, null);
     }
-
-
-    public static void e(Throwable t) {
-        log(Log.ERROR, t, null);
+    
+    static public void e(String tag, String msgFormat) {
+        log(Log.ERROR, tag, msgFormat, null);
     }
-
-
-    public static void e(Object s1, Object... args) {
-        log(Log.ERROR, null, s1, args);
+    
+    static public void e(String tag, String msgFormat, Throwable t) {
+        log(Log.ERROR, tag, msgFormat, t);
     }
+    
+    private static void log(final int level, final String s1, final String msgFormat, final Throwable t) {
+        if (!DEBUG) return;
 
-
-    public static void e(Throwable t, Object s1, Object... args) {
-        log(Log.ERROR, t, s1, args);
-    }
-
-
-    private static void log(final int pType, final Throwable t, final Object s1, final Object... args) {
-        if (pType == Log.ERROR || BuildConfig.DEBUG) {
-            final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
-
-            final String fullClassName = stackTraceElement.getClassName();
-            final String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-            final int lineNumber = stackTraceElement.getLineNumber();
-            final String method = stackTraceElement.getMethodName();
-
-            final String tag = className + ":" + lineNumber;
-
-            final StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(method);
-            stringBuilder.append("(): ");
-
-            if (s1 != null) {
-                 final String message = (args == null) ? s1.toString() : String.format((String) s1, args);
-                 stringBuilder.append(message);
-            }
-
-
-            switch (pType) {
-                case Log.VERBOSE:
-                    if (t != null) {
-                        Log.v(tag, stringBuilder.toString(), t);
-                    } else {
-                        Log.v(tag, stringBuilder.toString());
-                    }
-                    break;
-
-                case Log.DEBUG:
-                    if (t != null) {
-                        Log.d(tag, stringBuilder.toString(), t);
-                    } else {
-                        Log.d(tag, stringBuilder.toString());
-                    }
-                    break;
-
-                case Log.INFO:
-                    if (t != null) {
-                        Log.i(tag, stringBuilder.toString(), t);
-                    } else {
-                        Log.i(tag, stringBuilder.toString());
-                    }
-                    break;
-
-                case Log.WARN:
-                    if (t != null) {
-                        Log.w(tag, stringBuilder.toString(), t);
-                    } else {
-                        Log.w(tag, stringBuilder.toString());
-                    }
-                    break;
-
-                case Log.ERROR:
-                    if (t != null) {
-                        Log.e(tag, stringBuilder.toString(), t);
-                    } else {
-                        Log.e(tag, stringBuilder.toString());
-                    }
-                    break;
-            }
+        final Thread thread = Thread.currentThread();
+        final String msg = (msgFormat == null) ? "" : msgFormat;
+        final StackTraceElement stackTraceElement = thread.getStackTrace()[4];
+        final String fullClassName = stackTraceElement.getClassName();
+        final String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+        final String tag = (s1 == null) ? className : s1; 
+                
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(stackTraceElement.getMethodName());
+        stringBuilder.append("@");
+        stringBuilder.append(stackTraceElement.getLineNumber());
+        stringBuilder.append(">>>");
+        stringBuilder.append(String.format(Locale.US, "[%d:%s] %s", thread.getId(), thread.getName(), msg));
+        
+        switch (level) {
+            case Log.VERBOSE:
+                if (t != null) {
+                    Log.v(tag, stringBuilder.toString(), t);
+                } else {
+                    Log.v(tag, stringBuilder.toString());
+                }
+                break;
+            case Log.DEBUG:
+                if (t != null) {
+                    Log.d(tag, stringBuilder.toString(), t);
+                } else {
+                    Log.d(tag, stringBuilder.toString());
+                }
+                break;
+            case Log.INFO:
+                if (t != null) {
+                    Log.i(tag, stringBuilder.toString(), t);
+                } else {
+                    Log.i(tag, stringBuilder.toString());
+                }
+                break;
+            case Log.WARN:
+                if (t != null) {
+                    Log.w(tag, stringBuilder.toString(), t);
+                } else {
+                    Log.w(tag, stringBuilder.toString());
+                }
+                break;
+            case Log.ERROR:
+                if (t != null) {
+                    Log.e(tag, stringBuilder.toString(), t);
+                } else {
+                    Log.e(tag, stringBuilder.toString());
+                }
+                break;
         }
     }
+
 }

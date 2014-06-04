@@ -1,15 +1,17 @@
 package com.iresearch.cn.android.utils;
 
-import android.content.Context;
 import android.widget.Toast;
+import android.content.Context;
 
 /**
  * ToastUtils
  * 
- * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2013-12-9
+ * @author lilong@qiyi.com
  */
 public class ToastUtils {
 
+    private static Toast toast;
+    
     public static void show(Context context, int resId) {
         show(context, context.getResources().getText(resId), Toast.LENGTH_SHORT);
     }
@@ -20,10 +22,6 @@ public class ToastUtils {
 
     public static void show(Context context, CharSequence text) {
         show(context, text, Toast.LENGTH_SHORT);
-    }
-
-    public static void show(Context context, CharSequence text, int duration) {
-        Toast.makeText(context, text, duration).show();
     }
 
     public static void show(Context context, int resId, Object... args) {
@@ -40,5 +38,16 @@ public class ToastUtils {
 
     public static void show(Context context, String format, int duration, Object... args) {
         show(context, String.format(format, args), duration);
+    }
+    
+    public static void show(Context context, CharSequence text, int duration) {
+        if (toast != null) {
+            toast.setText(text);
+            toast.setDuration(duration);
+            toast.show();
+        } else {
+            toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 }

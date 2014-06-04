@@ -1,4 +1,4 @@
-package com.iresearch.cn.android.settings;
+package com.iresearch.cn.android.constants;
 
 public class Config {
 
