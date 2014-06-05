@@ -233,6 +233,20 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	/**
+	 * 装载Fragment
+	 */
+	protected void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
+	    final Activity activity = getActivity();
+	    if (activity == null) return;
+	    
+	    if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).replace(clazz, tag, args);
+        } else if (activity instanceof BaseActionBarActivity) {
+            ((BaseActionBarActivity) activity).replace(clazz, tag, args);
+        }
+	}
+	
+	/**
 	 * 存储Fragment状态
 	 */
 	protected void storeSavedState(Bundle outState) {

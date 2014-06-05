@@ -5,7 +5,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,8 +25,10 @@ import com.android.volley.VolleyError;
 import com.iresearch.cn.android.base.BaseFragment;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.model.request.TestRequest;
+import com.iresearch.cn.android.service.SocketService;
 import com.iresearch.cn.android.uninstall.NativeMethod;
 import com.iresearch.cn.android.uninstall.UninstallObserver;
+import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
@@ -63,6 +68,14 @@ public class HomeFragment extends BaseFragment implements
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        
+        // 启动socket服务，监听本地4392端口
+        startService(new Intent(mActivity, SocketService.class));
+    }
+    
+    @Override
     public void onRefresh() {
         // 执行下拉刷新方法
         new Handler().postDelayed(new Runnable() {
@@ -93,6 +106,11 @@ public class HomeFragment extends BaseFragment implements
             
             nativeMethod.callPrint();  // C调用静态方法
             nativeMethod.callMethod(); // C调用实例方法
+        } else if (position == 2) {
+            String url="http://" + NetworkUtils.ipToString(mActivity);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url+":"+SocketService.CONNECTION_POST));
+            startActivity(intent);
         }
     }
     

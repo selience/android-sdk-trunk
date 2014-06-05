@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import com.iresearch.cn.android.constants.Config;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
@@ -33,7 +32,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		mStack=FragmentStack.newInstance(this, fm, layout());
 		mStack.restoreState(savedInstanceState);
 		
-		mViewManager=new ViewManager(Config.DEBUG);
+		mViewManager=new ViewManager(false);
 		mViewManager.onAppStart(this);
 	}
 
@@ -117,7 +116,7 @@ public abstract class BaseActivity extends FragmentActivity {
 	/*
 	 * 装载Fragment到Activity
 	 */
-	public void replace(Class<BaseFragment> clazz, String tag, Bundle args) {
+	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		mStack.replace(clazz, tag, args);
 	}
 }

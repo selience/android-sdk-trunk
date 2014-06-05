@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.ViewConfiguration;
-import com.iresearch.cn.android.constants.Config;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
@@ -38,7 +37,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 		mStack=FragmentStack.newInstance(this, fm, layout());
 		mStack.restoreState(savedInstanceState);
 		
-		mViewManager=new ViewManager(Config.DEBUG);
+		mViewManager=new ViewManager(false);
 		mViewManager.onAppStart(this);
 	}
 

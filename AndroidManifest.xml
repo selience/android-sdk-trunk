@@ -23,6 +23,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
     
@@ -84,6 +85,8 @@
                 <data android:mimeType="video/*" />
 		    </intent-filter>
         </activity>
+        
+        <service android:name="com.iresearch.cn.android.service.SocketService" android:process=":listen" />
     </application>
 
 </manifest>
