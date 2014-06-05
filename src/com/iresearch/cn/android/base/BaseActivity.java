@@ -2,8 +2,10 @@ package com.iresearch.cn.android.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.manager.ActivityStack;
 import com.iresearch.cn.android.manager.FragmentStack;
@@ -12,7 +14,6 @@ import com.iresearch.cn.android.manager.ViewManager;
 public abstract class BaseActivity extends FragmentActivity {
     protected String TAG = "BaseActivity";
     
-	private FragmentManager fm;
 	private FragmentStack mStack;
 	private ViewManager mViewManager;
 	private ActivityStack mActivityStack;
@@ -23,7 +24,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		TAG = getClass().getSimpleName();
 		XLog.d(TAG, "onCreate");
 
-		fm = getSupportFragmentManager();
+		FragmentManager fm=getSupportFragmentManager();
 		FragmentManager.enableDebugLogging(false);
 		
 		mActivityStack=ActivityStack.getInstance();
@@ -100,23 +101,33 @@ public abstract class BaseActivity extends FragmentActivity {
 				mStack.popFragment();
 				return;
 			}
-		} else {
-			if (mStack.peekFragment().onBackPressed()) {
-				return;
-			} else {
-				super.onBackPressed();
-			}
-		}
+		} 
+		super.onBackPressed();
 	}
 	
 	
 	// TODO content layout resource
 	protected abstract int layout();
 	
-	/*
-	 * 装载Fragment到Activity
+	/**
+	 * 装载Fragment 
 	 */
-	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
-		mStack.replace(clazz, tag, args);
+	public void replace(final int layout, Fragment fragment, String tag) {
+	    FragmentManager mFragmentManager=getSupportFragmentManager();
+	    FragmentTransaction mTransaction=mFragmentManager.beginTransaction();
+	    mTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    
+	    mTransaction.replace(layout, fragment, tag);
+	    mTransaction.commitAllowingStateLoss();
+	    mTransaction=null;
+	    
+	    mFragmentManager.executePendingTransactions();
 	}
+	
+	/**
+     * 装载Fragment，添加到栈管理队列
+     */
+    public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
+        mStack.replace(clazz, tag, args);
+    }
 }

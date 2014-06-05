@@ -1,5 +1,7 @@
 package com.iresearch.cn.android.utils;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 import android.content.Context;
 
@@ -11,6 +13,12 @@ import android.content.Context;
 public class ToastUtils {
 
     private static Toast toast;
+    
+    private static Handler handler;
+    
+    static {
+        handler = new Handler(Looper.getMainLooper());
+    }
     
     public static void show(Context context, int resId) {
         show(context, context.getResources().getText(resId), Toast.LENGTH_SHORT);
@@ -40,14 +48,19 @@ public class ToastUtils {
         show(context, String.format(format, args), duration);
     }
     
-    public static void show(Context context, CharSequence text, int duration) {
-        if (toast != null) {
-            toast.setText(text);
-            toast.setDuration(duration);
-            toast.show();
-        } else {
-            toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
+    public static void show(final Context context, final CharSequence text, final int duration) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (toast != null) {
+                    toast.setText(text);
+                    toast.setDuration(duration);
+                    toast.show();
+                } else {
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
     }
 }

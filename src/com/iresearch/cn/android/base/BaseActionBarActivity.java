@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.ViewConfiguration;
@@ -16,7 +17,6 @@ import com.iresearch.cn.android.manager.ViewManager;
 public abstract class BaseActionBarActivity extends ActionBarActivity {
     protected String TAG = "BaseActionBarActivity";
     
-	private FragmentManager fm;
 	private FragmentStack mStack;
 	private ViewManager mViewManager;
 	private ActivityStack mActivityStack;
@@ -27,7 +27,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 		TAG = getClass().getSimpleName();
 		XLog.d(TAG, "onCreate");
 		
-		fm = getSupportFragmentManager();
+		FragmentManager fm=getSupportFragmentManager();
 		FragmentManager.enableDebugLogging(false);
 		forceShowActionBarOverflowMenu();
 		
@@ -132,13 +132,8 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 				mStack.popFragment();
 				return;
 			}
-		} else {
-			if (mStack.peekFragment().onBackPressed()) {
-				return;
-			} else {
-				super.onBackPressed();
-			}
-		}
+		} 
+		super.onBackPressed();
 	}
 	
 	private BaseActionBarFragment getFragment() {
@@ -149,19 +144,33 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 		return null;
 	}
 	
-
 	// TODO content layout resource
 	protected abstract int layout();
 	
-	/*
-	 * 装载Fragment到Activity
+	
+	/**
+     * 装载Fragment 
+     */
+    public void replace(final int layout, Fragment fragment, String tag) {
+        FragmentManager mFragmentManager=getSupportFragmentManager();
+        FragmentTransaction mTransaction=mFragmentManager.beginTransaction();
+        mTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        
+        mTransaction.replace(layout, fragment, tag);
+        mTransaction.commitAllowingStateLoss();
+        mTransaction=null;
+        
+        mFragmentManager.executePendingTransactions();
+    }
+	
+	/**
+	 * 装载Fragment,添加到栈管理队列
 	 */
 	public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {
 		mStack.replace(clazz, tag, args);
 	}
 	
-	
-	/** 在有 menu按键的手机上面，ActionBar 上的 overflow menu 默认不会出现，只有当点击了 menu按键时才会显示 */
+	/** 在有 menu按键的手机上面，ActionBar上的 overflow menu默认不会出现，只有当点击了 menu按键时才会显示 */
 	private void forceShowActionBarOverflowMenu() {
         try {
             ViewConfiguration config = ViewConfiguration.get(this);

@@ -6,4 +6,5 @@
     <string name="drawer_open">Slider Menu Opened</string>
     <string name="drawer_close">Slider Menu Closed</string>
 
+    <string name="location_not_found">Unknown location</string>
 </resources>

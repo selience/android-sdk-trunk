@@ -978,14 +978,33 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int drawer_shadow=0x7f020057;
-        public static final int ic_drawer=0x7f020058;
-        public static final int icon=0x7f020059;
-        public static final int nav_main_tab_bg=0x7f02005a;
-        public static final int nav_main_tab_divider=0x7f02005b;
-        public static final int nav_slide_layout_bg=0x7f02005c;
-        public static final int nav_slide_tab_bg=0x7f02005d;
-        public static final int nav_tab_bg_pressed=0x7f02005e;
+        public static final int btn_viewer_bottomleft=0x7f020057;
+        public static final int btn_viewer_bottomright=0x7f020058;
+        public static final int btn_viewer_focused_bottomleft=0x7f020059;
+        public static final int btn_viewer_focused_bottomright=0x7f02005a;
+        public static final int btn_viewer_focused_topleft=0x7f02005b;
+        public static final int btn_viewer_focused_topright=0x7f02005c;
+        public static final int btn_viewer_normal_bottomleft=0x7f02005d;
+        public static final int btn_viewer_normal_bottomright=0x7f02005e;
+        public static final int btn_viewer_normal_topleft=0x7f02005f;
+        public static final int btn_viewer_normal_topright=0x7f020060;
+        public static final int btn_viewer_pressed_bottomleft=0x7f020061;
+        public static final int btn_viewer_pressed_bottomright=0x7f020062;
+        public static final int btn_viewer_pressed_topleft=0x7f020063;
+        public static final int btn_viewer_pressed_topright=0x7f020064;
+        public static final int btn_viewer_topleft=0x7f020065;
+        public static final int btn_viewer_topright=0x7f020066;
+        public static final int drawer_shadow=0x7f020067;
+        public static final int ic_drawer=0x7f020068;
+        public static final int ic_map_marker=0x7f020069;
+        public static final int ic_menu_close_clear_cancel=0x7f02006a;
+        public static final int ic_menu_mylocation=0x7f02006b;
+        public static final int icon=0x7f02006c;
+        public static final int nav_main_tab_bg=0x7f02006d;
+        public static final int nav_main_tab_divider=0x7f02006e;
+        public static final int nav_slide_layout_bg=0x7f02006f;
+        public static final int nav_slide_tab_bg=0x7f020070;
+        public static final int nav_tab_bg_pressed=0x7f020071;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1004,6 +1023,7 @@ containing a value of this type.
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
+        public static final int content=0x7f050040;
         public static final int content_frame=0x7f05003e;
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
@@ -1022,7 +1042,9 @@ containing a value of this type.
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int list_slidermenu=0x7f05003f;
-        public static final int menu_settings=0x7f050040;
+        public static final int mapview_center_btn=0x7f050042;
+        public static final int mapview_close_btn=0x7f050041;
+        public static final int menu_settings=0x7f050043;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -1106,7 +1128,8 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f030017;
         public static final int home=0x7f030018;
         public static final int main=0x7f030019;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
+        public static final int map_viewer=0x7f03001a;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
     }
     public static final class menu {
         public static final int activity_main=0x7f0d0000;
@@ -1155,6 +1178,7 @@ containing a value of this type.
         public static final int app_name=0x7f0a000d;
         public static final int drawer_close=0x7f0a0010;
         public static final int drawer_open=0x7f0a000f;
+        public static final int location_not_found=0x7f0a0011;
         public static final int menu_settings=0x7f0a000e;
     }
     public static final class style {

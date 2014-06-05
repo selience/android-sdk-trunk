@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +26,6 @@ import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.model.request.TestRequest;
 import com.iresearch.cn.android.service.SocketService;
 import com.iresearch.cn.android.uninstall.NativeMethod;
-import com.iresearch.cn.android.uninstall.UninstallObserver;
 import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
@@ -68,14 +66,6 @@ public class HomeFragment extends BaseFragment implements
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        
-        // 启动socket服务，监听本地4392端口
-        startService(new Intent(mActivity, SocketService.class));
-    }
-    
-    @Override
     public void onRefresh() {
         // 执行下拉刷新方法
         new Handler().postDelayed(new Runnable() {
@@ -96,8 +86,6 @@ public class HomeFragment extends BaseFragment implements
                     .addRequest(new TestRequest(), mRequestCallback)
                     .start();
         } else if (position == 1) {
-            // 启动卸载应用监听
-            UninstallObserver.startTask(mActivity);
             // JNI方法调用
             NativeMethod nativeMethod = new NativeMethod();
             System.out.println("C实现有参的java方法：" + nativeMethod.sayHi("test"));
@@ -111,6 +99,11 @@ public class HomeFragment extends BaseFragment implements
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url+":"+SocketService.CONNECTION_POST));
             startActivity(intent);
+        } else if (position == 3) {
+            double lat = 39.90960456049752, lng = 116.3972282409668;
+            Intent mapIntent = new Intent(mActivity, MapViewerActivity.class);
+            mapIntent.setData(Uri.parse("wuxian://map?lat="+lat+"&lng="+lng));
+            startActivity(mapIntent);
         }
     }
     

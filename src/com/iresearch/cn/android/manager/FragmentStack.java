@@ -65,13 +65,11 @@ public final class FragmentStack {
 	 * 处理栈顶Fragment
 	 */
 	private boolean resetFragment(BaseFragment f, String tag) {
-		if (f !=null && !f.isSingleton() && mStack.size() > 0) {
+		if (f !=null && f.isSingleton() && mStack.size() > 0) {
 			BaseFragment element = mStack.peek();
 			// 当前Fragment位于栈顶直接返回
 			if (tag.equals(element.getTag())) {
-			    if (element.isCleanStack() || element.isSingleton()) {
-			        return true;    
-			    }
+			    return true; 
 			}
 			
 			// 当前Fragment位于栈底，则弹出上面Fragment

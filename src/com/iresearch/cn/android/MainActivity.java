@@ -4,6 +4,7 @@ package com.iresearch.cn.android;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +18,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.cn.android.base.BaseActionBarActivity;
 import com.iresearch.cn.android.base.WebViewFragment;
+import com.iresearch.cn.android.location.LocationHelper;
+import com.iresearch.cn.android.location.LocationHelper.LocationResult;
+import com.iresearch.cn.android.service.SocketService;
+import com.iresearch.cn.android.uninstall.UninstallObserver;
+import com.iresearch.cn.android.utils.ToastUtils;
 
-public class MainActivity extends BaseActionBarActivity implements OnItemClickListener {
+public class MainActivity extends BaseActionBarActivity implements 
+    OnItemClickListener, LocationResult {
 
     private ActionBar mActionBar;
     private ListView mDrawerList;
@@ -28,6 +35,8 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
     private String[] mPlanetTitles;
+    
+    private LocationHelper mLocationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +62,14 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        
+        // 启动卸载应用监听
+        UninstallObserver.startTask(this);
+        // 启动定位功能
+        mLocationHelper=new LocationHelper();
+        mLocationHelper.getLocation(this, this);
+        // 启动socket服务，监听本地4392端口
+        startService(new Intent(this, SocketService.class));
     }
 
     @Override
@@ -87,9 +104,11 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
                 replace(HomeFragment.class, "HomeFragment", null);
                 break;
             case 1:
+                replace(WebFlotr2Fragment.class, "WebFlotr2Fragment", null);
+                break;
+            case 2:
                 Bundle bundle = new Bundle();
-                String url = "file:///android_asset/www/info.html";
-                url = "http://blog.sina.com.cn/selienceblog";
+                String url = "http://blog.sina.com.cn/selienceblog";
                 bundle.putString(WebViewFragment.INTENT_KEY_URI, url);
                 replace(WebPageFragment.class, "WebPageFragment", bundle);
                 break;
@@ -128,6 +147,24 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void gotLocation(final Location location) {
+        if (location != null) {
+            String message = location.getLatitude() + "," + location.getLongitude();
+            ToastUtils.show(getBaseContext(), message);
+        } else {
+            ToastUtils.show(getBaseContext(), R.string.location_not_found);
+        }
+    }
+    
+    @Override
+    public void onDestroy() {
+        if (mLocationHelper!=null) {
+            mLocationHelper.cancelTimer();
+        }
+        super.onDestroy();
+    }
+    
     private class ActionBarDrawerToggleImpl extends ActionBarDrawerToggle {
 
         public ActionBarDrawerToggleImpl(Activity activity, DrawerLayout drawerLayout,

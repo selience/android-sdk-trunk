@@ -18,7 +18,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings.RenderPriority;
-
 import com.iresearch.cn.android.utils.ReflectionUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -28,7 +27,6 @@ public class WebViewFragment extends BaseFragment {
 	private String mWebUrl;
 	private WebView mWebView;
 	private long mZoomTimeout;
-	private Activity mActivity;
 	private boolean mIsWebViewAvailable;
 
     @Override
@@ -37,7 +35,6 @@ public class WebViewFragment extends BaseFragment {
 		if (mWebView != null) {
             mWebView.destroy();
         }
-		mActivity = getActivity();
         mWebView = new WebView(mActivity);
         mIsWebViewAvailable = true;
         return mWebView;
@@ -142,8 +139,7 @@ public class WebViewFragment extends BaseFragment {
 		view.setLayerType(layerType, paint);
 	}
 	
-	
-	private class DefaultWebViewClient extends WebViewClient {
+	protected class DefaultWebViewClient extends WebViewClient {
 
 		private final Activity mActivity;
 
@@ -185,7 +181,7 @@ public class WebViewFragment extends BaseFragment {
 		}
 	}
 	
-	private class DefaultWebChromeClient extends WebChromeClient {
+	protected class DefaultWebChromeClient extends WebChromeClient {
 
 		private final Activity mActivity;
 
