@@ -1,4 +1,3 @@
-
 package com.iresearch.cn.android;
 
 import java.lang.reflect.Field;
@@ -6,21 +5,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.android.volley.VolleyError;
+import com.iresearch.cn.android.adapter.MenuListAdapter;
 import com.iresearch.cn.android.base.BaseFragment;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.model.request.TestRequest;
@@ -30,9 +36,14 @@ import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.ShareActionProvider;
 
 public class HomeFragment extends BaseFragment implements 
     OnRefreshListener, OnGlobalLayoutListener, OnItemClickListener {
@@ -40,7 +51,7 @@ public class HomeFragment extends BaseFragment implements
     private ListView mListView;
     private List<String> mDataList;
     private SwipeRefreshLayout mRefreshLayout;
-    private ArrayAdapter<String> mListAdapter;
+    private MenuListAdapter mListAdapter;
 
     @Override
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -59,7 +70,7 @@ public class HomeFragment extends BaseFragment implements
         String[] mResources=getResources().getStringArray(R.array.main_list_item); 
         mDataList.addAll(Arrays.asList(mResources));
         // 设置列表适配器
-        mListAdapter=new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mDataList);
+        mListAdapter=new MenuListAdapter(mActivity, mDataList);
         mListView.setAdapter(mListAdapter);
         
         return convertView;
@@ -78,6 +89,32 @@ public class HomeFragment extends BaseFragment implements
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
+        searchView.setQueryHint(getText(R.string.main_menu_search_hint));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new FilterQueryTextTask());
+
+        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.menu_share));
+        shareProvider.setShareIntent(new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, "Text I want to share"));
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_about:
+                ToastUtils.show(mActivity, item.getTitle());
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == 0) {
             //Queue use custom listener
@@ -88,9 +125,9 @@ public class HomeFragment extends BaseFragment implements
         } else if (position == 1) {
             // JNI方法调用
             NativeMethod nativeMethod = new NativeMethod();
-            System.out.println("C实现有参的java方法：" + nativeMethod.sayHi("test"));
-            System.out.println("C实现两个整数相加方法:" + nativeMethod.add(120, 130));
-            System.out.println("C实现数据元素加5的方法:"+ nativeMethod.intMethod(new int[]{2, 5, 8}));
+            XLog.i("C实现有参的java方法：" + nativeMethod.sayHi("test"));
+            XLog.i("C实现两个整数相加方法:" + nativeMethod.add(120, 130));
+            XLog.i("C实现数据元素加5的方法:"+ nativeMethod.intMethod(new int[]{2, 5, 8}));
             
             nativeMethod.callPrint();  // C调用静态方法
             nativeMethod.callMethod(); // C调用实例方法
@@ -106,24 +143,6 @@ public class HomeFragment extends BaseFragment implements
             startActivity(mapIntent);
         }
     }
-    
-    private RequestCallback<String, Void> mRequestCallback = new RequestCallback<String, Void>() {
-        @Override
-        public Void doInBackground(String response) {
-            XLog.d("\n"+response.toString());
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void result) {
-            ToastUtils.show(mActivity, "Toast from UI");
-        }
-
-        @Override
-        public void onError(VolleyError error) {
-            XLog.e(error.toString());
-        }
-    };
     
     @Override
     @SuppressWarnings("deprecation")
@@ -150,6 +169,71 @@ public class HomeFragment extends BaseFragment implements
             obs.removeOnGlobalLayoutListener(this);
         } else {
             obs.removeGlobalOnLayoutListener(this);
+        }
+    }
+    
+    private RequestCallback<String, Void> mRequestCallback = new RequestCallback<String, Void>() {
+        @Override
+        public Void doInBackground(String response) {
+            XLog.d("\n"+response.toString());
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            ToastUtils.show(mActivity, "Toast from UI");
+        }
+
+        @Override
+        public void onError(VolleyError error) {
+            XLog.e(error.toString());
+        }
+    };
+    
+    private class FilterQueryTextTask implements OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            XLog.d("onQueryTextSubmit");
+            return false;
+        }
+        
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            XLog.d("onQueryTextChange >> " + newText);
+            List<String> dataList=new ArrayList<String>();
+            if (!TextUtils.isEmpty(newText)) {
+               for (String subItem : mDataList) {
+                   if (subItem.startsWith(newText)) {
+                       dataList.add(subItem);
+                   }
+               }
+            } else {
+                dataList.addAll(mDataList);
+            }
+            mListAdapter.setItems(dataList, true);
+            return false;
+        }
+    }
+    
+    public static class SettingsActionProvider extends ActionProvider {
+        /** An intent for launching the system settings. */
+        private static final Intent sSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        
+        public SettingsActionProvider(Context context) {
+            super(context);
+        }
+
+        @Override
+        public View onCreateActionView() {
+            TextView txtView = new TextView(getContext());
+            txtView.setText("setting");
+            return txtView;
+        }
+        
+        @Override
+        public boolean onPerformDefaultAction() {
+            getContext().startActivity(sSettingsIntent);
+            return true;
         }
     }
 }

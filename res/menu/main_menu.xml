@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="101"
+        android:title="@string/main_menu_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView"/>
+    <item
+        android:id="@+id/menu_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="102"
+        android:title="@string/main_menu_share"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:orderInCategory="103"
+        android:title="@string/main_menu_setting"
+        app:actionProviderClass="com.iresearch.cn.android.HomeFragment$SettingsActionProvider"
+        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@android:drawable/ic_menu_help"
+        android:orderInCategory="104"
+        android:title="@string/main_menu_about"
+        app:showAsAction="ifRoom|withText"/>
+
+</menu>

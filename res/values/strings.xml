@@ -7,4 +7,11 @@
     <string name="drawer_close">Slider Menu Closed</string>
 
     <string name="location_not_found">Unknown location</string>
+    
+    <string name="main_menu_search">搜索</string>
+    <string name="main_menu_share">分享</string>
+    <string name="main_menu_setting">设置</string>
+    <string name="main_menu_about">关于</string>
+    
+    <string name="main_menu_search_hint">请输入文字</string>
 </resources>

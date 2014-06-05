@@ -1,5 +1,7 @@
 package com.iresearch.cn.android.uninstall;
 
+import com.iresearch.cn.android.log.XLog;
+
 /**
  * @file NativeMethod.java
  * @create 2013-5-31 上午11:17:49
@@ -45,12 +47,12 @@ public class NativeMethod {
     
     // 调用方法
     public static void print(String s) {
-        System.out.println("C调用Java中的静态方法:" + s);
+        XLog.i("C调用Java中的静态方法:" + s);
     }
 
     // 调用方法
     public void calculate(int x, int y) {
-        System.out.println("C调用Java中的实例方法:" + x+"x"+y+"="+(x*y));
+        XLog.i("C调用Java中的实例方法:" + x+"x"+y+"="+(x*y));
     } 
     
 }

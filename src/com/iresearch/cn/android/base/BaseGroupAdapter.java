@@ -1,9 +1,5 @@
-/**
- * 
- */
 package com.iresearch.cn.android.base;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,32 +17,37 @@ public abstract class BaseGroupAdapter<T> extends BaseAdapter {
 
 	private LayoutInflater inflater;
 
-	private List<T> data = new ArrayList<T>();
+	private List<T> dataList = null;
 
 	public BaseGroupAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
 	}
 
+	public BaseGroupAdapter(Context context, List<T> dataList) {
+	    this.dataList = dataList;
+	    this.inflater = LayoutInflater.from(context);
+	}
+	
 	@Override
 	public int getCount() {
 		int size = 0;
-		if (data != null) {
-			size += data.size();
+		if (dataList != null) {
+			size += dataList.size();
 		}
 		return size;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return data!=null && !data.isEmpty();
+		return dataList!=null && !dataList.isEmpty();
 	}
 
 	@Override
 	public T getItem(int position) {
-		if (data == null) {
+		if (dataList == null) {
 			return null;
 		}
-		return data.get(position);
+		return dataList.get(position);
 	}
 
 	@Override
@@ -60,39 +61,29 @@ public abstract class BaseGroupAdapter<T> extends BaseAdapter {
 			v = newView(inflater, v, position);
 		}
 
-		bindView(v, data.get(position));
+		bindView(v, dataList.get(position));
 
 		return v;
 	}
 
 	public List<T> getItems() {
-		return data;
+		return dataList;
 	}
 
-	public void addAll(List<T> items) {
-		data.addAll(items);
-		notifyDataSetChanged();
+	public void setItems(List<T> items) {
+	    setItems(items, false);
 	}
-
-	public void addAll(List<T> items, boolean redrawList) {
-		data.addAll(items);
-		if (redrawList) {
-			notifyDataSetChanged();
-		}
+	
+	public void setItems(List<T> items, boolean redrawList) {
+	    this.dataList=items;
+	    if (redrawList) {
+            notifyDataSetChanged();
+        }
 	}
-
-	public void clear() {
-		data.clear();
-		notifyDataSetChanged();
-	}
-
-	public void remove(int position) {
-		data.remove(position);
-		notifyDataSetChanged();
-	}
-
+	
 	public abstract View newView(LayoutInflater inflater, View v, int position);
 
+	
 	public abstract void bindView(View v, T item);
 
 }

@@ -16,7 +16,7 @@ import com.iresearch.cn.android.constants.Constants;
  * @file MapViewerActivity.java
  * @create 2013-9-27 下午03:39:49
  * @author lilong@qiyi.com
- * @description TODO
+ * @description TODO http://www.androidhive.info/2013/08/android-working-with-google-maps-v2/
  */
 public class MapViewerActivity extends BaseActivity implements Constants, OnClickListener {
     private static final String FRAGMENT_TAG = "MapFragment";

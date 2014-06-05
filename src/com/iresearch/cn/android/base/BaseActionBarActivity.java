@@ -26,10 +26,10 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		TAG = getClass().getSimpleName();
 		XLog.d(TAG, "onCreate");
-		
+
+		forceShowActionBarOverflowMenu();
 		FragmentManager fm=getSupportFragmentManager();
 		FragmentManager.enableDebugLogging(false);
-		forceShowActionBarOverflowMenu();
 		
 		mActivityStack=ActivityStack.getInstance();
 		mActivityStack.pushActivity(this);
