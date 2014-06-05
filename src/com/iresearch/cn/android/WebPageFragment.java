@@ -8,7 +8,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
-import com.iresearch.cn.android.extras.WebViewFragment;
+import com.iresearch.cn.android.base.WebViewFragment;
 import com.iresearch.cn.android.log.XLog;
 
 public class WebPageFragment extends WebViewFragment {

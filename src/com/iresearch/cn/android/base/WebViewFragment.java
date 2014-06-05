@@ -1,4 +1,4 @@
-package com.iresearch.cn.android.extras;
+package com.iresearch.cn.android.base;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -14,9 +14,11 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.iresearch.cn.android.base.BaseFragment;
+import android.webkit.WebSettings.RenderPriority;
+
 import com.iresearch.cn.android.utils.ReflectionUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -41,14 +43,22 @@ public class WebViewFragment extends BaseFragment {
         return mWebView;
 	}
 
-	@Override
-	public void onActivityCreated(final Bundle savedInstanceState) {
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		WebSettings webSettings = mWebView.getSettings();
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setUserAgentString("android-native");
+        webSettings.setSavePassword(false);
+        webSettings.setRenderPriority(RenderPriority.HIGH);
+		
 		setLayerType(mWebView, View.LAYER_TYPE_SOFTWARE, null);
-		mWebView.getSettings().setBuiltInZoomControls(true);
 		mZoomTimeout=ViewConfiguration.getZoomControlsTimeout();
-		mWebView.getSettings().setJavaScriptEnabled(true);
 		
 		mWebView.setWebViewClient(new DefaultWebViewClient(mActivity));
 		mWebView.setWebChromeClient(new DefaultWebChromeClient(mActivity));

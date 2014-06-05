@@ -16,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.cn.android.base.BaseActionBarActivity;
-import com.iresearch.cn.android.extras.WebViewFragment;
+import com.iresearch.cn.android.base.WebViewFragment;
 
 public class MainActivity extends BaseActionBarActivity implements OnItemClickListener {
 
