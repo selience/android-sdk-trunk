@@ -1,0 +1,37 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>网络错误--404 Not Found</title>
+	<style type="text/css">
+		a {text-decoration:none; color:green; margin-right:20px;}
+	</style>
+	<script type="text/javascript">
+		function check() {
+			window.android.netSetting();
+		}
+		function reload() {
+			window.android.refresh();
+		}
+	</script>
+</head>
+
+<body>
+<div id="page">
+	<h3>404 Not Found</h3>
+	<p class="bg_err">网络出错，可能的原因有：</p>
+    <div>
+    	<ul>
+        	<li>无手机信号或信号太弱；</li>
+        	<li>当前接入点已失效或过期；</li>
+        	<li>为正确开通手机上网服务；</li>
+        </ul>
+    </div>
+    <div>
+    	<a href="javascript:check()">检测网络</a>
+		<a href="javascript:reload()">点击重试</a>
+    </div>
+</div>
+</body>
+</html>
