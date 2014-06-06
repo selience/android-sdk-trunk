@@ -78,12 +78,6 @@ public class MainActivity extends BaseActionBarActivity implements
         mDrawerToggle.syncState();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-    }
-    
     private void initViews() {
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -1,5 +1,6 @@
 package com.iresearch.cn.android.base;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,13 @@ public abstract class BaseActivity extends FragmentActivity {
 		mViewManager.onAppStart(this);
 	}
 
+	@Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        XLog.d(TAG, "onNewIntent");
+    }
+	
 	@Override
 	protected void onStart() {
 		super.onStart();

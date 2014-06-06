@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,7 +43,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.ShareActionProvider;
 
 public class HomeFragment extends BaseFragment implements 
@@ -94,10 +94,14 @@ public class HomeFragment extends BaseFragment implements
         
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
         searchView.setQueryHint(getText(R.string.main_menu_search_hint));
+        searchView.setIconified(false);
         searchView.setSubmitButtonEnabled(true);
-        searchView.setIconifiedByDefault(true);
-        searchView.setOnQueryTextListener(new FilterQueryTextTask());
-
+        searchView.setIconifiedByDefault(false); // 默认不展开
+        // http://developer.android.com/guide/topics/search/search-dialog.html
+        ComponentName componentName=new ComponentName(mActivity, SearchActivity.class);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+        
         ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.menu_share));
         shareProvider.setShareIntent(new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, "Text I want to share"));
     }
@@ -189,31 +193,6 @@ public class HomeFragment extends BaseFragment implements
             XLog.e(error.toString());
         }
     };
-    
-    private class FilterQueryTextTask implements OnQueryTextListener {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            XLog.d("onQueryTextSubmit");
-            return false;
-        }
-        
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            XLog.d("onQueryTextChange >> " + newText);
-            List<String> dataList=new ArrayList<String>();
-            if (!TextUtils.isEmpty(newText)) {
-               for (String subItem : mDataList) {
-                   if (subItem.startsWith(newText)) {
-                       dataList.add(subItem);
-                   }
-               }
-            } else {
-                dataList.addAll(mDataList);
-            }
-            mListAdapter.setItems(dataList, true);
-            return false;
-        }
-    }
     
     public static class SettingsActionProvider extends ActionProvider {
         /** An intent for launching the system settings. */
