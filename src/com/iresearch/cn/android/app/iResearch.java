@@ -16,7 +16,10 @@ import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
 
 public class iResearch extends Application {
-
+    
+    public static double latitude=39.90960456049752;   // 纬度    
+    public static double longitude=116.3972282409668;  // 经度
+    
 	/**
      * A singleton instance of the application class for easy access in other places
      */

@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.base.BaseActionBarActivity;
 import com.iresearch.cn.android.base.WebViewFragment;
 import com.iresearch.cn.android.location.LocationHelper;
@@ -144,6 +146,9 @@ public class MainActivity extends BaseActionBarActivity implements
     @Override
     public void gotLocation(final Location location) {
         if (location != null) {
+            iResearch.latitude=location.getLatitude();            
+            iResearch.longitude=location.getLongitude();
+            
             String message = location.getLatitude() + "," + location.getLongitude();
             ToastUtils.show(getBaseContext(), message);
         } else {

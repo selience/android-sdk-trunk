@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -26,8 +27,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.android.volley.VolleyError;
 import com.iresearch.cn.android.adapter.MenuListAdapter;
+import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.base.BaseFragment;
 import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.model.request.TestRequest;
@@ -37,6 +40,7 @@ import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
+
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -141,9 +145,8 @@ public class HomeFragment extends BaseFragment implements
             intent.setData(Uri.parse(url+":"+SocketService.CONNECTION_POST));
             startActivity(intent);
         } else if (position == 3) {
-            double lat = 39.90960456049752, lng = 116.3972282409668;
             Intent mapIntent = new Intent(mActivity, MapViewerActivity.class);
-            mapIntent.setData(Uri.parse("wuxian://map?lat="+lat+"&lng="+lng));
+            mapIntent.setData(Uri.parse("wuxian://map?lat="+iResearch.latitude+"&lng="+iResearch.longitude));
             startActivity(mapIntent);
         }
     }
