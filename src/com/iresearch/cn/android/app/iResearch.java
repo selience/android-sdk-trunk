@@ -1,21 +1,18 @@
 package com.iresearch.cn.android.app;
 
-import java.util.Iterator;
-import java.util.List;
-
 import android.annotation.TargetApi;
-import android.app.ActivityManager;
 import android.app.Application;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Build;
 import android.os.Process;
 import android.os.StrictMode;
-
 import com.iresearch.cn.android.constants.Config;
 import com.iresearch.cn.android.log.XLog;
+import com.iresearch.cn.android.utils.ManifestUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
+import com.iresearch.cn.android.crash.CrashHandler;
+import com.iresearch.cn.android.crash.CrashHandler.OnCrashHandlerListener;
 
-public class iResearch extends Application {
+public class iResearch extends Application implements OnCrashHandlerListener {
     
     public static double latitude=39.90960456049752;   // 纬度    
     public static double longitude=116.3972282409668;  // 经度
@@ -31,7 +28,7 @@ public class iResearch extends Application {
 		// initialize the singleton
 		instance = this;
 		
-		if (needCallInit()) {
+		if (isRunning()) {
 			initialize();
 		}
 	}
@@ -44,6 +41,7 @@ public class iResearch extends Application {
 	    RequestManager.initializeWith(this);
 	    
 		checkStrictMode();
+		sendCrashReports();
 	}
 	
 	@Override
@@ -65,33 +63,28 @@ public class iResearch extends Application {
 	private void checkStrictMode() {
 		// FIXME: StrictMode类在1.6以下的版本中没有，会导致类加载失败。因此将这些代码设成关闭状态，仅在做性能调试时才打开。
 		// NOTE: StrictMode模式需要2.3+ API支持。设置严苛模式；
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) { 
+		if (Config.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) { 
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
 		    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build()); 
 		}
 	}
 	
-	/*
-	 * 防止多进程重复执行初始化操作
-	 */
-	private boolean needCallInit() {
-		try {
-			ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-			List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
-			Iterator<RunningAppProcessInfo> process = list.iterator();
-			while (process.hasNext()) {
-				RunningAppProcessInfo info = (RunningAppProcessInfo) process.next();
-				if (info.pid == Process.myPid()) {
-					String processName = info.processName;
-					if ("com.iresearch.cn.android".equals(processName)) {
-						return true;
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return true;
-		}
-		return false;
+	// 防止多进程重复执行初始化操作
+	private boolean isRunning() {
+	    return ManifestUtils.checkIfIsAppRunning(this, Process.myPid(), "com.iresearch.cn.android");
 	}
+
+	// 收集设备崩溃日志信息
+    private void sendCrashReports() {
+        if (!Config.DEBUG) { 
+            /** 在Release状态下开启日志收集功能，以精确分析应用性能 */
+            CrashHandler mCrashHandler=new CrashHandler(this);
+            mCrashHandler.setOnCrashHandlerListener(this);
+        }
+    }
+	
+    @Override
+    public void handleCrashResponse(String message) {
+        // TODO 处理异常信息，常见操作是将奔溃日志发送到服务器端用于分析
+    }
 }
