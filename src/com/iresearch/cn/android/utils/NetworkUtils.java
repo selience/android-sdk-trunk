@@ -19,8 +19,8 @@ import android.telephony.TelephonyManager;
 /**
  * @className NetworkUtils
  * @create 2014年4月16日 上午10:22:34
- * @author lilong (dreamxsky@gmail.com)
- * @description TODO
+ * @author Jacky.Lee
+ * @description TODO 封装常用的网络操作 
  */
 public final class NetworkUtils {
 

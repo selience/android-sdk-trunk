@@ -1,21 +1,133 @@
 package com.iresearch.cn.android.utils;
 
-import android.annotation.SuppressLint;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import android.annotation.SuppressLint;
 
+/**
+ * @file TimeUtils.java
+ * @create 2013-4-10 下午12:00:42
+ * @author Jacky.Lee
+ * @description TODO
+ */
 @SuppressLint("SimpleDateFormat")
 public class TimeUtils {
 	
-	private TimeUtils() {
-	}
-	
-	/**
+    private TimeUtils() {
+    }
+
+    /**
+     * 获取月数
+     * @return
+     */
+    public static String[] getMonths() {
+        return new DateFormatSymbols().getMonths();
+    }
+    
+    /**
+     * 获取星期天数
+     * @return
+     */
+    public static String[] getWeekdays() {
+        String[] weekdays = new DateFormatSymbols().getWeekdays();
+        return  new String[] { weekdays[Calendar.MONDAY],
+                weekdays[Calendar.TUESDAY], weekdays[Calendar.WEDNESDAY],
+                weekdays[Calendar.THURSDAY], weekdays[Calendar.FRIDAY],
+                weekdays[Calendar.SATURDAY], weekdays[Calendar.SUNDAY] };
+    }
+    
+    /**
+     * 格式化日期
+     * @param milliseconds
+     * @return
+     */
+    public static String formatString(long milliseconds) {
+        return formatString(milliseconds, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     * 指定模式格式化日期
+     * @param milliseconds
+     * @param pattern
+     * @return
+     */
+    public static String formatString(long milliseconds, String pattern) {
+        try {
+            Date date = new Date(milliseconds);
+            DateFormat dateFormat = new SimpleDateFormat(pattern);
+            return dateFormat.format(date);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("the pattern is not considered to be usable by this formatter. " 
+                                                + ex.getMessage());
+        }
+    }
+    
+    /**
+     * 计算当前年龄
+     * @param _year
+     * @param _month
+     * @param _day
+     * @return
+     */
+    public static int calculateAge (int _year, int _month, int _day) {
+        GregorianCalendar cal = new GregorianCalendar();
+        int y, m, d, a;     
+
+        y = cal.get(Calendar.YEAR);
+        m = cal.get(Calendar.MONTH) + 1;
+        d = cal.get(Calendar.DAY_OF_MONTH);
+        cal.set(_year, _month, _day);
+        a = y - cal.get(Calendar.YEAR);
+        if ((m < cal.get(Calendar.MONTH)) || ((m == cal.get(Calendar.MONTH))
+                && (d < cal.get(Calendar.DAY_OF_MONTH)))) {
+            --a;
+        }
+        if(a < 0)
+            throw new IllegalArgumentException("Age < 0");
+        return a;
+    }
+    
+    /**
+     * 转换时间为字符串
+     * @param millis   millis e.g.time/length from file
+     * @return  formated string (hh:)mm:ss
+     */
+    public static String millisToString(long millis) {
+        boolean negative=millis<0;
+        millis=Math.abs(millis);
+
+        millis/=1000;
+        int sec=(int) (millis%60);
+        millis/=60;
+        int min=(int) (millis%60);
+        millis/=60;
+        int hours=(int) millis;
+
+        String time;
+        DecimalFormat format=(DecimalFormat) NumberFormat.getInstance(Locale.US);
+        format.applyPattern("00");
+        if (millis>0) {
+            time=(negative ? "-" : "")+hours+":"+format.format(min)+":"+format.format(sec);
+        } else {
+            time=(negative ? "-" : "")+min+":"+format.format(sec);
+        }
+        return time;
+    }
+    
+    /**
      * 根据 timestamp 生成各类时间状态串
      * 
      * @param timestamp 距1970 00:00:00 GMT的秒数
      * @return 时间状态串(如：刚刚5分钟前)
      */
+    @SuppressLint("SimpleDateFormat")
     public static String getTimeState(String timestamp) {
         if (timestamp == null || "".equals(timestamp)) {
             return "";

@@ -190,6 +190,7 @@ public abstract class BaseFragment extends Fragment {
 	public void onDetach() {
 		XLog.d(TAG, "onDetach");
 		super.onDetach();
+		mActivity=null;
 	}
 
 	@Override
