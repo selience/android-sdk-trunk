@@ -6,10 +6,13 @@ import android.view.View;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 import android.view.View.OnClickListener;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.iresearch.cn.android.base.BaseActivity;
 import com.iresearch.cn.android.constants.Constants;
+import com.iresearch.cn.android.ui.NativeMapV2Fragment;
+import com.iresearch.cn.android.ui.WebMapFragment;
 
 /**
  * 谷歌地图使用，详细说明参考官方文档

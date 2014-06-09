@@ -1,4 +1,4 @@
-package com.iresearch.cn.android;
+package com.iresearch.cn.android.ui;
 
 import android.content.Intent;
 import android.net.Uri;

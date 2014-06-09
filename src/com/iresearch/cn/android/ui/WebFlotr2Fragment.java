@@ -1,4 +1,4 @@
-package com.iresearch.cn.android;
+package com.iresearch.cn.android.ui;
 
 import java.util.Random;
 import android.app.Activity;

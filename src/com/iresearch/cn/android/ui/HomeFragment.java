@@ -1,10 +1,9 @@
-package com.iresearch.cn.android;
+package com.iresearch.cn.android.ui;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -27,8 +26,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.android.volley.VolleyError;
+import com.iresearch.cn.android.MapViewerActivity;
+import com.iresearch.cn.android.R;
+import com.iresearch.cn.android.SearchActivity;
 import com.iresearch.cn.android.adapter.MenuListAdapter;
 import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.base.BaseFragment;
@@ -40,7 +41,6 @@ import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
-
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -98,7 +98,7 @@ public class HomeFragment extends BaseFragment implements
         
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
         searchView.setQueryHint(getText(R.string.main_menu_search_hint));
-        searchView.setIconified(false);
+        searchView.setIconified(true);
         searchView.setSubmitButtonEnabled(true);
         searchView.setIconifiedByDefault(false); // 默认不展开
         // http://developer.android.com/guide/topics/search/search-dialog.html

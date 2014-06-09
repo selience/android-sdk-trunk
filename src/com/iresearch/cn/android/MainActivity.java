@@ -23,6 +23,9 @@ import com.iresearch.cn.android.base.WebViewFragment;
 import com.iresearch.cn.android.location.LocationHelper;
 import com.iresearch.cn.android.location.LocationHelper.LocationResult;
 import com.iresearch.cn.android.service.SocketService;
+import com.iresearch.cn.android.ui.HomeFragment;
+import com.iresearch.cn.android.ui.WebFlotr2Fragment;
+import com.iresearch.cn.android.ui.WebPageFragment;
 import com.iresearch.cn.android.uninstall.UninstallObserver;
 import com.iresearch.cn.android.utils.ToastUtils;
 

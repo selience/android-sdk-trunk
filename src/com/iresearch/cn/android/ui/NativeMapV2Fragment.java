@@ -1,4 +1,4 @@
-package com.iresearch.cn.android;
+package com.iresearch.cn.android.ui;
 
 import android.os.Bundle;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -7,6 +7,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.iresearch.cn.android.R;
 import com.iresearch.cn.android.MapViewerActivity.MapInterface;
 import com.iresearch.cn.android.constants.Constants;
 
