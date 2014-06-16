@@ -21,7 +21,7 @@ public class UninstallObserver {
     
     private static final String LOCK_FILE = "uninstall.data";
     
-    private static final String FEEDBACK_URL = "http://www.cnbeta.com";
+    private static final String FEEDBACK_URL = "http://www.diaochapai.com/";
     
     static {
         System.loadLibrary("uninstall");

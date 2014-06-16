@@ -2,7 +2,6 @@
 package com.iresearch.cn.android;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,17 +15,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.iresearch.cn.android.app.iResearch;
 import com.iresearch.cn.android.base.BaseActionBarActivity;
 import com.iresearch.cn.android.base.WebViewFragment;
 import com.iresearch.cn.android.location.LocationHelper;
 import com.iresearch.cn.android.location.LocationHelper.LocationResult;
-import com.iresearch.cn.android.service.SocketService;
 import com.iresearch.cn.android.ui.HomeFragment;
+import com.iresearch.cn.android.ui.SwipeFragment;
 import com.iresearch.cn.android.ui.WebFlotr2Fragment;
 import com.iresearch.cn.android.ui.WebPageFragment;
-import com.iresearch.cn.android.uninstall.UninstallObserver;
 import com.iresearch.cn.android.utils.ToastUtils;
 
 public class MainActivity extends BaseActionBarActivity implements 
@@ -68,13 +65,9 @@ public class MainActivity extends BaseActionBarActivity implements
             selectItem(0);
         }
         
-        // 启动卸载应用监听
-        UninstallObserver.startTask(this);
         // 启动定位功能
         mLocationHelper=new LocationHelper();
         mLocationHelper.getLocation(this, this);
-        // 启动socket服务，监听本地4392端口
-        startService(new Intent(this, SocketService.class));
     }
 
     @Override
@@ -106,6 +99,9 @@ public class MainActivity extends BaseActionBarActivity implements
                 replace(WebFlotr2Fragment.class, "WebFlotr2Fragment", null);
                 break;
             case 2:
+                replace(SwipeFragment.class, "SwipeFragment", null);
+                break;
+            case 3:
                 Bundle bundle = new Bundle();
                 String url = "http://blog.sina.com.cn/selienceblog";
                 bundle.putString(WebViewFragment.INTENT_KEY_URI, url);

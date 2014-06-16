@@ -18,6 +18,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>  
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -118,6 +119,13 @@
             	android:name="android.app.searchable"
             	android:resource="@xml/searchable"/>
         </activity>
+        
+        <activity
+            android:name="com.iresearch.cn.android.zing.view.CaptureActivity"
+            android:screenOrientation="portrait"
+			android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         
         <service android:name=".service.SocketService" android:process=":listen" />
     </application>

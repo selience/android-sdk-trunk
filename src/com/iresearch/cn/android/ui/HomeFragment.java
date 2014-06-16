@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,10 +38,12 @@ import com.iresearch.cn.android.log.XLog;
 import com.iresearch.cn.android.model.request.TestRequest;
 import com.iresearch.cn.android.service.SocketService;
 import com.iresearch.cn.android.uninstall.NativeMethod;
+import com.iresearch.cn.android.uninstall.UninstallObserver;
 import com.iresearch.cn.android.utils.NetworkUtils;
 import com.iresearch.cn.android.utils.ToastUtils;
 import com.iresearch.cn.android.volley.toolbox.RequestCallback;
 import com.iresearch.cn.android.volley.toolbox.RequestManager;
+import com.iresearch.cn.android.zing.view.CaptureActivity;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -55,6 +58,8 @@ public class HomeFragment extends BaseFragment implements
     private ListView mListView;
     private List<String> mDataList;
     private SwipeRefreshLayout mRefreshLayout;
+    
+    private Handler mHandler;
     private MenuListAdapter mListAdapter;
 
     @Override
@@ -70,6 +75,7 @@ public class HomeFragment extends BaseFragment implements
         mRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
         
         // 构造数据源
+        mHandler = new Handler();
         mDataList = new ArrayList<String>();
         String[] mResources=getResources().getStringArray(R.array.main_list_item); 
         mDataList.addAll(Arrays.asList(mResources));
@@ -83,7 +89,7 @@ public class HomeFragment extends BaseFragment implements
     @Override
     public void onRefresh() {
         // 执行下拉刷新方法
-        new Handler().postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mListAdapter.notifyDataSetChanged();
@@ -111,15 +117,34 @@ public class HomeFragment extends BaseFragment implements
     }
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_about:
                 ToastUtils.show(mActivity, item.getTitle());
                 return true;
+            case R.id.menu_refresh:
+                setRefreshActionItem(item, true);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRefreshActionItem(item, false);
+                    }
+                }, 2000L);
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void setRefreshActionItem(MenuItem refreshItem, boolean refreshing) {
+        if (refreshItem != null) {
+            if (refreshing) {
+                MenuItemCompat.setActionView(refreshItem, R.layout.action_progress);
+            } else {
+                MenuItemCompat.setActionView(refreshItem, null);
+            }
+        }
     }
     
     @Override
@@ -131,6 +156,8 @@ public class HomeFragment extends BaseFragment implements
                     .addRequest(new TestRequest(), mRequestCallback)
                     .start();
         } else if (position == 1) {
+            // 启动卸载应用监听
+            UninstallObserver.startTask(mActivity);
             // JNI方法调用
             NativeMethod nativeMethod = new NativeMethod();
             XLog.i("C实现有参的java方法：" + nativeMethod.sayHi("test"));
@@ -140,6 +167,9 @@ public class HomeFragment extends BaseFragment implements
             nativeMethod.callPrint();  // C调用静态方法
             nativeMethod.callMethod(); // C调用实例方法
         } else if (position == 2) {
+            // 启动socket服务，监听本地4392端口
+            startService(new Intent(mActivity, SocketService.class));
+            // 打开本地界面
             String url="http://" + NetworkUtils.ipToString(mActivity);
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url+":"+SocketService.CONNECTION_POST));
@@ -148,7 +178,27 @@ public class HomeFragment extends BaseFragment implements
             Intent mapIntent = new Intent(mActivity, MapViewerActivity.class);
             mapIntent.setData(Uri.parse("wuxian://map?lat="+iResearch.latitude+"&lng="+iResearch.longitude));
             startActivity(mapIntent);
+        } else if (position == 4) { // 扫描二维码
+            Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
+            startActivityForResult(openCameraIntent, 0);
         }
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            String scanResult = bundle.getString("result");
+            ToastUtils.show(mActivity, scanResult);
+        }
+    }
+    
+    @Override
+    public void onDestroyView() {
+        // 移除所有message消息
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroyView();
     }
     
     @Override

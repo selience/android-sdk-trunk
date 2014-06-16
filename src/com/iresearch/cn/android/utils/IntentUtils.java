@@ -3,6 +3,7 @@ package com.iresearch.cn.android.utils;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +11,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
 /**
  * @className IntentUtils
  * @create 2014年4月16日 上午11:44:14
- * @author lilong (dreamxsky@gmail.com)
+ * @author lilong@qiyi.com
  * @description 封装常用的Intent操作 
  */
 public class IntentUtils {
@@ -85,22 +87,16 @@ public class IntentUtils {
         return intent;
     }
 
-    public static Intent newSelectPictureIntent() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+    @SuppressLint("InlinedApi")
+    public static Intent newMediaIntent(String type) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT < 19) {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+        } else {
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        }
+        intent.setType(type);
         return intent;
-    }
-
-    public static Intent newSelectVideoIntent() {
-    	 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-         intent.setType("video/*");
-         return intent;
-    }
-    
-    public static Intent newSelectAudioIntent() {
-    	 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-         intent.setType("audio/*");
-         return intent;
     }
     
     public static Intent newDialNumberIntent(String phoneNumber) {
