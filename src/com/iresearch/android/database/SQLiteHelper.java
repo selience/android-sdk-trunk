@@ -36,12 +36,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-	    new RssTable().getTable().create(db);
+	    RssTable.TABLE.create(db);
 	}
 	
 	@Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-	    new RssTable().getTable().delete(db);
+	    RssTable.TABLE.delete(db);
 	}
 
 }
