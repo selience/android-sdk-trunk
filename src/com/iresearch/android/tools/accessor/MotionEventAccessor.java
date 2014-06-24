@@ -1,4 +1,4 @@
-package com.iresearch.android.accessor;
+package com.iresearch.android.tools.accessor;
 
 import android.annotation.TargetApi;
 import android.os.Build;

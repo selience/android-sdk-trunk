@@ -1,3 +1,4 @@
+
 package com.iresearch.android.base;
 
 import android.content.Intent;
@@ -14,125 +15,137 @@ import com.iresearch.android.manager.ViewManager;
 
 public abstract class BaseActivity extends FragmentActivity {
     protected String TAG = "BaseActivity";
-    
-	private FragmentStack mStack;
-	private ViewManager mViewManager;
-	private ActivityStack mActivityStack;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		TAG = getClass().getSimpleName();
-		XLog.d(TAG, "onCreate");
 
-		FragmentManager fm=getSupportFragmentManager();
-		FragmentManager.enableDebugLogging(false);
-		
-		mActivityStack=ActivityStack.getInstance();
-		mActivityStack.pushActivity(this);
-		
-		mStack=FragmentStack.newInstance(this, fm, layout());
-		mStack.restoreState(savedInstanceState);
-		
-		mViewManager=new ViewManager(false);
-		mViewManager.onAppStart(this);
-	}
+    private boolean isConfigChange;
+    private FragmentStack mStack;
+    private ViewManager mViewManager;
+    private ActivityStack mActivityStack;
 
-	@Override
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TAG = getClass().getSimpleName();
+        XLog.d(TAG, "onCreate");
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager.enableDebugLogging(false);
+
+        mActivityStack = ActivityStack.getInstance();
+        mActivityStack.pushActivity(this);
+
+        mStack = FragmentStack.newInstance(this, fm, layout());
+        mStack.restoreState(savedInstanceState);
+
+        mViewManager = new ViewManager(false);
+        mViewManager.onAppStart(this);
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         XLog.d(TAG, "onNewIntent");
     }
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		XLog.d(TAG, "onStart");
-	}
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		XLog.d(TAG, "onRestart");
-	}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        XLog.d(TAG, "onStart");
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		XLog.d(TAG, "onResume");
-		
-		mViewManager.onAppResume(this);
-	}
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        XLog.d(TAG, "onRestart");
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		XLog.d(TAG, "onPause");
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        XLog.d(TAG, "onResume");
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		XLog.d(TAG, "onStop");
-	}
+        mViewManager.onAppResume(this);
+    }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		XLog.d(TAG, "onDestroy");
-		
-		mViewManager.onAppEnd(this);
-		mActivityStack.removeActivity(this);
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        XLog.d(TAG, "onPause");
+    }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		XLog.d(TAG, "onSaveInstanceState");
-		mStack.savedState(outState);
-		super.onSaveInstanceState(outState);
-	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		XLog.d(TAG, "onConfigurationChanged");
-	    super.onConfigurationChanged(newConfig);
-	}
-	
-	@Override
-	public void onBackPressed() {
-		XLog.d(TAG, "onBackPressed");
-		if (mStack.stackSize()>1) {
-			if (mStack.peekFragment().onBackPressed()) {
-				return;
-			} else {
-				mStack.popFragment();
-				return;
-			}
-		} 
-		super.onBackPressed();
-	}
-	
-	
-	// TODO content layout resource
-	protected abstract int layout();
-	
-	/**
-	 * 装载Fragment 
-	 */
-	public void replace(final int layout, Fragment fragment, String tag) {
-	    FragmentManager mFragmentManager=getSupportFragmentManager();
-	    FragmentTransaction mTransaction=mFragmentManager.beginTransaction();
-	    mTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	    
-	    mTransaction.replace(layout, fragment, tag);
-	    mTransaction.commitAllowingStateLoss();
-	    mTransaction=null;
-	    
-	    mFragmentManager.executePendingTransactions();
-	}
-	
-	/**
+    @Override
+    protected void onStop() {
+        super.onStop();
+        XLog.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XLog.d(TAG, "onDestroy");
+
+        mViewManager.onAppEnd(this);
+        mActivityStack.removeActivity(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        XLog.d(TAG, "onSaveInstanceState");
+        mStack.savedState(outState);
+        super.onSaveInstanceState(outState);
+        // FIXME 兼容API低于11版本
+        isConfigChange = true;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        XLog.d(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean isChangingConfigurations() {
+        // TODO 是否因为屏幕发生改变导致Activity重新构建
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            return super.isChangingConfigurations();
+        } else {
+            return isConfigChange;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        XLog.d(TAG, "onBackPressed");
+        if (mStack.stackSize() > 1) {
+            if (mStack.peekFragment().onBackPressed()) {
+                return;
+            } else {
+                mStack.popFragment();
+                return;
+            }
+        }
+        super.onBackPressed();
+    }
+
+    // TODO content layout resource
+    protected abstract int layout();
+
+    /**
+     * 装载Fragment
+     */
+    public void replace(final int layout, Fragment fragment, String tag) {
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction mTransaction = mFragmentManager.beginTransaction();
+        mTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+        mTransaction.replace(layout, fragment, tag);
+        mTransaction.commitAllowingStateLoss();
+        mTransaction = null;
+
+        mFragmentManager.executePendingTransactions();
+    }
+
+    /**
      * 装载Fragment，添加到栈管理队列
      */
     public void replace(Class<? extends BaseFragment> clazz, String tag, Bundle args) {

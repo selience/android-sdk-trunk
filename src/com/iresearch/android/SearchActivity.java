@@ -5,7 +5,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import com.iresearch.android.base.BaseActionBarActivity;
-import com.iresearch.android.utils.ToastUtils;
+import com.iresearch.android.utils.Toaster;
 
 public class SearchActivity extends BaseActionBarActivity {
 
@@ -31,7 +31,7 @@ public class SearchActivity extends BaseActionBarActivity {
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            ToastUtils.show(this, "搜索结果：" + query);
+            Toaster.show(this, "搜索结果：" + query);
         }
     }
 

@@ -3,6 +3,9 @@ package com.iresearch.android.utils;
 import android.app.Activity;
 import android.view.View;
 
+/**
+* Utilities for working with the {@link View} class
+*/
 public class ViewUtils {
 
 	private ViewUtils() {

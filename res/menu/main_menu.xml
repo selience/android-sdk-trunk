@@ -27,7 +27,7 @@
         android:icon="@android:drawable/ic_menu_manage"
         android:orderInCategory="104"
         android:title="@string/main_menu_setting"
-        app:actionProviderClass="com.iresearch.cn.android.ui.HomeFragment$SettingsActionProvider"
+        app:actionProviderClass="com.iresearch.android.ui.HomeFragment$SettingsActionProvider"
         app:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/menu_about"

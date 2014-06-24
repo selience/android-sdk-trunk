@@ -42,7 +42,7 @@ import com.iresearch.android.service.SocketService;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
 import com.iresearch.android.utils.NetworkUtils;
-import com.iresearch.android.utils.ToastUtils;
+import com.iresearch.android.utils.Toaster;
 import com.iresearch.android.volley.toolbox.RequestCallback;
 import com.iresearch.android.volley.toolbox.RequestManager;
 import com.iresearch.android.zing.view.CaptureActivity;
@@ -123,7 +123,7 @@ public class HomeFragment extends BaseFragment implements
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_about:
-                ToastUtils.show(mActivity, item.getTitle());
+                Toaster.show(mActivity, item.getTitle());
                 return true;
             case R.id.menu_refresh:
                 setRefreshActionItem(item, true);
@@ -193,7 +193,7 @@ public class HomeFragment extends BaseFragment implements
         if (resultCode == Activity.RESULT_OK) {
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
-            ToastUtils.show(mActivity, scanResult);
+            Toaster.show(mActivity, scanResult);
         }
     }
     
@@ -241,7 +241,7 @@ public class HomeFragment extends BaseFragment implements
 
         @Override
         public void onPostExecute(Void result) {
-            ToastUtils.show(mActivity, "Toast from UI");
+            Toaster.show(mActivity, "Toast from UI");
         }
 
         @Override

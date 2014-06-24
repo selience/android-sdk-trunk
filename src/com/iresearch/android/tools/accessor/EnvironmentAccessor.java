@@ -1,4 +1,4 @@
-package com.iresearch.android.accessor;
+package com.iresearch.android.tools.accessor;
 
 import java.io.File;
 

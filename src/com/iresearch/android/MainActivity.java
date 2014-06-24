@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.iresearch.android.R;
 import com.iresearch.android.app.MainApp;
 import com.iresearch.android.base.BaseActionBarActivity;
@@ -26,7 +25,7 @@ import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.SwipeFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
 import com.iresearch.android.ui.WebPageFragment;
-import com.iresearch.android.utils.ToastUtils;
+import com.iresearch.android.utils.Toaster;
 
 public class MainActivity extends BaseActionBarActivity implements 
     OnItemClickListener, LocationResult {
@@ -151,9 +150,9 @@ public class MainActivity extends BaseActionBarActivity implements
             MainApp.longitude=location.getLongitude();
             
             String message = location.getLatitude() + "," + location.getLongitude();
-            ToastUtils.show(getBaseContext(), message);
+            Toaster.show(MainActivity.this, message);
         } else {
-            ToastUtils.show(getBaseContext(), R.string.location_not_found);
+            Toaster.show(MainActivity.this, R.string.location_not_found);
         }
     }
     
