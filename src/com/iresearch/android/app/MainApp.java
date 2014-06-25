@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
+
+import com.activeandroid.ActiveAndroid;
 import com.iresearch.android.constants.Config;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.utils.ManifestUtils;
@@ -43,7 +45,8 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	    
 		checkStrictMode();
 		sendCrashReports();
-		
+		// 初始化ActiveAndroid数据对象
+		ActiveAndroid.initialize(this);
 		// 注册监听Activity生命周期变化, API Level>=14有效
 		mCallback=new ActivityLifecycleCallbackImpl();
 		mCallback.register(this);
@@ -56,6 +59,8 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		instance = null;
 		// 取消注册监听Activity声明周期变化
 		mCallback.unregister(this);
+		// 释放ActiveAndroid数据对象
+		ActiveAndroid.dispose();
 		super.onTerminate();
 	}
 	

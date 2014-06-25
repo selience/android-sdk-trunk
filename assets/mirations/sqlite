@@ -1,0 +1,10 @@
+在assets里添加sql脚本，路径格式为：migrations/{new_db_version}.sql,同时，这个new_db_version要在AndroidMainfiest.xml里对应位置填上相同值。
+
+比如：
+我在assets里添加的sql脚本路径为：
+mirations/7.sql
+
+所以我在AndroidMainiest.xml的就是：
+<meta-data android:name="AA_DB_VERSION" android:value="7" />
+
+注意：该new_db_version 要大于 old_db_version
