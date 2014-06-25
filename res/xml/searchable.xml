@@ -2,7 +2,4 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:hint="@string/main_menu_search_hint"
     android:label="@string/app_name"
-    android:searchMode="showSearchLabelAsBadge"
-    android:voiceLanguageModel="free_form"
-    android:voicePromptText="语音搜索"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />

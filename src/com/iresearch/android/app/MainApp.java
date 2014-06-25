@@ -46,7 +46,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		checkStrictMode();
 		sendCrashReports();
 		// 初始化ActiveAndroid数据对象
-		ActiveAndroid.initialize(this);
+//		ActiveAndroid.initialize(this);
 		// 注册监听Activity生命周期变化, API Level>=14有效
 		mCallback=new ActivityLifecycleCallbackImpl();
 		mCallback.register(this);
@@ -60,7 +60,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		// 取消注册监听Activity声明周期变化
 		mCallback.unregister(this);
 		// 释放ActiveAndroid数据对象
-		ActiveAndroid.dispose();
+		//ActiveAndroid.dispose();
 		super.onTerminate();
 	}
 	
