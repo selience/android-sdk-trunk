@@ -30,29 +30,32 @@ public class IntentUtils {
     private IntentUtils() {
     }
     
-    public static boolean isIntentAvailable(Context context, String action, Uri uri, String mimeType) {
-        final Intent intent = (uri != null) ? new Intent(action, uri) : new Intent(action);
-        if (mimeType != null) {
-            intent.setType(mimeType);
-        }
-        return isIntentAvailable(context, intent);
-    }
-
+    /**
+     * Checks whether there are applications installed which are able to handle the given intent.
+     */
     public static boolean isIntentAvailable(Context context, Intent intent) {
         List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
                 PackageManager.MATCH_DEFAULT_ONLY);
         return !list.isEmpty();
     }
 
-    public static Intent newEmailIntent(Context context, String subject, String body, String... address) {
+    /**
+     * Create an intent to send an email with an attachment
+     */
+    public static Intent newEmailIntent(String subject, String body, Uri attachment, String... addresses) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, address);
-        intent.putExtra(Intent.EXTRA_TEXT, body);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (addresses != null) intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        if (body != null) intent.putExtra(Intent.EXTRA_TEXT, body);
+        if (subject != null) intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (attachment != null) intent.putExtra(Intent.EXTRA_STREAM, attachment);
         intent.setType(MIME_TYPE_EMAIL);
+
         return intent;
     }
 
+    /**
+     * Creates a chooser to share some data.
+     */
     public static Intent newShareIntent(Context context, String content, Uri uri) {
         Intent intent = new Intent(Intent.ACTION_SEND); //启动分享发送的属性  
         if (uri != null) {
@@ -63,9 +66,13 @@ public class IntentUtils {
         	intent.setType(MIME_TYPE_TEXT);
         }
         intent.putExtra(Intent.EXTRA_TEXT, content);
+        
         return intent;
     }
 
+    /**
+     * Intent that should allow opening a map showing the given address (if it exists)
+     */
     public static Intent newMapsIntent(String address, String placeTitle) {
         StringBuilder sb = new StringBuilder();
         sb.append("geo:0,0?q=");
@@ -81,12 +88,87 @@ public class IntentUtils {
         return new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString()));
     }
 
+    /**
+     * Intent that should allow opening a map showing the given location (if it exists)
+     */
+    public static Intent newMapsIntent(float latitude, float longitude) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("geo:");
+
+        sb.append(latitude);
+        sb.append(",");
+        sb.append(longitude);
+
+        return new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString()));
+    }
+    
+    /**
+     * Intent that should allow opening a map showing the given address (if it exists)
+     */
+    public static Intent newNavigationIntent(String address) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("google.navigation:q=");
+
+        String addressEncoded = Uri.encode(address);
+        sb.append(addressEncoded);
+
+        return new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString()));
+    }
+    
+    /**
+     * Creates an intent that will launch the camera to take a picture that's saved to a temporary file so you can use
+     * it directly without going through the gallery.
+     */
     public static Intent newTakePictureIntent(File tempFile) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
         return intent;
     }
 
+    /**
+     * Creates an intent that will launch the phone's picture gallery to select a picture from it.
+     */
+    public static Intent newSelectPictureIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        return intent;
+    }
+    
+    /**
+     * Creates an intent that will launch a browser (most probably as other apps may handle specific URLs, e.g. YouTube)
+     * to view the provided URL.
+     */
+    public static Intent newOpenWebBrowserIntent(String url) {
+        if (!url.startsWith("https://") && !url.startsWith("http://")) {
+            url = "http://" + url;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        return intent;
+    }
+    
+    /**
+     * Open the video player to play the given
+     */
+    public static Intent newPlayVideoIntent(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), "video/*");
+        return intent;
+    }
+    
+    /**
+     * Creates an intent that will capture a video file.
+     */
+    public static Intent newVideoIntent(File tempFile) {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE); 
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        
+        return intent;
+    }
+    
+    /**
+     *  Creates an intent that will select a media file.
+     */
     @SuppressLint("InlinedApi")
     public static Intent newMediaIntent(String type) {
         Intent intent = new Intent();
@@ -96,64 +178,141 @@ public class IntentUtils {
             intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         }
         intent.setType(type);
+        
         return intent;
     }
     
+    /**
+     * Creates an intent that will allow to send an SMS to a phone number
+     */
+    public static Intent newSmsIntent(String phoneNumber, String body) {
+        final Intent intent;
+        if (phoneNumber == null || phoneNumber.trim().length() <= 0) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"));
+        } else {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumber));
+        }
+        intent.putExtra("sms_body", body);
+        return intent;
+    }
+    
+    /**
+     * Creates an intent that will open the phone app and enter the given number.
+     */
     public static Intent newDialNumberIntent(String phoneNumber) {
-        return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber.replace(" ", "")));
+        final Intent intent;
+        if (phoneNumber == null || phoneNumber.trim().length() <= 0) {
+            intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"));
+        } else {
+            intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber.replace(" ", "")));
+        }
+        return intent;
     }
 
+    /**
+     * Creates an intent that will immediately dispatch a call to the given number.
+     */
     public static Intent newCallNumberIntent(String phoneNumber) {
-        return new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber.replace(" ", "")));
+        final Intent intent;
+        if (phoneNumber == null || phoneNumber.trim().length() <= 0) {
+            intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
+        } else {
+            intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber.replace(" ", "")));
+        }
+        return intent;
     }
 
-    public static Intent newTakeVideoIntent() {
-    	return new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+    /**
+     * Intent that should open the app store of the device on the given application
+     */
+    public static Intent newMarketForAppIntent(Context context, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
+
+        if (!IntentUtils.isIntentAvailable(context, intent)) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("amzn://apps/android?p=" + packageName));
+        }
+
+        if (!IntentUtils.isIntentAvailable(context, intent)) {
+            intent = null;
+        }
+
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+
+        return intent;
     }
     
-    public static Intent newSmsIntent(String phoneNumber, String message) {
-    	Uri uri = Uri.parse("smsto:" + phoneNumber);
-    	Intent intent = new Intent(Intent.ACTION_SENDTO);
-    	intent.setData(uri);
-    	intent.putExtra("sms_body", message);
-    	intent.setType("vnd.android-dir/mms-sms");
-    	return intent;
+    /**
+     * Intent that should open either the Google Play app or if not available, the web browser on the Google Play website
+     */
+    public static Intent newGooglePlayIntent(Context context, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
+
+        if (!IntentUtils.isIntentAvailable(context, intent)) {
+            intent = newOpenWebBrowserIntent("https://play.google.com/store/apps/details?id=" + packageName);
+        }
+
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+
+        return intent;
     }
     
-    /** 从market市场安装应用app */
-	public static Intent newMarketIntent(String packageName) {
-		Intent installIntent = new Intent(Intent.ACTION_VIEW);  
-		// market://details?id=com.adobe.flashplayer
-        installIntent.setData(Uri.parse("market://details?id=" + packageName));  
-        return installIntent;
-	}
+    /**
+     * Intent that should open either the Amazon store app or if not available, the web browser on the Amazon website
+     */
+    public static Intent newAmazonStoreIntent(Context context, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("amzn://apps/android?p=" + packageName));
+
+        if (!IntentUtils.isIntentAvailable(context, intent)) {
+            intent = newOpenWebBrowserIntent("http://www.amazon.com/gp/mas/dl/android?p=" + packageName);
+        }
+
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+
+        return intent;
+    }
 	
-	public static Intent newWebViewIntent(String uri) {
-		 return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-	}
-	
+    /**
+     * 获取谷歌搜索Intent
+     * @param term
+     * @return
+     */
 	public static Intent newGoogleSearchIntent(String term) {
 		 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
 		 intent.putExtra(SearchManager.QUERY, term);
 		 return intent;
 	}
 	
+	/**
+	 * 启动WiFi网络设置Intent
+	 * @return
+	 */
 	public static Intent newWiFiSettingIntent() {
-		return new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-	}
-	
-	public static Intent newGpsSettingsIntent() {
-		return new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-	}
-	
-	public static Intent newVideoIntent(File tempFile) {
-		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE); 
-		intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+	    Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
 	    return intent;
 	}
 	
-	/** 截取图像部分区域 ;魅族的机器没有返回data字段，但是返回了filePath */
+	/**
+	 * 启动GPS定位设置Intent
+	 * @return
+	 */
+	public static Intent newGpsSettingsIntent() {
+	    Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+	    return intent;
+	}
+	
+	/**
+	 * 截取图像部分区域 ;魅族的机器没有返回data字段，但是返回了filePath
+	 * @param uri
+	 * @param outputX
+	 * @param outputY
+	 * @return
+	 */
 	public static Intent newCropImageUri(Uri uri, int outputX, int outputY){
 		//android1.6以后只能传图库中图片
 		//http://www.linuxidc.com/Linux/2012-11/73940.htm
@@ -177,22 +336,43 @@ public class IntentUtils {
 		return intent;
 	}
 	
+	/**
+	 * 创建系统应用管理Intent
+	 * @return
+	 */
 	public static Intent newManageApplicationIntent() {
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.setClassName("com.android.settings", "com.android.settings.ManageApplications");
+		
 		return intent;
 	}
 	
+	/**
+	 * 创建应用安装Intent
+	 * @param apkFile
+	 * @return
+	 */
 	public static Intent newInstallApkIntent(File apkFile) {
 		Intent intent=new Intent(Intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.parse("file://"+apkFile.toString()), "application/vnd.android.package-archive");
+		
 		return intent;
 	}
 	
+	/**
+	 * 创建卸载应用Intent
+	 * @param data
+	 * @return
+	 */
 	public static Intent newUnInstallApkIntent(Uri data) {
 		return new Intent(Intent.ACTION_DELETE, data);
 	}
 	
+	/**
+	 * 创建文件扫描Intent
+	 * @param data
+	 * @return
+	 */
 	public static Intent newScanFileIntent(Uri data) {
 		return new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data);
 	}

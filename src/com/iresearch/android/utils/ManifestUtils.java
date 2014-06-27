@@ -11,13 +11,11 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import com.iresearch.android.log.XLog;
 
@@ -143,18 +141,6 @@ public class ManifestUtils {
             }
         }
         return mApps;
-    }
-    
-    /**
-     * 扫描文件到媒体库
-     * @param context
-     * @param filePath
-     */
-    public static void scanFile(Context context, File filePath) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(filePath);
-        mediaScanIntent.setData(contentUri);
-        context.sendBroadcast(mediaScanIntent);
     }
     
     /**

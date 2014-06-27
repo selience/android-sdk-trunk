@@ -1,28 +1,26 @@
 
-package com.iresearch.android.app;
+package com.iresearch.android.app.compat;
 
-import android.os.Build;
-import android.os.Bundle;
 import android.app.Activity;
-import android.app.Application;
-import android.annotation.TargetApi;
+import android.os.Bundle;
 import com.iresearch.android.log.XLog;
-import android.app.Application.ActivityLifecycleCallbacks;
+import com.iresearch.android.manager.ActivityStack;
 
-/**
- * API Level>=14 系统用于监听应用中所有Activity的运行情况
- */
-@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-public class ActivityLifecycleCallbackImpl implements ActivityLifecycleCallbacks {
+public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallbacksCompat {
 
     private static final String TAG = "ActivityLifecycle";
 
-    public ActivityLifecycleCallbackImpl() {
+    private ActivityStack mActivityStack;
+
+    public ActivityLifecycleCallbacksAdapter() {
+        this.mActivityStack = ActivityStack.getInstance();
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         XLog.v(TAG, activity.toString());
+        // 保存Activity实例
+        mActivityStack.pushActivity(activity);
     }
 
     @Override
@@ -53,13 +51,7 @@ public class ActivityLifecycleCallbackImpl implements ActivityLifecycleCallbacks
     @Override
     public void onActivityDestroyed(Activity activity) {
         XLog.v(TAG, activity.toString());
-    }
-
-    public void register(Application mAppClient) {
-        mAppClient.registerActivityLifecycleCallbacks(this);
-    }
-
-    public void unregister(Application mAppClient) {
-        mAppClient.unregisterActivityLifecycleCallbacks(this);
+        // 移除Activity实例
+        mActivityStack.removeActivity(activity);
     }
 }

@@ -1,25 +1,24 @@
 
 package com.iresearch.android.base;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import com.iresearch.android.app.compat.MainLifecycleDispatcher;
 import com.iresearch.android.log.XLog;
-import com.iresearch.android.manager.ActivityStack;
 import com.iresearch.android.manager.FragmentStack;
-import com.iresearch.android.manager.ViewManager;
 
 public abstract class BaseActivity extends FragmentActivity {
     protected String TAG = "BaseActivity";
 
     private boolean isConfigChange;
     private FragmentStack mStack;
-    private ViewManager mViewManager;
-    private ActivityStack mActivityStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +29,10 @@ public abstract class BaseActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentManager.enableDebugLogging(false);
 
-        mActivityStack = ActivityStack.getInstance();
-        mActivityStack.pushActivity(this);
-
         mStack = FragmentStack.newInstance(this, fm, layout());
         mStack.restoreState(savedInstanceState);
 
-        mViewManager = new ViewManager(false);
-        mViewManager.onAppStart(this);
+        MainLifecycleDispatcher.get().onActivityCreated(this, savedInstanceState);
     }
 
     @Override
@@ -51,6 +46,7 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onStart() {
         super.onStart();
         XLog.d(TAG, "onStart");
+        MainLifecycleDispatcher.get().onActivityStarted(this);
     }
 
     @Override
@@ -63,29 +59,28 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         XLog.d(TAG, "onResume");
-
-        mViewManager.onAppResume(this);
+        MainLifecycleDispatcher.get().onActivityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         XLog.d(TAG, "onPause");
+        MainLifecycleDispatcher.get().onActivityPaused(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         XLog.d(TAG, "onStop");
+        MainLifecycleDispatcher.get().onActivityStopped(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         XLog.d(TAG, "onDestroy");
-
-        mViewManager.onAppEnd(this);
-        mActivityStack.removeActivity(this);
+        MainLifecycleDispatcher.get().onActivityDestroyed(this);
     }
 
     @Override
@@ -95,6 +90,8 @@ public abstract class BaseActivity extends FragmentActivity {
         super.onSaveInstanceState(outState);
         // FIXME 兼容API低于11版本
         isConfigChange = true;
+        
+        MainLifecycleDispatcher.get().onActivitySaveInstanceState(this, outState);
     }
 
     @Override
@@ -104,6 +101,7 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public boolean isChangingConfigurations() {
         // TODO 是否因为屏幕发生改变导致Activity重新构建
         if (android.os.Build.VERSION.SDK_INT >= 11) {

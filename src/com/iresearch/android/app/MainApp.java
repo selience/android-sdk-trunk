@@ -4,21 +4,21 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
-
-import com.activeandroid.ActiveAndroid;
 import com.iresearch.android.constants.Config;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.utils.ManifestUtils;
 import com.iresearch.android.volley.toolbox.RequestManager;
 import com.iresearch.android.crash.CrashHandler;
 import com.iresearch.android.crash.CrashHandler.OnCrashHandlerListener;
+import com.iresearch.android.app.compat.ActivityLifecycleCallbacksAdapter;
+import com.iresearch.android.app.compat.ApplicationHelper;
 
 public class MainApp extends Application implements OnCrashHandlerListener {
     
     public static double latitude=39.90960456049752;   // 纬度    
     public static double longitude=116.3972282409668;  // 经度
     
-    private ActivityLifecycleCallbackImpl mCallback;
+    private ActivityLifecycleCallbacksAdapter mCallback;
     
 	/**
      * A singleton instance of the application class for easy access in other places
@@ -46,10 +46,11 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		checkStrictMode();
 		sendCrashReports();
 		// 初始化ActiveAndroid数据对象
-//		ActiveAndroid.initialize(this);
-		// 注册监听Activity生命周期变化, API Level>=14有效
-		mCallback=new ActivityLifecycleCallbackImpl();
-		mCallback.register(this);
+		//ActiveAndroid.initialize(this);
+		
+		// 注册监听Activity生命周期变化
+		mCallback=new ActivityLifecycleCallbacksAdapter();
+		ApplicationHelper.registerActivityLifecycleCallbacks(this, mCallback);
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		// 因此这些清理动作需要再找合适的地方放置，以确保执行。
 		instance = null;
 		// 取消注册监听Activity声明周期变化
-		mCallback.unregister(this);
+		ApplicationHelper.unregisterActivityLifecycleCallbacks(this, mCallback);
 		// 释放ActiveAndroid数据对象
 		//ActiveAndroid.dispose();
 		super.onTerminate();
