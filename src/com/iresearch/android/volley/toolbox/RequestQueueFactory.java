@@ -6,16 +6,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.ResponseDelivery;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
-
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.http.AndroidHttpClient;
-import android.os.Build;
-
 import java.io.File;
 import java.util.concurrent.Executors;
 
@@ -52,11 +45,9 @@ public class RequestQueueFactory {
         File cacheDir = new File(context.getCacheDir(), RequestOptions.REQUEST_CACHE_PATH);
 
         if (stack == null) {
-            stack = createStack(context);
+            stack = Volley.createHttpStack(context);
         }
 
-        // important part
-//        int threadPoolSize = 10; // number of network dispatcher threads to create
         // pass Executor to constructor of ResponseDelivery object
         ResponseDelivery delivery = new ExecutorDelivery(
                 Executors.newFixedThreadPool(threadPoolSize));
@@ -82,7 +73,7 @@ public class RequestQueueFactory {
         cacheDir.mkdirs();
 
         if (stack == null) {
-            stack = createStack(context);
+            stack = Volley.createHttpStack(context);
         }
 
         BasicNetwork network = new BasicNetwork(stack);
@@ -94,28 +85,4 @@ public class RequestQueueFactory {
 
         return queue;
     }
-
-    public static HttpStack createStack(Context context) {
-        HttpStack result = null;
-
-        String userAgent = "volley/0";
-        try {
-            String packageName = context.getPackageName();
-            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
-            userAgent = packageName + "/" + info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-
-        if (Build.VERSION.SDK_INT >= 9) {
-            result = new RedirectHurlStack();
-        } else {
-            // Prior to Gingerbread, HttpUrlConnection was unreliable.
-            // See: http://android-developers.blogspot.com/2011/09/androids-http-clients.html
-            result = new HttpClientStack(AndroidHttpClient.newInstance(userAgent));
-        }
-
-        return result;
-    }
-
-
 }

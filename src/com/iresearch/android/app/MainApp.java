@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
+
+import com.android.volley.toolbox.Volley;
 import com.iresearch.android.constants.Config;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.utils.ManifestUtils;
@@ -41,6 +43,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	 */
 	private void initialize() {
 	    XLog.enableDebugLogging(Config.DEBUG);
+	    Volley.setLoggable(Config.DEBUG);
 	    RequestManager.initializeWith(this);
 	    
 		checkStrictMode();

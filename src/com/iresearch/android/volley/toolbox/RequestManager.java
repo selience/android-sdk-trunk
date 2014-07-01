@@ -11,6 +11,7 @@ import java.util.Map;
 
 // link https://github.com/yakivmospan/volley-request-manager
 // link https://github.com/vince-styling/Netroid
+// link https://github.com/vinaysshenoy/enhanced-volley
 public class RequestManager {
 
     private static RequestManager instance;
