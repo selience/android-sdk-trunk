@@ -1,5 +1,6 @@
 package com.iresearch.android.ui;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,8 +29,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.android.volley.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.core.RequestCallback;
+import com.android.volley.core.RequestManager;
+import com.android.volley.core.RequestOptions;
 import com.iresearch.android.MapViewerActivity;
 import com.iresearch.android.SearchActivity;
 import com.iresearch.android.R;
@@ -39,14 +43,12 @@ import com.iresearch.android.base.BaseFragment;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.model.request.TestRequest;
 import com.iresearch.android.service.SocketService;
+import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
 import com.iresearch.android.utils.NetworkUtils;
 import com.iresearch.android.utils.Toaster;
-import com.iresearch.android.volley.toolbox.RequestCallback;
-import com.iresearch.android.volley.toolbox.RequestManager;
 import com.iresearch.android.zing.view.CaptureActivity;
-
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -154,10 +156,18 @@ public class HomeFragment extends BaseFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == 0) {
             //Queue use custom listener
-            RequestManager.queue()
-                    .useBackgroundQueue()
-                    .addRequest(new TestRequest(), mRequestCallback)
-                    .start();
+            RequestManager.queue().useBackgroundQueue().addRequest(new TestRequest(), 
+                    new RequestCallback<String, String>() {
+                    @Override
+                    public String doInBackground(String response) {
+                        return Thread.currentThread().getName()+"@"+response;
+                    }
+
+                    @Override
+                    public void onPostExecute(String result) {
+                        Toaster.show(mActivity, result);
+                    }
+            });
         } else if (position == 1) {
             // 启动卸载应用监听
             UninstallObserver.startTask(mActivity);
@@ -181,7 +191,19 @@ public class HomeFragment extends BaseFragment implements
             Intent mapIntent = new Intent(mActivity, MapViewerActivity.class);
             mapIntent.setData(Uri.parse("wuxian://map?lat="+MainApp.latitude+"&lng="+MainApp.longitude));
             startActivity(mapIntent);
-        } else if (position == 4) { // 扫描二维码
+        } else if (position == 4) { // 下载远程文件
+            String url="http://dldir1.qq.com/qqfile/qq/QQ6.0/11743/QQ6.0.exe";
+            if (EnvironmentAccessor.isExternalStorageAvailable()) {
+                File rootDir=new File(EnvironmentAccessor.getExternalCacheDir(mActivity), RequestOptions.FILE_CACHE_PATH);
+                if (!rootDir.exists()) rootDir.mkdirs();
+                String storeFilePath=rootDir.getPath() + File.separator + "QQ6.0.exe";
+                // 启动文件下载
+                RequestManager.downloader()
+                        .useDefaultLoader().obtain()
+                        .add(storeFilePath, url, new DownloadListener());
+            }
+           
+        } else if (position == 5) { // 扫描二维码
             Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
             startActivityForResult(openCameraIntent, 0);
         }
@@ -232,24 +254,6 @@ public class HomeFragment extends BaseFragment implements
         }
     }
     
-    private RequestCallback<String, Void> mRequestCallback = new RequestCallback<String, Void>() {
-        @Override
-        public Void doInBackground(String response) {
-            XLog.d("\n"+response.toString());
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void result) {
-            Toaster.show(mActivity, "Toast from UI");
-        }
-
-        @Override
-        public void onError(VolleyError error) {
-            XLog.e(error.toString());
-        }
-    };
-    
     public static class SettingsActionProvider extends ActionProvider {
         /** An intent for launching the system settings. */
         private static final Intent sSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
@@ -269,6 +273,36 @@ public class HomeFragment extends BaseFragment implements
         public boolean onPerformDefaultAction() {
             getContext().startActivity(sSettingsIntent);
             return true;
+        }
+    }
+    
+    private class DownloadListener extends Listener<Void> {
+        private ProgressDialogFragment mFragment; 
+        
+        @Override
+        public void onStart() {
+            mFragment = ProgressDialogFragment.newInstance();
+            mFragment.showFragment(getChildFragmentManager());
+        }
+        
+        @Override
+        public void onProgressUpdate(long fileSize, long downloadedSize) {
+            mFragment.setMessage("正在下载文件：" + (int)((downloadedSize * 100) / fileSize) + "%");
+        }
+        
+        @Override
+        public void onSuccess(Void response) {
+            Toaster.show(mActivity, "request is success");
+        }
+        
+        @Override
+        public void onFinish() {
+            mFragment.hideFragment();
+        }
+        
+        @Override
+        public void onError(VolleyError error) {
+            Toaster.show(mActivity, error.getMessage());
         }
     }
 }

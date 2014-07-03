@@ -1,14 +1,16 @@
 package com.iresearch.android.model.request;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
-
 import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-import com.iresearch.android.volley.toolbox.RequestInterface;
+import com.android.volley.core.RequestInterface;
+import com.android.volley.request.StringRequest;
+import java.util.concurrent.TimeUnit;
 
 public class TestRequest extends RequestInterface<String, Void> {
 
     @Override
+    @SuppressLint("NewApi")
     public Request<String> create() {
 
         Uri.Builder builder = Uri.parse("").buildUpon();
@@ -18,9 +20,9 @@ public class TestRequest extends RequestInterface<String, Void> {
         builder.appendQueryParameter("nojsoncallback", "1");
         
         Request<String> request = new StringRequest(
-                "http://blog.sina.com.cn/selienceblog",
-                useInterfaceListener(),
-                useInterfaceErrorListener());
+                "http://www.baidu.com",
+                useInterfaceListener()).
+                setCacheExpireTime(TimeUnit.MINUTES, 5);
 
         return request;
     }

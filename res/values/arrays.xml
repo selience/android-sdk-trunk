@@ -18,7 +18,8 @@
         <item>本地方法调用</item>
         <item>启动服务监听</item>
         <item>启动谷歌地图</item>
-        <item>扫描二维码图片</item>
+        <item>下载远程文件</item>
+        <item>扫描二维码</item>
         <item>Android</item>
         <item>iPhone</item>
         <item>Blackberry</item>

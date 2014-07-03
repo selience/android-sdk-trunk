@@ -4,12 +4,11 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
-
-import com.android.volley.toolbox.Volley;
+import com.android.volley.Volley;
+import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.utils.ManifestUtils;
-import com.iresearch.android.volley.toolbox.RequestManager;
 import com.iresearch.android.crash.CrashHandler;
 import com.iresearch.android.crash.CrashHandler.OnCrashHandlerListener;
 import com.iresearch.android.app.compat.ActivityLifecycleCallbacksAdapter;
