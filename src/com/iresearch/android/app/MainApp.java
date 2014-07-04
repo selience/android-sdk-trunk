@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
+import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
@@ -44,11 +45,10 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	    XLog.enableDebugLogging(Config.DEBUG);
 	    Volley.setLoggable(Config.DEBUG);
 	    RequestManager.initializeWith(this);
+	    ActiveAndroid.initialize(this);
 	    
 		checkStrictMode();
 		sendCrashReports();
-		// 初始化ActiveAndroid数据对象
-		//ActiveAndroid.initialize(this);
 		
 		// 注册监听Activity生命周期变化
 		mCallback=new ActivityLifecycleCallbacksAdapter();
@@ -63,7 +63,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 		// 取消注册监听Activity声明周期变化
 		ApplicationHelper.unregisterActivityLifecycleCallbacks(this, mCallback);
 		// 释放ActiveAndroid数据对象
-		//ActiveAndroid.dispose();
+		ActiveAndroid.dispose();
 		super.onTerminate();
 	}
 	
