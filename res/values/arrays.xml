@@ -19,6 +19,7 @@
         <item>启动服务监听</item>
         <item>启动谷歌地图</item>
         <item>下载远程文件</item>
+        <item>裁剪本地图片</item>
         <item>扫描二维码</item>
         <item>Android</item>
         <item>iPhone</item>
@@ -31,4 +32,8 @@
         <item>OS/2</item>
     </string-array>
     
+    <string-array name="pick_image">
+        <item>使用相机拍照</item>
+        <item>从手机相册选择</item>
+    </string-array>
 </resources>

@@ -9,4 +9,10 @@
     <color name="zing_viewfinder_frame">#ff000000</color>
     <color name="zing_viewfinder_laser">#ffff0000</color>
     <color name="zing_possible_result_points">#c0ffff00</color>
+    
+    <!-- crop image -->
+    <color name="crop__button_bar">#f3f3f3</color>
+    <color name="crop__button_text">#666666</color>
+    <color name="crop__selector_pressed">#1a000000</color>
+    <color name="crop__selector_focused">#77000000</color>
 </resources>

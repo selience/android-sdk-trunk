@@ -37,6 +37,7 @@ public class AlertDialogFragment extends DialogFragment {
     private int mNegativeButtonId;
     private boolean mCancelIsNegative;
     private Object mPayload;
+    private AlertDialogListener mDialogListener;
 
     private Bundle getArgs() {
         Bundle res = getArguments();
@@ -189,7 +190,9 @@ public class AlertDialogFragment extends DialogFragment {
             builder.setItems(mItemsId, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((AlertDialogListener) getActivity()).onClickListItem(mTag, which, mPayload);
+                    if (mDialogListener!=null) { 
+                        mDialogListener.onClickListItem(mTag, which, mPayload);
+                    }
                 }
             });
         }
@@ -199,14 +202,18 @@ public class AlertDialogFragment extends DialogFragment {
             positiveOnClickListener = new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((AlertDialogListener) getActivity()).onClickPositive(mTag, mPayload);
+                    if (mDialogListener!=null) { 
+                        mDialogListener.onClickPositive(mTag, mPayload);                        
+                    }
                 }
             };
 
             negativeOnClickListener = new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((AlertDialogListener) getActivity()).onClickNegative(mTag, mPayload);
+                    if (mDialogListener!=null) {
+                        mDialogListener.onClickNegative(mTag, mPayload);                        
+                    }
                 }
             };
         }
@@ -228,13 +235,18 @@ public class AlertDialogFragment extends DialogFragment {
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
 
-        if (mCancelIsNegative) {
-            if (getActivity() instanceof AlertDialogListener) {
-                ((AlertDialogListener) getActivity()).onClickNegative(mTag, mPayload);
-            }
+        if (mCancelIsNegative && mDialogListener!=null) {
+            mDialogListener.onClickNegative(mTag, mPayload);
         }
     }
 
+    /**
+     * Set dialog click event listener
+     */
+    public void setOnAlertDialogListener(AlertDialogListener listener) {
+        mDialogListener=listener;
+    }
+    
     /**
      * Show this {@link AlertDialogFragment}.
      */

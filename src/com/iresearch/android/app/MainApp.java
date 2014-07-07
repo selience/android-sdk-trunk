@@ -49,6 +49,7 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	    
 		checkStrictMode();
 		sendCrashReports();
+		setUpAsyncTask();
 		
 		// 注册监听Activity生命周期变化
 		mCallback=new ActivityLifecycleCallbacksAdapter();
@@ -97,6 +98,16 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	    return ManifestUtils.checkIfIsAppRunning(this, "com.iresearch.android");
 	}
 
+	// 初始化AsyncTask任务，修复找不到相关类BUG
+	private void setUpAsyncTask() {
+        try {
+            // http://code.google.com/p/android/issues/detail?id=20915
+            Class.forName("android.os.AsyncTask");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+	
 	// 收集设备崩溃日志信息
     private void sendCrashReports() {
         if (!Config.DEBUG) { 

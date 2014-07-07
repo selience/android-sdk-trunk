@@ -4,13 +4,13 @@ package com.iresearch.android.view;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-public abstract class InfiniteScrollListener implements OnScrollListener {
+public abstract class EndlessScrollListener implements OnScrollListener {
     private int bufferItemCount = 10;
     private int currentPage = 0;
     private int itemCount = 0;
     private boolean isLoading = true;
 
-    public InfiniteScrollListener(int bufferItemCount) {
+    public EndlessScrollListener(int bufferItemCount) {
         this.bufferItemCount = bufferItemCount;
     }
 
@@ -42,5 +42,9 @@ public abstract class InfiniteScrollListener implements OnScrollListener {
             loadMore(currentPage + 1, totalItemCount);
             isLoading = true;
         }
+    }
+    
+    public int getCurrentPage() {
+        return currentPage;
     }
 }

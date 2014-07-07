@@ -1,11 +1,9 @@
 package com.iresearch.android.ui;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -15,16 +13,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -40,30 +37,36 @@ import com.iresearch.android.R;
 import com.iresearch.android.adapter.MenuListAdapter;
 import com.iresearch.android.app.MainApp;
 import com.iresearch.android.base.BaseFragment;
+import com.iresearch.android.crop.Crop;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.model.request.TestRequest;
 import com.iresearch.android.service.SocketService;
 import com.iresearch.android.tools.accessor.EnvironmentAccessor;
+import com.iresearch.android.ui.AlertDialogFragment.AlertDialogListener;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
+import com.iresearch.android.utils.IntentUtils;
 import com.iresearch.android.utils.NetworkUtils;
 import com.iresearch.android.utils.Toaster;
 import com.iresearch.android.zing.view.CaptureActivity;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 
-public class HomeFragment extends BaseFragment implements 
-    OnRefreshListener, OnGlobalLayoutListener, OnItemClickListener {
+public class HomeFragment extends BaseFragment implements OnRefreshListener, OnItemClickListener {
 
+    private static final int REQUEST_CODE_QRCODE = 0x2000;
+    private static final int REQUEST_CODE_PICK_IMAGE = 0x2001;
+    private static final int REQUEST_CODE_TAKE_PHOTO = 0x2002;
+    
     private ListView mListView;
     private List<String> mDataList;
     private SwipeRefreshLayout mRefreshLayout;
-    
+
+    private File tempFile;
     private Handler mHandler;
     private MenuListAdapter mListAdapter;
 
@@ -77,7 +80,6 @@ public class HomeFragment extends BaseFragment implements
         mRefreshLayout.setColorScheme(android.R.color.holo_green_dark, android.R.color.holo_orange_dark, 
                 android.R.color.holo_blue_dark, android.R.color.holo_red_dark);
         mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
         
         // 构造数据源
         mHandler = new Handler();
@@ -203,20 +205,47 @@ public class HomeFragment extends BaseFragment implements
                         .add(storeFilePath, url, new DownloadListener());
             }
            
-        } else if (position == 5) { // 扫描二维码
+        } else if (position == 5) { 
+            // 裁剪本地图片
+            tempFile=new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+            // 显示Fragment
+            AlertDialogFragment f=AlertDialogFragment.newInstance(0x1000);
+            f.setItems(R.array.pick_image);
+            f.setOnAlertDialogListener(new DialogListener());
+            f.show(getChildFragmentManager());
+        } else if (position == 6) { // 扫描二维码
             Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
-            startActivityForResult(openCameraIntent, 0);
+            startActivityForResult(openCameraIntent, REQUEST_CODE_QRCODE);
         }
     }
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+        XLog.e("requestCode = " + requestCode);
+        XLog.e("resultCode = " + resultCode);
+        XLog.e("data = " + data);
+
+        if (resultCode!=Activity.RESULT_OK)
+            return;
+        
+        if (requestCode==REQUEST_CODE_QRCODE) { // 二维码扫描
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
             Toaster.show(mActivity, scanResult);
+        } else if (requestCode==REQUEST_CODE_TAKE_PHOTO) { // 拍照
+            beginCrop(Uri.fromFile(tempFile), Uri.fromFile(tempFile));
+        } else if (requestCode==REQUEST_CODE_PICK_IMAGE) { // 选择照片
+            beginCrop(data.getData(), Uri.fromFile(tempFile));
+        } else if (requestCode==Crop.REQUEST_CROP) { // 输出裁剪结果
+            Toaster.show(mActivity, "result:" + Crop.getOutput(data));
         }
+    }
+    
+    /*
+     * 开始裁剪图片
+     */
+    private void beginCrop(Uri source, Uri outputUri) {
+        new Crop(source).output(outputUri).asSquare().start(mActivity, this);
     }
     
     @Override
@@ -224,34 +253,6 @@ public class HomeFragment extends BaseFragment implements
         // 移除所有message消息
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroyView();
-    }
-    
-    @Override
-    @SuppressWarnings("deprecation")
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void onGlobalLayout() {
-        // 反射调整下拉滑动距离
-        final DisplayMetrics metrics = getResources().getDisplayMetrics();
-        Float mDistanceToTriggerSync = Math.min(
-                ((View) mRefreshLayout.getParent()).getHeight() * 0.6f,
-                120 * metrics.density);
-
-        try {
-            // Set the internal trigger distance using reflection.
-            Field field = SwipeRefreshLayout.class.getDeclaredField("mDistanceToTriggerSync");
-            field.setAccessible(true);
-            field.setFloat(mRefreshLayout, mDistanceToTriggerSync);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Only needs to be done once so remove listener.
-        ViewTreeObserver obs = mRefreshLayout.getViewTreeObserver();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            obs.removeOnGlobalLayoutListener(this);
-        } else {
-            obs.removeGlobalOnLayoutListener(this);
-        }
     }
     
     public static class SettingsActionProvider extends ActionProvider {
@@ -303,6 +304,25 @@ public class HomeFragment extends BaseFragment implements
         @Override
         public void onError(VolleyError error) {
             Toaster.show(mActivity, error.getMessage());
+        }
+    }
+
+    private class DialogListener implements AlertDialogListener {
+        @Override
+        public void onClickPositive(int tag, Object payload) {
+        }
+        
+        @Override
+        public void onClickNegative(int tag, Object payload) {
+        }
+        
+        @Override
+        public void onClickListItem(int tag, int index, Object payload) {
+            if (index == 0) { // 启动相机拍照
+                startActivityForResult(IntentUtils.newTakePictureIntent(tempFile), REQUEST_CODE_TAKE_PHOTO);
+            } else { // 相册选择照片
+                startActivityForResult(IntentUtils.newMediaIntent("image/*"), REQUEST_CODE_PICK_IMAGE);
+            }
         }
     }
 }

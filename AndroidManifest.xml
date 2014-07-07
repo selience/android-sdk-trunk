@@ -125,11 +125,13 @@
         </activity>
         
         <activity
-            android:name="com.iresearch.android.zing.view.CaptureActivity"
+            android:name=".zing.view.CaptureActivity"
             android:screenOrientation="portrait"
 			android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        
+        <activity android:name=".crop.CropImageActivity"/>
         
         <service android:name=".service.SocketService" android:process=":listen" />
     </application>
