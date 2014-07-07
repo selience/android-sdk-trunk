@@ -31,7 +31,7 @@ char* Jstring2CStr(JNIEnv* env, jstring jstr) {
 }
 
 // 其中 JENEnv*代表的是java环境 ,通过这个环境可以调用java的方法,jobject表示哪个对象调用了 这个c语言的方法,thiz就表示的是当前的对象；
-jstring Java_com_iresearch_cn_android_uninstall_NativeMethod_sayHi
+jstring Java_com_iresearch_android_uninstall_NativeMethod_sayHi
   (JNIEnv *env, jobject obj, jstring str) {
 
 	char* p = Jstring2CStr(env, str);
@@ -44,7 +44,7 @@ jstring Java_com_iresearch_cn_android_uninstall_NativeMethod_sayHi
 }
 
 //处理整形相加
-JNIEXPORT jint JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_add
+JNIEXPORT jint JNICALL Java_com_iresearch_android_uninstall_NativeMethod_add
 		(JNIEnv *env, jobject obj, jint x, jint y) {
 	//打印 java 传递过来的 jstring ;
 	LOGI("log from c code ");
@@ -54,7 +54,7 @@ JNIEXPORT jint JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_add
 }
 
 //处理数组中的每一个元素
-JNIEXPORT jintArray JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_intMethod
+JNIEXPORT jintArray JNICALL Java_com_iresearch_android_uninstall_NativeMethod_intMethod
 	(JNIEnv *env, jobject obj, jintArray arr) {
 	// 1.获取到 arr的大小
 	int len = (*env)->GetArrayLength(env, arr);
@@ -75,10 +75,10 @@ JNIEXPORT jintArray JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod
 }
 
 // 调用java中的静态方法print
-JNIEXPORT void JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_callPrint
+JNIEXPORT void JNICALL Java_com_iresearch_android_uninstall_NativeMethod_callPrint
 	(JNIEnv *env, jobject obj) {
 
-	char* classname = "com/iresearch/cn/android/uninstall/NativeMethod";
+	char* classname = "com/iresearch/android/uninstall/NativeMethod";
 	jclass dpclazz = (*env)->FindClass(env,classname);
 	// 参数分别为：虚拟机执行对象；操作对象；方法名称；传递的参数；注意和下面的实例方法区别；
 	jmethodID methodID = (*env)->GetStaticMethodID(env, dpclazz, "print", "(Ljava/lang/String;)V");
@@ -92,10 +92,10 @@ JNIEXPORT void JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_call
 }
 
 // 调用java中的实例方法add, 传递两个参数 jint x,y
-JNIEXPORT void JNICALL Java_com_iresearch_cn_android_uninstall_NativeMethod_callMethod
+JNIEXPORT void JNICALL Java_com_iresearch_android_uninstall_NativeMethod_callMethod
 	(JNIEnv *env, jobject obj) {
 	// 注意和上面的静态方法区别
-	char* classname = "com/iresearch/cn/android/uninstall/NativeMethod";
+	char* classname = "com/iresearch/android/uninstall/NativeMethod";
 	jclass dpclazz = (*env)->FindClass(env,classname);
 
 	jmethodID methodID = (*env)->GetMethodID(env,dpclazz,"calculate","(II)V");

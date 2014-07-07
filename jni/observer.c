@@ -47,7 +47,7 @@ jstring callbackFromJNI(JNIEnv* env, jclass cls) {
  * feedbackurl 		反馈url
  * version android	系统版本号
  */
-jstring Java_com_iresearch_cn_android_uninstall_UninstallObserver_startObserver(JNIEnv* env,
+jstring Java_com_iresearch_android_uninstall_UninstallObserver_startObserver(JNIEnv* env,
 		jobject thiz, jstring lockfilepath,jstring observerpath, jstring feedbackurl, jint version) {
 	jstring tag = (*env)->NewStringUTF(env, c_TAG);
 	//初始化log
