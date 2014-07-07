@@ -101,7 +101,8 @@ public class MainApp extends Application implements OnCrashHandlerListener {
 	// 初始化AsyncTask任务，修复找不到相关类BUG
 	private void setUpAsyncTask() {
         try {
-            // http://code.google.com/p/android/issues/detail?id=20915
+            // AsyncTask class needs to be loaded in UI thread.
+            // So we load it here to comply the rule.
             Class.forName("android.os.AsyncTask");
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
