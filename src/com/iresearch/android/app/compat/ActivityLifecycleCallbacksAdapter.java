@@ -4,23 +4,20 @@ package com.iresearch.android.app.compat;
 import android.app.Activity;
 import android.os.Bundle;
 import com.iresearch.android.log.XLog;
-import com.iresearch.android.manager.ActivityStack;
+import com.iresearch.android.app.AppManager;
 
 public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallbacksCompat {
 
     private static final String TAG = "ActivityLifecycle";
 
-    private ActivityStack mActivityStack;
-
     public ActivityLifecycleCallbacksAdapter() {
-        this.mActivityStack = ActivityStack.getInstance();
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         XLog.v(TAG, activity.toString());
-        // 保存Activity实例
-        mActivityStack.pushActivity(activity);
+        // 添加Activity到堆栈
+        AppManager.getAppManager().addActivity(activity);
     }
 
     @Override
@@ -51,7 +48,7 @@ public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallb
     @Override
     public void onActivityDestroyed(Activity activity) {
         XLog.v(TAG, activity.toString());
-        // 移除Activity实例
-        mActivityStack.removeActivity(activity);
+        // 结束Activity&从堆栈中移除
+        AppManager.getAppManager().finishActivity(activity);
     }
 }

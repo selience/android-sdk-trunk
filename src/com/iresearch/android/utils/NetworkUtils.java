@@ -33,9 +33,8 @@ public final class NetworkUtils {
 	}
 
 	/** 检查网络是否可用 */
-	public static boolean isNetworkAvailable(Context ctx) {
-		ConnectivityManager connMgr = (ConnectivityManager) ctx
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+	public static boolean isNetworkAvailable(Context context) {
+		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		return (networkInfo != null && networkInfo.isConnected());
 	}

@@ -8,17 +8,54 @@ import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.view.View;
-
+import android.view.Window;
+import android.view.WindowManager;
 import java.io.File;
 import java.io.IOException;
-
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-
 import com.iresearch.android.log.XLog;
+import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 
 public class UIUtils {
 
+    /** 检验SDCard是否可用具有可读可写权限 */
+    public static boolean isExternalStorageMounted() {
+        return EnvironmentAccessor.isExternalStorageAvailable();
+    }
+    
+    /**
+     * 获取APP数据缓存目录
+     * @param context
+     * @return
+     */
+    public static File getExternalCacheDir(Context context) {
+        if (isExternalStorageMounted()) {
+            Context appContext=context.getApplicationContext();
+            File rootDir=EnvironmentAccessor.getExternalCacheDir(appContext);
+            if (rootDir!=null && !rootDir.exists()) {
+                if (rootDir.mkdirs()) return rootDir;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * 获取APP文件存储目录
+     * @param context
+     * @return
+     */
+    public static File getExternalFilesDir(Context context) {
+        if (isExternalStorageMounted()) {
+            Context appContext=context.getApplicationContext();
+            File rootDir=EnvironmentAccessor.getExternalFilesDir(appContext, null);
+            if (rootDir!=null && !rootDir.exists()) {
+                if (rootDir.mkdirs()) return rootDir;
+            }
+        }
+        return null;
+    }
+    
     /**
      * 强制隐藏输入法窗口
      * 
@@ -26,13 +63,32 @@ public class UIUtils {
      */
     public static void hideSoftInputFromWindow(View view) {
         // 实例化输入法控制对象，通过hideSoftInputFromWindow来控制
-        InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        final Context context=view.getContext();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
+    /**
+     * 设置全屏模式
+     * @param activity
+     * @param isFullScreen true 设置全拼; false 退出全屏；
+     */
+    public static void setFullScreen(Activity activity, boolean isFullScreen) {
+        Window window = activity.getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        if (isFullScreen) {
+            params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setAttributes(params);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            window.setAttributes(params);
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+    
     /**
      * 扫描指定文件到媒体库
      * 

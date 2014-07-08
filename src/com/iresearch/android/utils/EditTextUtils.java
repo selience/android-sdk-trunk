@@ -5,9 +5,12 @@ import static android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
+
+import android.content.Context;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -63,6 +66,26 @@ public class EditTextUtils {
             }
         });
 
+        return editText;
+    }
+    
+    /**
+     * Bind View focus changed
+     * @param editText
+     * @return
+     */
+    public static EditText onFocusChanged(final EditText editText) {
+        final Context context=editText.getContext();
+        final InputMethodManager imm=(InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    imm.showSoftInput(v, 0);
+                } else {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
         return editText;
     }
 }

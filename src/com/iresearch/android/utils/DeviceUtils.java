@@ -1,7 +1,6 @@
 package com.iresearch.android.utils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,6 +11,7 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import java.io.UnsupportedEncodingException;
 
 public class DeviceUtils {
 
@@ -127,13 +127,13 @@ public class DeviceUtils {
 			//它在Android <=2.1 or Android >=2.3的版本是可靠、稳定的，但在2.2的版本并不是100%可靠的
 			//在主流厂商生产的设备上，有一个很经常的bug，就是每个设备都会产生相同的ANDROID_ID：9774d56d682e549c
 			if (androidId != null && !"9774d56d682e549c".equals(androidId)) {
-				uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
+				uuid = UUID.nameUUIDFromBytes(androidId.getBytes("UTF-8"));
 			} else {
 				//根据不同的手机设备返回IMEI，MEID或者ESN码
 				//非手机设备就没有这个DEVICE_ID，获取DEVICE_ID需要READ_PHONE_STATE权限
 				final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
 				if (deviceId != null) {
-					uuid = UUID.nameUUIDFromBytes(deviceId.getBytes("utf8"));
+					uuid = UUID.nameUUIDFromBytes(deviceId.getBytes("UTF-8"));
 				}
 			}
 		} catch (UnsupportedEncodingException e) {

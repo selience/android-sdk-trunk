@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.iresearch.android.app.MainApp;
+import com.iresearch.android.app.AppContext;
 import com.iresearch.android.log.XLog;
 
 /**
@@ -37,9 +37,9 @@ public abstract class BaseFragment extends Fragment {
 		TAG = getClass().getSimpleName();
     }
 	
-    public MainApp getApplication() {
+    public AppContext getApplication() {
     	final Activity activity = getActivity();
-		if (activity != null) return (MainApp) activity.getApplication();
+		if (activity != null) return (AppContext) activity.getApplication();
 		return null;
     }
     

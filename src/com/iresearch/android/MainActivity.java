@@ -9,6 +9,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.android.R;
-import com.iresearch.android.app.MainApp;
+import com.iresearch.android.app.AppContext;
 import com.iresearch.android.base.BaseActionBarActivity;
 import com.iresearch.android.base.WebViewFragment;
 import com.iresearch.android.location.LocationHelper;
@@ -25,10 +26,11 @@ import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.SwipeFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
 import com.iresearch.android.ui.WebPageFragment;
+import com.iresearch.android.utils.ClickExitHelper;
+import com.iresearch.android.utils.NetworkUtils;
 import com.iresearch.android.utils.Toaster;
 
-public class MainActivity extends BaseActionBarActivity implements 
-    OnItemClickListener, LocationResult {
+public class MainActivity extends BaseActionBarActivity implements OnItemClickListener, LocationResult {
 
     private ActionBar mActionBar;
     private ListView mDrawerList;
@@ -39,6 +41,7 @@ public class MainActivity extends BaseActionBarActivity implements
     private CharSequence mDrawerTitle;
     private String[] mPlanetTitles;
     
+    private ClickExitHelper mExitHelper;
     private LocationHelper mLocationHelper;
 
     @Override
@@ -66,9 +69,14 @@ public class MainActivity extends BaseActionBarActivity implements
             selectItem(0);
         }
         
+        mExitHelper=new ClickExitHelper(this);
         // 启动定位功能
         mLocationHelper=new LocationHelper();
         mLocationHelper.getLocation(this, this);
+        
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            Toaster.show(this, R.string.network_not_connected);
+        }
     }
 
     @Override
@@ -144,15 +152,24 @@ public class MainActivity extends BaseActionBarActivity implements
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // 是否退出应用
+            return mExitHelper.onKeyDown(keyCode, event);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
     public void gotLocation(final Location location) {
         if (location != null) {
-            MainApp.latitude=location.getLatitude();            
-            MainApp.longitude=location.getLongitude();
+            AppContext.latitude=location.getLatitude();            
+            AppContext.longitude=location.getLongitude();
             
             String message = location.getLatitude() + "," + location.getLongitude();
-            Toaster.show(MainActivity.this, message);
+            Toaster.show(this, message);
         } else {
-            Toaster.show(MainActivity.this, R.string.location_not_found);
+            Toaster.show(this, R.string.location_not_found);
         }
     }
     

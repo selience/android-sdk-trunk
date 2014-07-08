@@ -35,7 +35,7 @@ import com.iresearch.android.MapViewerActivity;
 import com.iresearch.android.SearchActivity;
 import com.iresearch.android.R;
 import com.iresearch.android.adapter.MenuListAdapter;
-import com.iresearch.android.app.MainApp;
+import com.iresearch.android.app.AppContext;
 import com.iresearch.android.base.BaseFragment;
 import com.iresearch.android.crop.Crop;
 import com.iresearch.android.log.XLog;
@@ -191,7 +191,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             startActivity(intent);
         } else if (position == 3) {
             Intent mapIntent = new Intent(mActivity, MapViewerActivity.class);
-            mapIntent.setData(Uri.parse("wuxian://map?lat="+MainApp.latitude+"&lng="+MainApp.longitude));
+            mapIntent.setData(Uri.parse("wuxian://map?lat="+AppContext.latitude+"&lng="+AppContext.longitude));
             startActivity(mapIntent);
         } else if (position == 4) { // 下载远程文件
             String url="http://dldir1.qq.com/qqfile/qq/QQ6.0/11743/QQ6.0.exe";
