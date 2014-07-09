@@ -135,6 +135,20 @@
         
         <activity android:name=".crop.CropImageActivity"/>
         
+        <receiver android:name=".receiver.MediaCardStateBroadcastReceiver">
+        	<intent-filter>
+			     <action android:name="android.intent.action.MEDIA_MOUNTED" />
+			     <action android:name="android.intent.action.MEDIA_EJECT" />
+			     <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+			     <action android:name="android.intent.action.MEDIA_SHARED" />
+			     <action android:name="android.intent.action.MEDIA_SCANNER_STARTED" />
+			     <action android:name="android.intent.action.MEDIA_SCANNER_FINISHED" />
+			     <action android:name="android.intent.action.MEDIA_REMOVED" />
+			     <action android:name="android.intent.action.MEDIA_BAD_REMOVAL" />
+			     <data android:scheme="file" />
+     		</intent-filter>
+        </receiver>
+        
         <service android:name=".service.SocketService" android:process=":listen" />
     </application>
 

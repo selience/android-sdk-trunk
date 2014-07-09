@@ -1,8 +1,9 @@
 
 package com.iresearch.android.utils;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
-import android.app.Activity;
 import android.content.Context;
 
 /**
@@ -11,59 +12,61 @@ import android.content.Context;
 public class Toaster {
 
     private static Toast toast;
+    private static Handler handler;
 
-    private Toaster() {
+    static {
+        handler=new Handler(Looper.getMainLooper());
     }
-
-    public static void show(Activity activity, int resId) {
-        if (activity == null)
+    
+    public static void show(Context context, int resId) {
+        if (context == null)
             return;
-        show(activity, activity.getResources().getText(resId), Toast.LENGTH_SHORT);
+        show(context, context.getResources().getText(resId), Toast.LENGTH_SHORT);
     }
 
-    public static void show(Activity activity, int resId, int duration) {
-        if (activity == null)
+    public static void show(Context context, int resId, int duration) {
+        if (context == null)
             return;
-        show(activity, activity.getResources().getText(resId), duration);
+        show(context, context.getResources().getText(resId), duration);
     }
 
-    public static void show(Activity activity, CharSequence text) {
-        show(activity, text, Toast.LENGTH_SHORT);
+    public static void show(Context context, CharSequence text) {
+        show(context, text, Toast.LENGTH_SHORT);
     }
 
-    public static void show(Activity activity, int resId, Object... args) {
-        if (activity == null)
+    public static void show(Context context, int resId, Object... args) {
+        if (context == null)
             return;
-        show(activity, activity.getResources().getString(resId), args);
+        show(context, context.getResources().getString(resId), args);
     }
 
-    public static void show(Activity activity, String format, Object... args) {
-        show(activity, String.format(format, args), Toast.LENGTH_SHORT);
+    public static void show(Context context, String format, Object... args) {
+        show(context, String.format(format, args), Toast.LENGTH_SHORT);
     }
 
-    public static void show(Activity activity, int resId, int duration, Object... args) {
-        if (activity == null)
+    public static void show(Context context, int resId, int duration, Object... args) {
+        if (context == null)
             return;
-        show(activity, activity.getResources().getString(resId), duration, args);
+        show(context, context.getResources().getString(resId), duration, args);
     }
 
-    public static void show(Activity activity, String format, int duration, Object... args) {
-        show(activity, String.format(format, args), duration);
+    public static void show(Context context, String format, int duration, Object... args) {
+        show(context, String.format(format, args), duration);
     }
 
-    public static void show(final Activity activity, final CharSequence text, final int duration) {
-        if (activity == null)
+    public static void show(final Context context, final CharSequence text, final int duration) {
+        if (context == null)
             return;
 
-        final Context context = activity.getApplication();
-        activity.runOnUiThread(new Runnable() {
+        final Context appContext=context.getApplicationContext();
+        handler.post(new Runnable() {
             public void run() {
                 if (toast != null) {
                     toast.setText(text);
                     toast.setDuration(duration);
                     toast.show();
                 } else {
-                    toast = Toast.makeText(context, text, duration);
+                    toast = Toast.makeText(appContext, text, duration);
                     toast.show();
                 }
             }

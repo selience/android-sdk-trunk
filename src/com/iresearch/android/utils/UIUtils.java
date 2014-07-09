@@ -5,13 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.media.ExifInterface;
+import java.io.File;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import java.io.File;
+import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
+import android.media.MediaScannerConnection.OnScanCompletedListener;
 import java.io.IOException;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -106,6 +108,17 @@ public class UIUtils {
         context.sendBroadcast(mediaScanIntent);
     }
 
+    /**
+     * 扫描指定文件到媒体库
+     * 
+     * @param context
+     * @param paths
+     * @param scanListener
+     */
+    public static void scanFile(Context context, String[] paths, OnScanCompletedListener scanListener) {
+        MediaScannerConnection.scanFile(context, paths, null, scanListener);
+    }
+    
     /**
      * 平移动画处理
      * 
