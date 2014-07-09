@@ -74,7 +74,7 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
         mLocationHelper=new LocationHelper();
         mLocationHelper.getLocation(this, this);
         
-        if (NetworkUtils.isNetworkAvailable(this)) {
+        if (!NetworkUtils.isNetworkAvailable(this)) {
             Toaster.show(this, R.string.network_not_connected);
         }
     }

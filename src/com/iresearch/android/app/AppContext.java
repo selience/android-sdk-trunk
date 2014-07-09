@@ -5,16 +5,14 @@ import android.os.StrictMode;
 import android.app.Application;
 import android.annotation.TargetApi;
 import android.content.pm.PackageInfo;
-
 import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
 import com.iresearch.android.log.XLog;
 import com.iresearch.android.utils.ManifestUtils;
-
+import com.iresearch.android.utils.StorageOptions;
 import android.content.pm.PackageManager.NameNotFoundException;
-
 import com.iresearch.android.app.compat.ActivityLifecycleCallbacksCompat;
 import com.iresearch.android.app.compat.ApplicationHelper;
 import com.iresearch.android.app.compat.ActivityLifecycleCallbacksAdapter;
@@ -47,10 +45,12 @@ public class AppContext extends Application {
 	 * 初始化操作
 	 */
 	private void initialize() {
-	    XLog.enableDebugLogging(DEBUG);
 	    Volley.setLoggable(DEBUG);
-	    RequestManager.initializeWith(this);
+	    XLog.enableDebugLogging(DEBUG);
+	    StorageOptions.getInstance().init(this);
+	    
 	    ActiveAndroid.initialize(this);
+	    RequestManager.initializeWith(this);
 	    
 		checkStrictMode();
 		setUpAsyncTask();

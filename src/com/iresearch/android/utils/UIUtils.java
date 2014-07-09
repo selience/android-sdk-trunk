@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,9 +20,13 @@ import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 
 public class UIUtils {
 
-    /** 检验SDCard是否可用具有可读可写权限 */
+    /**
+     * 检查是否安装SD卡
+     * 
+     * @return
+     */
     public static boolean isExternalStorageMounted() {
-        return EnvironmentAccessor.isExternalStorageAvailable();
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
     
     /**
