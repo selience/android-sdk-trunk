@@ -2,15 +2,18 @@ package com.iresearch.android.utils;
 
 import java.io.File;
 import java.util.UUID;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+
 import java.io.UnsupportedEncodingException;
 
 public class DeviceUtils {
@@ -116,6 +119,28 @@ public class DeviceUtils {
         return diagonalPixels / (160 * dm.density);
     }
 
+    /**
+     * Returns the ANDROID_ID unique device ID for the current device. Reading that ID has changed
+     * between platform versions, so this method takes care of attempting to read it in different
+     * ways, if one failed.
+     * 
+     * @param context
+     *            the context
+     * @return the device's ANDROID_ID, or null if it could not be determined
+     * @see Secure#ANDROID_ID
+     */
+    public static String getAndroidId(Context context) {
+        String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+        if (androidId == null) {
+            // this happens on 1.6 and older
+            androidId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
+        }
+        if (androidId == null) {
+            androidId= ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        }
+        return androidId;
+    }
+    
 	/**
 	 * 获取设备唯一标识ID
 	 */

@@ -1,4 +1,4 @@
-package com.iresearch.android.tools;
+package com.iresearch.android.task.manager;
 
 import android.content.Context;
 import android.os.AsyncTask;

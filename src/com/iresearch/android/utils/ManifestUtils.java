@@ -32,11 +32,12 @@ public class ManifestUtils {
     }
     
     /**
-     * 检查应用是否在后台运行
+     * Checks if the application is in the background (i.e behind another application's Activity).
+     * 
      * @param context
      * @return true if another application is above this one.
      */
-    public static boolean isApplicationBroughtToBackground(Context context) {
+    public static boolean isApplicationBroughtToBackground(final Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> tasks = am.getRunningTasks(1);
         if (!tasks.isEmpty()) {
