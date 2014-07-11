@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -49,12 +48,13 @@ public class ImageCache extends AbstractCache<String, byte[]> {
 
     @Override
     protected byte[] readValueFromDisk(File file) throws IOException {
-        BufferedInputStream istream = new BufferedInputStream(new FileInputStream(file));
         long fileSize = file.length();
         if (fileSize > Integer.MAX_VALUE) {
             throw new IOException("Cannot read files larger than " + Integer.MAX_VALUE + " bytes");
         }
 
+        BufferedInputStream istream = new BufferedInputStream(new FileInputStream(file));
+        
         int imageDataLength = (int) fileSize;
 
         byte[] imageData = new byte[imageDataLength];
