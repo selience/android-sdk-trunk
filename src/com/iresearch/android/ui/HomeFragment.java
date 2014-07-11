@@ -228,6 +228,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
         if (resultCode!=Activity.RESULT_OK)
             return;
         
+        if (tempFile==null) 
+            tempFile=new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+        
         if (requestCode==REQUEST_CODE_QRCODE) { // 二维码扫描
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");

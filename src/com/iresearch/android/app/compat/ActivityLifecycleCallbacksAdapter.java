@@ -48,7 +48,7 @@ public class ActivityLifecycleCallbacksAdapter implements ActivityLifecycleCallb
     @Override
     public void onActivityDestroyed(Activity activity) {
         XLog.v(TAG, activity.toString());
-        // 结束Activity&从堆栈中移除
-        AppManager.getAppManager().finishActivity(activity);
+        // 从堆栈中移除Activity
+        AppManager.getAppManager().removeActivity(activity);
     }
 }
