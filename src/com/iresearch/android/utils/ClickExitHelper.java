@@ -3,11 +3,9 @@ package com.iresearch.android.utils;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.KeyEvent;
 import android.widget.Toast;
 import com.iresearch.android.R;
 import android.annotation.SuppressLint;
-import com.iresearch.android.app.AppManager;
 
 /**
  * 再点击一次推出应用程序
@@ -31,17 +29,12 @@ public class ClickExitHelper {
      * Activity onKeyDown事件
      **/
     @SuppressLint("ShowToast")
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode != KeyEvent.KEYCODE_BACK) {
-            return false;
-        }
+    public boolean onBackPressed() {
         if(isOnKeyBacking) {
             mHandler.removeCallbacks(onBackTimeRunnable);
             if(mBackToast != null){
                 mBackToast.cancel();
             }
-            // 退出
-            AppManager.getAppManager().AppExit(mActivity);
             return true;
         } else {
             isOnKeyBacking = true;
@@ -50,7 +43,7 @@ public class ClickExitHelper {
             }
             mBackToast.show();
             mHandler.postDelayed(onBackTimeRunnable, 2000);
-            return true;
+            return false;
         }
     }
     

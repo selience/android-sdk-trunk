@@ -61,7 +61,7 @@ public class AppContext extends Application {
 		
 		// 在Release模式下开启日志收集功能，以精确分析应用性能；开发模式下默认关闭以精确查看异常信息；
 		if (!DEBUG) {
-		    Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+		    Thread.setDefaultUncaughtExceptionHandler(new AppException(this));
 		}
 	}
 	

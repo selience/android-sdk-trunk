@@ -140,7 +140,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
                 return true;
             }
         }
-        super.onBackPressed();
+        onBackTask();
         return super.onSupportNavigateUp();
     }
 
@@ -155,9 +155,14 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
                 return;
             }
         }
-        super.onBackPressed();
+        onBackTask();
     }
 
+    protected void onBackTask() {
+        XLog.d(TAG, "onBack");
+        super.onBackPressed();
+    }
+    
     private BaseActionBarFragment getFragment() {
         Fragment f = mStack.peekFragment();
         if (f != null && f instanceof BaseActionBarFragment) {

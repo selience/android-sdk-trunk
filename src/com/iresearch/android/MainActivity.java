@@ -9,7 +9,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.android.R;
 import com.iresearch.android.app.AppContext;
+import com.iresearch.android.app.AppManager;
 import com.iresearch.android.base.BaseActionBarActivity;
 import com.iresearch.android.base.WebViewFragment;
 import com.iresearch.android.location.LocationHelper;
@@ -152,15 +152,6 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // 是否退出应用
-            return mExitHelper.onKeyDown(keyCode, event);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-    
-    @Override
     public void gotLocation(final Location location) {
         if (location != null) {
             AppContext.latitude=location.getLatitude();            
@@ -179,6 +170,14 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
             mLocationHelper.cancelTimer();
         }
         super.onDestroy();
+    }
+    
+    @Override
+    protected void onBackTask() {
+        if (mExitHelper.onBackPressed()) {
+            // 退出应用程序
+            AppManager.getAppManager().AppExit(this);
+        }
     }
     
     private class ActionBarDrawerToggleImpl extends ActionBarDrawerToggle {

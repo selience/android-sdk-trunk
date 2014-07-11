@@ -122,9 +122,14 @@ public abstract class BaseActivity extends FragmentActivity {
                 return;
             }
         }
-        super.onBackPressed();
+        onBackTask();
     }
 
+    protected void onBackTask() {
+        XLog.d(TAG, "onBack");
+        super.onBackPressed();
+    }
+    
     // TODO content layout resource
     protected abstract int layout();
 
