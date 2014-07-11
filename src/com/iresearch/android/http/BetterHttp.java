@@ -1,9 +1,12 @@
 package com.iresearch.android.http;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpVersion;
+import org.apache.http.NameValuePair;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRouteBean;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -241,10 +244,15 @@ public class BetterHttp {
         return new HttpPost(this, url, defaultHeaders);
     }
 
-    public BetterHttpRequest post(String url, HttpEntity payload) {
-        return new HttpPost(this, url, payload, defaultHeaders);
+    public BetterHttpRequest post(String url, List<NameValuePair> nameValuePairs) {
+        return new HttpPost(this, url, nameValuePairs, defaultHeaders);
     }
 
+    public BetterHttpRequest post(String url, Map<String, String> multipartParams, 
+            Map<String, String> filesToUpload) {
+        return new HttpPost(this, url, multipartParams, filesToUpload, defaultHeaders);
+    }
+    
     public BetterHttpRequest put(String url) {
         return new HttpPut(this, url, defaultHeaders);
     }

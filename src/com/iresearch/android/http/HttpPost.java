@@ -1,14 +1,18 @@
 package com.iresearch.android.http;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import com.android.volley.multipart.FilePart;
-import com.android.volley.multipart.MultipartEntity;
-import com.android.volley.multipart.StringPart;
+import java.util.List;
+import java.util.HashMap;
+import java.io.UnsupportedEncodingException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.NameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import com.iresearch.android.http.multipart.FilePart;
+import com.iresearch.android.http.multipart.MultipartEntity;
+import com.iresearch.android.http.multipart.StringPart;
 
 class HttpPost extends BetterHttpRequestBase {
 
@@ -20,20 +24,27 @@ class HttpPost extends BetterHttpRequestBase {
         }
     }
 
-    HttpPost(BetterHttp betterHttp, String url, HttpEntity payload,
+    HttpPost(BetterHttp betterHttp, String url, List<NameValuePair> nameValuePairs,
             HashMap<String, String> defaultHeaders) {
         super(betterHttp);
         this.request = new org.apache.http.client.methods.HttpPost(url);
-        ((HttpEntityEnclosingRequest) request).setEntity(payload);
+        
+        try {
+            HttpEntity payload=new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8);
+            ((HttpEntityEnclosingRequest) request).setEntity(payload);
+            
+            request.setHeader(HTTP_CONTENT_TYPE_HEADER, payload.getContentType().getValue());
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalArgumentException("Unable to encode http parameters.");
+        }
 
-        request.setHeader(HTTP_CONTENT_TYPE_HEADER, payload.getContentType().getValue());
         for (String header : defaultHeaders.keySet()) {
             request.setHeader(header, defaultHeaders.get(header));
         }
     }
 
     HttpPost(BetterHttp betterHttp, String url, Map<String, String> multipartParams, 
-            Map<String, String> filesToUpload) throws IOException {
+            Map<String, String> filesToUpload, HashMap<String, String> defaultHeaders) {
         super(betterHttp);
         this.request = new org.apache.http.client.methods.HttpPost(url);
         
@@ -46,14 +57,21 @@ class HttpPost extends BetterHttpRequestBase {
             File file = new File(entry.getKey());
             
             if(!file.exists()) {
-                throw new IOException(String.format("File not found: %s", file.getAbsolutePath()));
+                throw new RuntimeException(String.format("File not found: %s", file.getAbsolutePath()));
             }
             
             if(file.isDirectory()) {
-                throw new IOException(String.format("File is a directory: %s", file.getAbsolutePath()));
+                throw new RuntimeException(String.format("File is a directory: %s", file.getAbsolutePath()));
             }
             
             multipartEntity.addPart(new FilePart(entry.getKey(), file, null, null));
+        }
+
+        ((HttpEntityEnclosingRequest) request).setEntity(multipartEntity);
+        
+        request.setHeader(HTTP_CONTENT_TYPE_HEADER, multipartEntity.getContentType().getValue());
+        for (String header : defaultHeaders.keySet()) {
+            request.setHeader(header, defaultHeaders.get(header));
         }
     }
 }
