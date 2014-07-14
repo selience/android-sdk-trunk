@@ -73,11 +73,11 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
     @Override
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View convertView = inflater.inflate(R.layout.home, null);
+        View convertView = inflater.inflate(R.layout.home, container, false);
         mListView = (ListView) convertView.findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
         mRefreshLayout = (SwipeRefreshLayout) convertView.findViewById(R.id.swipeLayout);
-        mRefreshLayout.setColorScheme(android.R.color.holo_green_dark, android.R.color.holo_orange_dark, 
+        mRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_orange_dark, 
                 android.R.color.holo_blue_dark, android.R.color.holo_red_dark);
         mRefreshLayout.setOnRefreshListener(this);
         

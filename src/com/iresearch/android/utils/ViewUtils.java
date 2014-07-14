@@ -2,8 +2,11 @@
 package com.iresearch.android.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Utilities for working with the {@link View} class
@@ -13,6 +16,12 @@ public class ViewUtils {
     private ViewUtils() {
     }
 
+    public static View inflate(Context context, int resource, 
+    		ViewGroup root, boolean attachToRoot) {
+        LayoutInflater factory = LayoutInflater.from(context);
+        return factory.inflate(resource, root, attachToRoot);
+    } 
+    
     @SuppressWarnings("unchecked")
     public static <T extends View> T findViewById(View view, int id) {
         return (T) view.findViewById(id);
