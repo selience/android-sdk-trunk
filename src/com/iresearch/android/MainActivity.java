@@ -170,19 +170,29 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
     }
     
     @Override
+    protected boolean onBackTaskStart() {
+    	// 关闭菜单显示
+    	if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    		return true;
+    	} 
+    	return false;
+    }
+    
+    @Override
+    protected void onBackTaskEnd() {
+    	// 退出应用程序
+    	if (mExitHelper.onBackPressed()) {
+            AppManager.getAppManager().AppExit(this);
+        }
+    }
+    
+    @Override
     public void onDestroy() {
         if (mLocationHelper!=null) {
             mLocationHelper.cancelTimer();
         }
         super.onDestroy();
-    }
-    
-    @Override
-    protected void onBackTask() {
-        if (mExitHelper.onBackPressed()) {
-            // 退出应用程序
-            AppManager.getAppManager().AppExit(this);
-        }
     }
     
     private class ActionBarDrawerToggleImpl extends ActionBarDrawerToggle {

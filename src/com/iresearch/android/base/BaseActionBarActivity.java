@@ -140,13 +140,16 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
                 return true;
             }
         }
-        onBackTask();
+        onBackTaskEnd();
         return super.onSupportNavigateUp();
     }
 
     @Override
     public void onBackPressed() {
         XLog.d(TAG, "onBackPressed");
+        if (onBackTaskStart()) {
+        	return;
+        }
         if (mStack.stackSize() > 1) {
             if (mStack.peekFragment().onBackPressed()) {
                 return;
@@ -155,11 +158,16 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
                 return;
             }
         }
-        onBackTask();
+        onBackTaskEnd();
     }
 
-    protected void onBackTask() {
-        XLog.d(TAG, "onBack");
+    protected boolean onBackTaskStart() {
+    	XLog.d(TAG, "onBackTaskStart");
+    	return false;
+    }
+    
+    protected void onBackTaskEnd() {
+        XLog.d(TAG, "onBackTaskEnd");
         super.onBackPressed();
     }
     

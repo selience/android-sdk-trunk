@@ -114,6 +114,9 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         XLog.d(TAG, "onBackPressed");
+        if (onBackTaskStart()) {
+        	return;
+        }
         if (mStack.stackSize() > 1) {
             if (mStack.peekFragment().onBackPressed()) {
                 return;
@@ -122,11 +125,16 @@ public abstract class BaseActivity extends FragmentActivity {
                 return;
             }
         }
-        onBackTask();
+        onBackTaskEnd();
     }
 
-    protected void onBackTask() {
-        XLog.d(TAG, "onBack");
+    protected boolean onBackTaskStart() {
+    	XLog.d(TAG, "onBackTaskStart");
+    	return false;
+    }
+    
+    protected void onBackTaskEnd() {
+        XLog.d(TAG, "onBackTaskEnd");
         super.onBackPressed();
     }
     

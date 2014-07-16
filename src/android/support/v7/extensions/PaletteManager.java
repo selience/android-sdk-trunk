@@ -13,15 +13,17 @@ public class PaletteManager {
 
     public void getPalette(final String key, Bitmap bitmap, final Callback callback) {
         Palette palette = cache.get(key);
-        if (palette != null)
+        if (palette != null) {
             callback.onPaletteReady(palette);
-        else
-            Palette.generateAsync(bitmap, 24, new Palette.PaletteAsyncListener() {
+        } else {
+        	if (bitmap == null) return;
+        	Palette.generateAsync(bitmap, 24, new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(Palette palette) {
                     cache.put(key, palette);
                     callback.onPaletteReady(palette);
                 }
             });
+        }
     }
 }

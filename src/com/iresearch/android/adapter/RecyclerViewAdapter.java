@@ -2,8 +2,11 @@ package com.iresearch.android.adapter;
 
 import java.util.List;
 import android.graphics.Bitmap;
+import com.android.volley.VolleyError;
 import com.android.volley.core.RequestManager;
 import com.android.volley.image.NetworkImageView;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.iresearch.android.R;
 import com.iresearch.android.model.ViewModel;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
@@ -39,7 +41,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setTag(item);
         holder.text.setText(item.getText());
 
-        ((NetworkImageView)holder.image).setImageUrl(item.getImage(), RequestManager.loader().useDefaultLoader().obtain());
+        holder.image.setImageListener(new ImageListener() {
+			@Override
+			public void onSuccess(ImageContainer response, boolean isImmediate) {
+				holder.updatePalette(paletteManager);
+			}
+			
+			@Override
+			public void onError(VolleyError error) {
+				holder.updatePalette(paletteManager);
+			}
+		});
+        holder.image.setImageUrl(item.getImage(), RequestManager.loader().useDefaultLoader().obtain());
     }
 
     @Override public int getItemCount() {
@@ -74,12 +87,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView text;
-        public ImageView image;
+        public NetworkImageView image;
         
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.text);
-            image = (ImageView) itemView.findViewById(R.id.image);
+            image = (NetworkImageView) itemView.findViewById(R.id.image);
         }
 
         public void updatePalette(PaletteManager paletteManager) {
@@ -90,9 +103,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onPaletteReady(Palette palette) {
                     int bgColor = palette.getDarkVibrantColor().getRgb();
                     text.setBackgroundColor(setColorAlpha(bgColor, 192));
-                    if (palette.getLightMutedColor()!=null) {
-                    	text.setTextColor(palette.getLightMutedColor().getRgb());
-                    }
+                    text.setTextColor(palette.getLightMutedColor().getRgb());
                 }
             });
         }

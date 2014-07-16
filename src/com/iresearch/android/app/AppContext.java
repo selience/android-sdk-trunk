@@ -52,7 +52,7 @@ public class AppContext extends Application {
 	    ActiveAndroid.initialize(this);
 	    RequestManager.initializeWith(this);
 	    
-		checkStrictMode();
+		//checkStrictMode();
 		setUpAsyncTask();
 		
 		// 注册监听Activity生命周期变化
