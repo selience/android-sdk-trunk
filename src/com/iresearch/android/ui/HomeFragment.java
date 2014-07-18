@@ -147,7 +147,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
     private void setRefreshActionItem(MenuItem refreshItem, boolean refreshing) {
         if (refreshItem != null) {
             if (refreshing) {
-                MenuItemCompat.setActionView(refreshItem, R.layout.action_progress);
+                MenuItemCompat.setActionView(refreshItem, R.layout.actionbar_indeterminate_progress);
             } else {
                 MenuItemCompat.setActionView(refreshItem, null);
             }
