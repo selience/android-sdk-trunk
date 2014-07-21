@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import com.iresearch.android.utils.AppUtils;
 import com.iresearch.android.utils.DeviceUtils;
 import com.iresearch.android.utils.UIUtils;
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -53,11 +52,11 @@ public class AppException implements UncaughtExceptionHandler {
         } else {
             try {
                 // sleep一会后结束程序
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "Error: ", e);
             }
-            // 如果自己处理了异常,则不会弹出错误对话框,则需要手动退出app
+            // 如果自己处理了异常,则不会弹出错误对话框,则需要手动退出App
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(-1); // 非正常退出
         }
@@ -83,13 +82,10 @@ public class AppException implements UncaughtExceptionHandler {
             }
         }.start();
         
-        System.out.println("###########"+Thread.currentThread().getName());
         // 收集APP异常信息
         String crashReport=collectCrashReport(ex);
         // 保存错误报告文件
         saveCrashInfoToFile(crashReport);
-        // 发送错误报告到服务器
-        AppUtils.sendAppCrashReport(mContext, crashReport);
         
         return true;
     }
@@ -102,7 +98,7 @@ public class AppException implements UncaughtExceptionHandler {
     private void saveCrashInfoToFile(String crashReport) {
         OutputStream output=null;
         try {
-            String fileName = "crash-" + System.currentTimeMillis() + "log";
+            String fileName = "crash-" + System.currentTimeMillis() + ".log";
             // 获取异常信息存储路径
             File rootFile = UIUtils.getExternalFilesDir(mContext);
             if (rootFile==null) {
@@ -110,16 +106,16 @@ public class AppException implements UncaughtExceptionHandler {
             } 
             File crashFile = new File(rootFile, fileName);
             output = new FileOutputStream(crashFile);
+            output.write(crashReport.getBytes());
+            output.flush();
         } catch (Exception e) {
             Log.e(TAG, "an error occured while writing report file.", e);
         } finally {
             try {
                 if (output!=null) {
-                    output.flush();
                     output.close();
                 }
-            } catch (IOException ex) {
-            }
+            } catch (IOException ex) { }
         }
     }
     

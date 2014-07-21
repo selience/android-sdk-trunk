@@ -41,8 +41,9 @@ public class UIUtils {
             Context appContext=context.getApplicationContext();
             File rootDir=EnvironmentAccessor.getExternalCacheDir(appContext);
             if (rootDir!=null && !rootDir.exists()) {
-                if (rootDir.mkdirs()) return rootDir;
+                rootDir.mkdirs();
             }
+            return rootDir;
         }
         return null;
     }
@@ -57,8 +58,9 @@ public class UIUtils {
             Context appContext=context.getApplicationContext();
             File rootDir=EnvironmentAccessor.getExternalFilesDir(appContext, null);
             if (rootDir!=null && !rootDir.exists()) {
-                if (rootDir.mkdirs()) return rootDir;
+                rootDir.mkdirs();
             }
+            return rootDir;
         }
         return null;
     }
