@@ -62,28 +62,6 @@ public final class NetworkUtils {
 		return null;
 	}
 	
-	/**
-	 * 获取设备服务商信息  
-	 * 需要加入权限<uses-permission android:name="android.permission.READ_PHONE_STATE"/>  
-	 */
-	public static String getProvidersName(Context ctx) {
-		String providersName = "unknown";
-		TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
-		// 返回唯一的用户ID;就是这张卡的编号 
-		String IMSI = tm.getSubscriberId();
-		if (IMSI!=null && IMSI.length()>0) {
-			// IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。
-			if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {
-				providersName = "中国移动";
-			} else if (IMSI.startsWith("46001")) {
-				providersName = "中国联通";
-			} else if (IMSI.startsWith("46003")) {
-				providersName = "中国电信";
-			}
-		}
-		return providersName;
-	}
-	
 	/** 获取设备网络类型  */
 	public int getNetworkType(Context ctx) {
 		ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -105,8 +83,43 @@ public final class NetworkUtils {
 		return NETTYPE_UNKNOWN;
 	}
 	
-	
-	/** 设置网络代理APN  */
+    public static boolean isWiFiConnected(Context context) {
+    	 ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+         return (networkInfo != null && networkInfo.isConnected());
+	}
+    
+    public static boolean isMobileConnected(Context context) {
+    	 ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+         return (networkInfo != null && networkInfo.isConnected());
+    }
+    
+    /**
+	 * 获取设备服务商信息  
+	 * 需要加入权限<uses-permission android:name="android.permission.READ_PHONE_STATE"/>  
+	 */
+	public static String getProvidersName(Context ctx) {
+		String providersName = "unknown";
+		TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+		// 返回唯一的用户ID;就是这张卡的编号 
+		String IMSI = tm.getSubscriberId();
+		if (IMSI!=null && IMSI.length()>0) {
+			// IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。
+			if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {
+				providersName = "中国移动";
+			} else if (IMSI.startsWith("46001")) {
+				providersName = "中国联通";
+			} else if (IMSI.startsWith("46003")) {
+				providersName = "中国电信";
+			}
+		}
+		return providersName;
+	}
+    
+    /** 设置网络代理APN  */
     public static void setProxy(Context context, DefaultHttpClient httpClient) {
 		try {
 			// APN网络的API是隐藏的,获取手机的APN设置,需要通过ContentProvider来进行数据库查询
@@ -141,16 +154,5 @@ public final class NetworkUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-    
-    /** 判断网络状态  */
-    public static boolean isWiFiConnected(Context context) {
-		boolean isWifiEnable = false;
-		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-		if (activeNetInfo!=null&&activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-			isWifiEnable = true;
-		}
-		return isWifiEnable;
 	}
 }

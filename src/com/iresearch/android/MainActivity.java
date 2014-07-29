@@ -25,6 +25,7 @@ import com.iresearch.android.location.LocationHelper.LocationResult;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
 import com.iresearch.android.ui.SwipeFragment;
+import com.iresearch.android.ui.VideoCropFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
 import com.iresearch.android.ui.WebPageFragment;
 import com.iresearch.android.utils.ClickExitHelper;
@@ -111,14 +112,17 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
             case 2:
                 replace(SwipeFragment.class, "SwipeFragment", null);
                 break;
-            case 3: {
+            case 3:
+            	replace(VideoCropFragment.class, "VideoCropFragment", null);
+            	break;
+            case 4: {
                 Bundle bundle = new Bundle();
                 String url = "http://blog.sina.com.cn/selienceblog";
                 bundle.putString(WebViewFragment.INTENT_KEY_URI, url);
                 replace(WebPageFragment.class, "WebPageFragment", bundle);
                 break;
             }
-            case 4:
+            case 5:
             	replace(RecyclerViewFragment.class, "RecyclerViewFragment", null);
             	break;
             default:
