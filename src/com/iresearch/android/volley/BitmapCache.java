@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
 import com.android.volley.toolbox.ImageLoader;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 
 /**
  * This class holds our bitmap caches (memory and disk).
@@ -79,7 +79,7 @@ public class BitmapCache implements ImageLoader.ImageCache {
      */
     private void init(int memCacheSize) {
         // Set up memory cache
-        XLog.d(TAG, "Memory cache created (size = " + memCacheSize + "KB)");
+        L.d(TAG, "Memory cache created (size = " + memCacheSize + "KB)");
         mMemoryCache = new LruCache<String, Bitmap>(memCacheSize) {
             /**
              * Measure item size in kilobytes rather than units which is more practical
@@ -106,7 +106,7 @@ public class BitmapCache implements ImageLoader.ImageCache {
         synchronized (mMemoryCache) {
             // Add to memory cache
             if (mMemoryCache.get(data) == null) {
-                XLog.d(TAG, "Memory cache put - " + data);
+                L.d(TAG, "Memory cache put - " + data);
                 mMemoryCache.put(data, bitmap);
             }
         }
@@ -123,11 +123,11 @@ public class BitmapCache implements ImageLoader.ImageCache {
             synchronized (mMemoryCache) {
                 final Bitmap memBitmap = mMemoryCache.get(data);
                 if (memBitmap != null) {
-                    XLog.d(TAG, "Memory cache hit - " + data);
+                    L.d(TAG, "Memory cache hit - " + data);
                     return memBitmap;
                 }
             }
-            XLog.d(TAG, "Memory cache miss - " + data);
+            L.d(TAG, "Memory cache miss - " + data);
         }
         return null;
     }
@@ -138,7 +138,7 @@ public class BitmapCache implements ImageLoader.ImageCache {
     public void clearCache() {
         if (mMemoryCache != null) {
             mMemoryCache.evictAll();
-            XLog.d(TAG, "Memory cache cleared");
+            L.d(TAG, "Memory cache cleared");
         }
     }
 

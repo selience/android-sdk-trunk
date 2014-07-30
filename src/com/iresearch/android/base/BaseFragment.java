@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.iresearch.android.app.AppContext;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 
 /**
  * @file BaseFragment.java
@@ -95,20 +95,20 @@ public abstract class BaseFragment extends Fragment {
     @Override
 	public void onInflate(Activity activity, AttributeSet attrs,
 			Bundle savedInstanceState) {
-    	XLog.d(TAG, "onInflate");
+    	L.d(TAG, "onInflate");
     	super.onInflate(activity, attrs, savedInstanceState);
     }
     
 	@Override
 	public void onAttach(Activity activity) {
-		XLog.d(TAG, "onAttach");
+		L.d(TAG, "onAttach");
 		super.onAttach(activity);
 		this.mActivity=activity;
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		XLog.d(TAG, "onCreate");
+		L.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
@@ -123,13 +123,13 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
-		XLog.d(TAG, "onCreateView");
+		L.d(TAG, "onCreateView");
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		XLog.d(TAG, "onViewCreated");
+		L.d(TAG, "onViewCreated");
 		super.onViewCreated(view, savedInstanceState);
 		
 		// 设置Fragment标题
@@ -140,62 +140,62 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		XLog.d(TAG, "onActivityCreated");
+		L.d(TAG, "onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
 	
 	@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-	    XLog.d(TAG, "setUserVisibleHint:" + isVisibleToUser);
+	    L.d(TAG, "setUserVisibleHint:" + isVisibleToUser);
         super.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override
 	public void onStart() {
-		XLog.d(TAG, "onStart");
+		L.d(TAG, "onStart");
 		super.onStart();
 	}
 	
 	@Override
 	public void onResume() {
-		XLog.d(TAG, "onResume");
+		L.d(TAG, "onResume");
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		XLog.d(TAG, "onPause");
+		L.d(TAG, "onPause");
 		super.onPause();
 	}
 
 	@Override
 	public void onStop() {
-		XLog.d(TAG, "onStop");
+		L.d(TAG, "onStop");
 		super.onStop();
 	}
 	
 	@Override
 	public void onDestroyView() {
-		XLog.d(TAG, "onDestroyView");
+		L.d(TAG, "onDestroyView");
 		super.onDestroyView();
 	}
 	
 	@Override
 	public void onDestroy() {
-		XLog.d(TAG, "onDestroy");
+		L.d(TAG, "onDestroy");
 		super.onDestroy();
 	}
 
 	@Override
 	public void onDetach() {
-		XLog.d(TAG, "onDetach");
+		L.d(TAG, "onDetach");
 		super.onDetach();
 		mActivity=null;
 	}
 
 	@Override
     public void onSaveInstanceState(Bundle outState) {
-		XLog.d(TAG, "onSaveInstanceState");
+		L.d(TAG, "onSaveInstanceState");
 		storeSavedState(outState); // 保存Fragment标题
 		outState.putCharSequence(STATE_TITLE, title);
 		super.onSaveInstanceState(outState);
@@ -203,7 +203,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		XLog.d(TAG, "onConfigurationChanged");
+		L.d(TAG, "onConfigurationChanged");
 		super.onConfigurationChanged(newConfig);
 	}
 

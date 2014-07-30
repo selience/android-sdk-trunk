@@ -1,6 +1,6 @@
 package com.iresearch.android.database;
 
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import java.util.concurrent.atomic.AtomicInteger;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -38,7 +38,7 @@ public class DatabaseManager {
 			// Opening new database
 			mDatabase = mDatabaseHelper.getWritableDatabase();
 		}
-		XLog.d("Database open counter: " + mOpenCounter.get());
+		L.d("Database open counter: " + mOpenCounter.get());
 		return mDatabase;
 	}
 

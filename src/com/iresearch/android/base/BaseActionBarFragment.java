@@ -2,7 +2,7 @@ package com.iresearch.android.base;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
@@ -41,11 +41,11 @@ public abstract class BaseActionBarFragment extends BaseFragment {
 	}
 	
 	protected void onActionModeStarted(ActionMode mode) {
-		XLog.d(TAG, "onActionModeStarted");
+		L.d(TAG, "onActionModeStarted");
 	}
 	
 	protected void onActionModeFinished(ActionMode mode) {
-		XLog.d(TAG, "onActionModeFinished");
+		L.d(TAG, "onActionModeFinished");
 	}
 	
 	@Override

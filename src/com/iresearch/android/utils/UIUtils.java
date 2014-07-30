@@ -17,7 +17,7 @@ import android.media.MediaScannerConnection.OnScanCompletedListener;
 import java.io.IOException;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 
 public class UIUtils {
@@ -180,7 +180,7 @@ public class UIUtils {
         try {
             exif = new ExifInterface(filepath);
         } catch (IOException ex) {
-            XLog.e("BackwardSupport", "cannot read exif", ex);
+            L.e("BackwardSupport", "cannot read exif", ex);
         }
 
         if (exif != null) {

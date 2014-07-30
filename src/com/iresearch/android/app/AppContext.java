@@ -9,7 +9,7 @@ import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import com.iresearch.android.utils.ManifestUtils;
 import com.iresearch.android.utils.StorageOptions;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -46,7 +46,7 @@ public class AppContext extends Application {
 	 */
 	private void initialize() {
 	    Volley.setLoggable(DEBUG);
-	    XLog.enableDebugLogging(DEBUG);
+	    L.enableDebugLogging(DEBUG);
 	    StorageOptions.getInstance().init(this);
 	    
 	    ActiveAndroid.initialize(this);

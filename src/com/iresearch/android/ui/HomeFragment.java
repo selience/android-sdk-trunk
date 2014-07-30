@@ -38,7 +38,7 @@ import com.iresearch.android.adapter.MenuListAdapter;
 import com.iresearch.android.app.AppContext;
 import com.iresearch.android.base.BaseFragment;
 import com.iresearch.android.crop.Crop;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import com.iresearch.android.model.request.TestRequest;
 import com.iresearch.android.service.SocketService;
 import com.iresearch.android.tools.accessor.EnvironmentAccessor;
@@ -175,9 +175,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             UninstallObserver.startTask(mActivity);
             // JNI方法调用
             NativeMethod nativeMethod = new NativeMethod();
-            XLog.i("C实现有参的java方法：" + nativeMethod.sayHi("test"));
-            XLog.i("C实现两个整数相加方法:" + nativeMethod.add(120, 130));
-            XLog.i("C实现数据元素加5的方法:"+ nativeMethod.intMethod(new int[]{2, 5, 8}));
+            L.i("C实现有参的java方法：" + nativeMethod.sayHi("test"));
+            L.i("C实现两个整数相加方法:" + nativeMethod.add(120, 130));
+            L.i("C实现数据元素加5的方法:"+ nativeMethod.intMethod(new int[]{2, 5, 8}));
             
             nativeMethod.callPrint();  // C调用静态方法
             nativeMethod.callMethod(); // C调用实例方法
@@ -221,9 +221,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        XLog.e("requestCode = " + requestCode);
-        XLog.e("resultCode = " + resultCode);
-        XLog.e("data = " + data);
+        L.e("requestCode = " + requestCode);
+        L.e("resultCode = " + resultCode);
+        L.e("data = " + data);
 
         if (resultCode!=Activity.RESULT_OK)
             return;

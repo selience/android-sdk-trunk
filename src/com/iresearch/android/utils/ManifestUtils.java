@@ -17,7 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.util.DisplayMetrics;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 
 /**
  * @file ManifestSupport.java
@@ -85,7 +85,7 @@ public class ManifestUtils {
             PackageInfo pi = pm.getPackageInfo(PACKAGE_NAME, 0);
             return pi.versionName;
         } catch (NameNotFoundException ex) {
-            XLog.e(TAG, "Failed to load versionName, NameNotFound: " + ex.getMessage());
+            L.e(TAG, "Failed to load versionName, NameNotFound: " + ex.getMessage());
             return null;
         }
     }
@@ -102,7 +102,7 @@ public class ManifestUtils {
             PackageInfo pi = pm.getPackageInfo(PACKAGE_NAME, 0);
             return pi.versionCode;
         } catch (NameNotFoundException ex) {
-            XLog.e(TAG, "Failed to load versionCode, NameNotFound: " + ex.getMessage());
+            L.e(TAG, "Failed to load versionCode, NameNotFound: " + ex.getMessage());
             return -1;
         }
     }
@@ -120,9 +120,9 @@ public class ManifestUtils {
             ApplicationInfo ai = pm.getApplicationInfo(PACKAGE_NAME, PackageManager.GET_META_DATA);
             return ai.metaData.getString(key);
         } catch (NameNotFoundException ex) {
-            XLog.e(TAG, "Failed to load meta-data, NameNotFound: " + ex.getMessage());
+            L.e(TAG, "Failed to load meta-data, NameNotFound: " + ex.getMessage());
         } catch (NullPointerException ex) {
-            XLog.e(TAG, "Failed to load meta-data, NullPointer: " + ex.getMessage());
+            L.e(TAG, "Failed to load meta-data, NullPointer: " + ex.getMessage());
         }
         return null;
     }
@@ -160,7 +160,7 @@ public class ManifestUtils {
             versionName = info.versionName;
             versionCode = info.versionCode;
         } catch (NameNotFoundException ex) {
-            XLog.e(TAG, "Failed to load meta-data, NameNotFound: " + ex.getMessage());
+            L.e(TAG, "Failed to load meta-data, NameNotFound: " + ex.getMessage());
         }
 
         return context.getPackageName() + "/" + versionName + " (" + versionCode + ") (gzip)";
@@ -185,16 +185,16 @@ public class ManifestUtils {
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature sig : pi.signatures) {
                 if (sig.equals(releaseSignature)) {
-                    XLog.v(TAG, "Determined that this is a RELEASE build.");
+                    L.v(TAG, "Determined that this is a RELEASE build.");
                     return true;
                 }
             }
         }
         catch (Exception e) {
-            XLog.w(TAG, "Exception thrown when detecting if app is signed by a release keystore, assuming this is a release build.", e);
+            L.w(TAG, "Exception thrown when detecting if app is signed by a release keystore, assuming this is a release build.", e);
             return true; // Return true if we can't figure it out
         }
-        XLog.v(TAG, "Determined that this is a DEBUG build.");
+        L.v(TAG, "Determined that this is a DEBUG build.");
 
         return false;
     }
@@ -300,7 +300,7 @@ public class ManifestUtils {
             return (PackageInfo)generatePackageInfoMethod.invoke(null, pkg, null, flags, 0, 0);
         }
         catch (Exception e) {
-            XLog.e("Signature Monitor", "android.content.pm.PackageParser reflection failed: " + e.toString());
+            L.e("Signature Monitor", "android.content.pm.PackageParser reflection failed: " + e.toString());
         }
 
         return null;

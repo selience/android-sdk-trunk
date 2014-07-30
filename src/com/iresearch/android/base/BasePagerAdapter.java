@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import android.content.Context;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -24,7 +24,7 @@ public abstract class BasePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        XLog.d("getItem >> " + position);
+        L.d("getItem >> " + position);
         if (mFragments != null && mFragments.size() > 0) {
             return Fragment.instantiate(mContext, mFragments.get(position));
         }
@@ -40,7 +40,7 @@ public abstract class BasePagerAdapter extends FragmentStatePagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
         registerFragments.put(position, fragment);
-        XLog.d("instantiateItem >> " + fragment);
+        L.d("instantiateItem >> " + fragment);
         return fragment;
     }
 
@@ -48,7 +48,7 @@ public abstract class BasePagerAdapter extends FragmentStatePagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         registerFragments.remove(position);
         super.destroyItem(container, position, object);
-        XLog.d("instantiateItem >> " + position + "-" + object);
+        L.d("instantiateItem >> " + position + "-" + object);
     }
 
     @Override

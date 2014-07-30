@@ -14,7 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.ViewConfiguration;
 import com.iresearch.android.app.compat.MainLifecycleDispatcher;
-import com.iresearch.android.log.XLog;
+import com.iresearch.android.log.L;
 import com.iresearch.android.manager.FragmentStack;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity {
@@ -27,7 +27,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TAG = getClass().getSimpleName();
-        XLog.d(TAG, "onCreate");
+        L.d(TAG, "onCreate");
 
         forceShowActionBarOverflowMenu();
         FragmentManager fm = getSupportFragmentManager();
@@ -43,53 +43,53 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        XLog.d(TAG, "onNewIntent");
+        L.d(TAG, "onNewIntent");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        XLog.d(TAG, "onStart");
+        L.d(TAG, "onStart");
         MainLifecycleDispatcher.get().onActivityStarted(this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        XLog.d(TAG, "onRestart");
+        L.d(TAG, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        XLog.d(TAG, "onResume");
+        L.d(TAG, "onResume");
         MainLifecycleDispatcher.get().onActivityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        XLog.d(TAG, "onPause");
+        L.d(TAG, "onPause");
         MainLifecycleDispatcher.get().onActivityPaused(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        XLog.d(TAG, "onStop");
+        L.d(TAG, "onStop");
         MainLifecycleDispatcher.get().onActivityStopped(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        XLog.d(TAG, "onDestroy");
+        L.d(TAG, "onDestroy");
         MainLifecycleDispatcher.get().onActivityDestroyed(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        XLog.d(TAG, "onSaveInstanceState");
+        L.d(TAG, "onSaveInstanceState");
         mStack.savedState(outState);
         super.onSaveInstanceState(outState);
         // FIXME 兼容API低于11版本
@@ -100,7 +100,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        XLog.d(TAG, "onConfigurationChanged");
+        L.d(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
     }
 
@@ -131,7 +131,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        XLog.d(TAG, "onSupportNavigateUp");
+        L.d(TAG, "onSupportNavigateUp");
         if (mStack.stackSize() > 1) {
             if (getFragment().onNavigateUp()) {
                 return true;
@@ -146,7 +146,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        XLog.d(TAG, "onBackPressed");
+        L.d(TAG, "onBackPressed");
         if (onBackTaskStart()) {
         	return;
         }
@@ -162,12 +162,12 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
     }
 
     protected boolean onBackTaskStart() {
-    	XLog.d(TAG, "onBackTaskStart");
+    	L.d(TAG, "onBackTaskStart");
     	return false;
     }
     
     protected void onBackTaskEnd() {
-        XLog.d(TAG, "onBackTaskEnd");
+        L.d(TAG, "onBackTaskEnd");
         super.onBackPressed();
     }
     
