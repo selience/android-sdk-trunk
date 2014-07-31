@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import com.iresearch.android.R;
 import com.iresearch.android.base.BaseFragment;
 import com.iresearch.android.model.ViewModel;
@@ -55,5 +57,14 @@ public class RecyclerViewFragment extends BaseFragment implements OnRecyclerView
 	public void onItemClick(View view, ViewModel model) {
 		// 移除视图元素
 		mViewAdapter.remove(model);
+	}
+	
+	@Override
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+		if(enter) {
+			return AnimationUtils.loadAnimation(mActivity, R.anim.abc_slide_in_top);
+		} else {
+			return AnimationUtils.loadAnimation(mActivity, R.anim.abc_slide_in_bottom);
+		}
 	}
 }

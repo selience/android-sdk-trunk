@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import com.iresearch.android.app.AppContext;
 import com.iresearch.android.log.L;
 
@@ -144,6 +145,12 @@ public abstract class BaseFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 	}
 	
+	@Override
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+		L.d(TAG, "onCreateAnimation");
+		return super.onCreateAnimation(transit, enter, nextAnim);
+	}
+
 	@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
 	    L.d(TAG, "setUserVisibleHint:" + isVisibleToUser);

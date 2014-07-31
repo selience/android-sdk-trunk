@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +37,7 @@ import com.android.volley.core.RequestOptions;
 import com.iresearch.android.MapViewerActivity;
 import com.iresearch.android.SearchActivity;
 import com.iresearch.android.R;
+import com.iresearch.android.SendActivity;
 import com.iresearch.android.adapter.MenuListAdapter;
 import com.iresearch.android.app.AppContext;
 import com.iresearch.android.base.BaseFragment;
@@ -49,6 +53,9 @@ import com.iresearch.android.utils.IntentUtils;
 import com.iresearch.android.utils.NetworkUtils;
 import com.iresearch.android.utils.Toaster;
 import com.iresearch.android.zing.view.CaptureActivity;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -213,7 +220,12 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             f.setItems(R.array.pick_image);
             f.setOnAlertDialogListener(new DialogListener());
             f.show(getChildFragmentManager());
-        } else if (position == 6) { // 扫描二维码
+        } else if (position == 6) {
+        	NotificationManagerCompat.from(mActivity).cancelAll();
+        	NotificationCompat.Builder notificationBuilder = createBuilder();
+            Notification notification = notificationBuilder.build();
+            NotificationManagerCompat.from(mActivity).notify(1000, notification);
+        } else if (position == 7) { // 扫描二维码
             Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
             startActivityForResult(openCameraIntent, REQUEST_CODE_QRCODE);
         }
@@ -242,6 +254,32 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
         } else if (requestCode==Crop.REQUEST_CROP) { // 输出裁剪结果
             Toaster.show(mActivity, "result:" + Crop.getOutput(data));
         }
+    }
+    
+    /*
+     * 自定义本地通知
+     */
+    private NotificationCompat.Builder createBuilder() {
+    	Intent resultIntent = new Intent(mActivity, SendActivity.class);
+    	TaskStackBuilder stackBuilder = TaskStackBuilder.create(mActivity);
+    	stackBuilder.addParentStack(SendActivity.class);// 添加后台堆栈
+    	stackBuilder.addNextIntent(resultIntent);// 添加Intent到栈顶
+    	// 获得一个PendingIntent包含整个后台堆栈 containing the entire back stack
+    	PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    	
+        return new NotificationCompat.Builder(mActivity)
+                .setSmallIcon(R.drawable.icon)
+                .setAutoCancel(true)
+                .setTicker("消息提示文字")
+                .setContentText("本地消息通知")
+                .setLights(0xff0000ff, 300, 1000)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentTitle("消息标题")
+                .setContentIntent(resultPendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("消息内容"))
+                .addAction(android.R.drawable.ic_menu_share, "Fix Now", resultPendingIntent)
+                .addAction(android.R.drawable.ic_menu_revert, "Remind Me", resultPendingIntent)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_image));
     }
     
     /*

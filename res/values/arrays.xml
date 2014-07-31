@@ -19,6 +19,7 @@
         <item>启动谷歌地图</item>
         <item>下载远程文件</item>
         <item>裁剪本地图片</item>
+        <item>发送本地通知</item>
         <item>二维码图片扫描</item>
     </string-array>
     
