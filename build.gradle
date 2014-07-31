@@ -1,0 +1,43 @@
+// http://meedamian.com/post/publishing-with-gradle
+
+apply plugin: 'android'
+
+android {
+
+  // some other gradle magic
+
+  signingConfigs {
+    release {
+      storeFile     file(STORE_FILE)
+      storePassword STORE_PASSWORD
+      keyAlias      KEY_ALIAS
+      keyPassword   KEY_PASSWORD
+    }
+  }
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
+
+      // this is used to alter output directory and file name. If you don't need it
+      // you can safely comment it out.
+      applicationVariants.all { variant ->
+        def file = variant.outputFile
+
+        String parent = file.parent
+        if(project.hasProperty('OUTPUT_DIR') && new File((String)OUTPUT_DIR).exists())
+            parent = OUTPUT_DIR
+
+        variant.outputFile = new File(
+          parent,
+          (String) file.name.replace(
+            ".apk",
+
+            // alter this string to change output file name
+            "-" + defaultConfig.versionName + "-build" + defaultConfig.versionCode + ".apk"
+          )
+        )
+      }
+      // end your comment here
+    }
+  }
+}

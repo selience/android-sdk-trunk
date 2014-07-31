@@ -26,16 +26,14 @@
     <string name="Resume">Resume</string>
     <string name="Stop">Stop</string>
 	
-    <string-array name="action_list">
-        <item>Crop Center</item>
-        <item>Crop Top</item>
-        <item>Crop Bottom</item>
-    </string-array>
-    
 	<!-- crop image -->
 	<string name="crop__saving">Saving picture…</string>
     <string name="crop__wait">Please wait…</string>
     <string name="crop__pick_error">No image sources available</string>
     <string name="crop__done">DONE</string>
     <string name="crop__cancel" tools:ignore="ButtonCase">CANCEL</string>
+    
+    <string name="menu_crop_top">Crop Top</string>
+    <string name="menu_crop_center">Crop Center</string>
+    <string name="menu_crop_bottom">Crop Bottom</string>
 </resources>

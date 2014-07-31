@@ -1,28 +1,22 @@
 package com.iresearch.android.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.SpinnerAdapter;
 import com.iresearch.android.R;
 import com.iresearch.android.base.BaseActionBarFragment;
 import com.iresearch.android.widget.TextureVideoView;
 
-public class VideoCropFragment extends BaseActionBarFragment implements
-		OnClickListener, ActionBar.OnNavigationListener {
+public class VideoCropFragment extends BaseActionBarFragment implements OnClickListener {
 
 	// Video file url
 	private static final String FILE_URL = "http://www.w3schools.com/html/mov_bbb.mp4";
 
-	private final int indexCropCenter = 0;
-	private final int indexCropTop = 1;
-	private final int indexCropBottom = 2;
-
-	private ActionBar mActionBar;
 	private TextureVideoView mTextureVideoView;
 
 	@Override
@@ -41,17 +35,33 @@ public class VideoCropFragment extends BaseActionBarFragment implements
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.video_crop, menu);
+	}
 
-		mActionBar = getActionBar();
-		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		mActionBar.setDisplayShowTitleEnabled(false);
-
-		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(
-				mActivity, R.array.action_list,
-				android.R.layout.simple_spinner_dropdown_item);
-		mActionBar.setListNavigationCallbacks(mSpinnerAdapter, this);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_crop_center:
+			mTextureVideoView.stop();
+			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.CENTER_CROP);
+			mTextureVideoView.setDataSource(FILE_URL);
+			mTextureVideoView.play();
+			break;
+		case R.id.menu_crop_top:
+			mTextureVideoView.stop();
+			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.TOP);
+			mTextureVideoView.setDataSource(FILE_URL);
+			mTextureVideoView.play();
+			break;
+		case R.id.menu_crop_bottom:
+			mTextureVideoView.stop();
+			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.BOTTOM);
+			mTextureVideoView.setDataSource(FILE_URL);
+			mTextureVideoView.play();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -69,32 +79,6 @@ public class VideoCropFragment extends BaseActionBarFragment implements
 		}
 	}
 
-	@Override
-	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		switch (itemPosition) {
-		case indexCropCenter:
-			mTextureVideoView.stop();
-			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.CENTER_CROP);
-			mTextureVideoView.setDataSource(FILE_URL);
-			mTextureVideoView.play();
-			break;
-		case indexCropTop:
-			mTextureVideoView.stop();
-			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.TOP);
-			mTextureVideoView.setDataSource(FILE_URL);
-			mTextureVideoView.play();
-			break;
-		case indexCropBottom:
-			mTextureVideoView.stop();
-			mTextureVideoView.setScaleType(TextureVideoView.ScaleType.BOTTOM);
-			mTextureVideoView.setDataSource(FILE_URL);
-			mTextureVideoView.play();
-			break;
-		}
-		return true;
-	}
-	
-	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
