@@ -6,7 +6,7 @@ package com.iresearch.android.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 import com.iresearch.android.utils.Toaster;
 
 /**
@@ -21,7 +21,7 @@ public class MediaCardStateBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		L.d(TAG, "Media state changed, reloading resource managers");
+		DebugLog.d(TAG, "Media state changed, reloading resource managers");
 		if (Intent.ACTION_MEDIA_UNMOUNTED.equals(intent.getAction())) {
 		    Toaster.show(context, "存储卡已被卸载::" + intent.getData().getPath());
 		} else if (Intent.ACTION_MEDIA_MOUNTED.equals(intent.getAction())) {

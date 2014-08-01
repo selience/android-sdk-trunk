@@ -11,13 +11,10 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.OnScanCompletedListener;
-import java.io.IOException;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import com.iresearch.android.log.L;
 import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 
 public class UIUtils {
@@ -166,40 +163,5 @@ public class UIUtils {
 
         res.offset(0, -statusBarHeight);
         return res;
-    }
-
-    /**
-     * 获取照片旋转的方向
-     * 
-     * @param filepath
-     * @return
-     */
-    public static int getExifOrientation(String filepath) {
-        int degree = 0;
-        ExifInterface exif = null;
-        try {
-            exif = new ExifInterface(filepath);
-        } catch (IOException ex) {
-            L.e("BackwardSupport", "cannot read exif", ex);
-        }
-
-        if (exif != null) {
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
-            if (orientation != -1) {
-                // We only recognize a subset of orientation tag values.
-                switch (orientation) {
-                    case ExifInterface.ORIENTATION_ROTATE_90:
-                        degree = 90;
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_180:
-                        degree = 180;
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_270:
-                        degree = 270;
-                        break;
-                }
-            }
-        }
-        return degree;
     }
 }

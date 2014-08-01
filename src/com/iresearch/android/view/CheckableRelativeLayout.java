@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
 
@@ -30,7 +30,7 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 
     @Override
     public void setChecked(boolean checked) {
-        L.d(TAG, "setChecked");
+        DebugLog.d(TAG, "setChecked");
         if (checked != mChecked) {
             mChecked = checked;
             refreshDrawableState();
@@ -43,13 +43,13 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 
     @Override
     public boolean isChecked() {
-        L.d(TAG, "isChecked");
+        DebugLog.d(TAG, "isChecked");
         return mChecked;
     }
 
     @Override
     public void toggle() {
-        L.d(TAG, "toggle");
+        DebugLog.d(TAG, "toggle");
         setChecked(!mChecked);
     }
 

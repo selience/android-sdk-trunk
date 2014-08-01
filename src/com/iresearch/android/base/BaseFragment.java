@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import com.iresearch.android.app.AppContext;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 
 /**
  * @file BaseFragment.java
@@ -96,20 +96,20 @@ public abstract class BaseFragment extends Fragment {
     @Override
 	public void onInflate(Activity activity, AttributeSet attrs,
 			Bundle savedInstanceState) {
-    	L.d(TAG, "onInflate");
+    	DebugLog.d(TAG, "onInflate");
     	super.onInflate(activity, attrs, savedInstanceState);
     }
     
 	@Override
 	public void onAttach(Activity activity) {
-		L.d(TAG, "onAttach");
+		DebugLog.d(TAG, "onAttach");
 		super.onAttach(activity);
 		this.mActivity=activity;
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		L.d(TAG, "onCreate");
+		DebugLog.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
@@ -124,13 +124,13 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
-		L.d(TAG, "onCreateView");
+		DebugLog.d(TAG, "onCreateView");
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		L.d(TAG, "onViewCreated");
+		DebugLog.d(TAG, "onViewCreated");
 		super.onViewCreated(view, savedInstanceState);
 		
 		// 设置Fragment标题
@@ -141,68 +141,68 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		L.d(TAG, "onActivityCreated");
+		DebugLog.d(TAG, "onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
 	
 	@Override
 	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-		L.d(TAG, "onCreateAnimation");
+		DebugLog.d(TAG, "onCreateAnimation");
 		return super.onCreateAnimation(transit, enter, nextAnim);
 	}
 
 	@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-	    L.d(TAG, "setUserVisibleHint:" + isVisibleToUser);
+	    DebugLog.d(TAG, "setUserVisibleHint:" + isVisibleToUser);
         super.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override
 	public void onStart() {
-		L.d(TAG, "onStart");
+		DebugLog.d(TAG, "onStart");
 		super.onStart();
 	}
 	
 	@Override
 	public void onResume() {
-		L.d(TAG, "onResume");
+		DebugLog.d(TAG, "onResume");
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		L.d(TAG, "onPause");
+		DebugLog.d(TAG, "onPause");
 		super.onPause();
 	}
 
 	@Override
 	public void onStop() {
-		L.d(TAG, "onStop");
+		DebugLog.d(TAG, "onStop");
 		super.onStop();
 	}
 	
 	@Override
 	public void onDestroyView() {
-		L.d(TAG, "onDestroyView");
+		DebugLog.d(TAG, "onDestroyView");
 		super.onDestroyView();
 	}
 	
 	@Override
 	public void onDestroy() {
-		L.d(TAG, "onDestroy");
+		DebugLog.d(TAG, "onDestroy");
 		super.onDestroy();
 	}
 
 	@Override
 	public void onDetach() {
-		L.d(TAG, "onDetach");
+		DebugLog.d(TAG, "onDetach");
 		super.onDetach();
 		mActivity=null;
 	}
 
 	@Override
     public void onSaveInstanceState(Bundle outState) {
-		L.d(TAG, "onSaveInstanceState");
+		DebugLog.d(TAG, "onSaveInstanceState");
 		storeSavedState(outState); // 保存Fragment标题
 		outState.putCharSequence(STATE_TITLE, title);
 		super.onSaveInstanceState(outState);
@@ -210,7 +210,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		L.d(TAG, "onConfigurationChanged");
+		DebugLog.d(TAG, "onConfigurationChanged");
 		super.onConfigurationChanged(newConfig);
 	}
 

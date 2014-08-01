@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import com.iresearch.android.app.compat.MainLifecycleDispatcher;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 import com.iresearch.android.manager.FragmentStack;
 
 public abstract class BaseActivity extends FragmentActivity {
@@ -24,7 +24,7 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TAG = getClass().getSimpleName();
-        L.d(TAG, "onCreate");
+        DebugLog.d(TAG, "onCreate");
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentManager.enableDebugLogging(false);
@@ -39,53 +39,53 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        L.d(TAG, "onNewIntent");
+        DebugLog.d(TAG, "onNewIntent");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        L.d(TAG, "onStart");
+        DebugLog.d(TAG, "onStart");
         MainLifecycleDispatcher.get().onActivityStarted(this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        L.d(TAG, "onRestart");
+        DebugLog.d(TAG, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        L.d(TAG, "onResume");
+        DebugLog.d(TAG, "onResume");
         MainLifecycleDispatcher.get().onActivityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        L.d(TAG, "onPause");
+        DebugLog.d(TAG, "onPause");
         MainLifecycleDispatcher.get().onActivityPaused(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        L.d(TAG, "onStop");
+        DebugLog.d(TAG, "onStop");
         MainLifecycleDispatcher.get().onActivityStopped(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        L.d(TAG, "onDestroy");
+        DebugLog.d(TAG, "onDestroy");
         MainLifecycleDispatcher.get().onActivityDestroyed(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        L.d(TAG, "onSaveInstanceState");
+        DebugLog.d(TAG, "onSaveInstanceState");
         mStack.savedState(outState);
         super.onSaveInstanceState(outState);
         // FIXME 兼容API低于11版本
@@ -96,7 +96,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        L.d(TAG, "onConfigurationChanged");
+        DebugLog.d(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
     }
 
@@ -113,7 +113,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        L.d(TAG, "onBackPressed");
+        DebugLog.d(TAG, "onBackPressed");
         if (onBackTaskStart()) {
         	return;
         }
@@ -129,12 +129,12 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     protected boolean onBackTaskStart() {
-    	L.d(TAG, "onBackTaskStart");
+    	DebugLog.d(TAG, "onBackTaskStart");
     	return false;
     }
     
     protected void onBackTaskEnd() {
-        L.d(TAG, "onBackTaskEnd");
+        DebugLog.d(TAG, "onBackTaskEnd");
         super.onBackPressed();
     }
     

@@ -9,7 +9,7 @@ import java.util.Locale;
  * Convenience class for logging. Logs the given parameters plus the 
  * calling class and line as a tag and the calling method's name
  */
-public class L {
+public class DebugLog {
 
     private static boolean DEBUG = false; 
 

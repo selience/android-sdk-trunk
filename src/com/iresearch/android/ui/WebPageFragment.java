@@ -9,7 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import com.iresearch.android.base.WebViewFragment;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 
 public class WebPageFragment extends WebViewFragment {
 
@@ -35,7 +35,7 @@ public class WebPageFragment extends WebViewFragment {
 	    if(result.getType() == HitTestResult.IMAGE_TYPE){
 	        menu.addSubMenu(1, 1, 1, "保存图片");
 	        //通过result.getExtra()取出URL
-	        L.d("webView", result.getExtra());
+	        DebugLog.d("webView", result.getExtra());
 	    }
 	}
 	

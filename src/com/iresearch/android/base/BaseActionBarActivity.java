@@ -12,9 +12,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 import com.iresearch.android.app.compat.MainLifecycleDispatcher;
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 import com.iresearch.android.manager.FragmentStack;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity {
@@ -27,7 +28,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TAG = getClass().getSimpleName();
-        L.d(TAG, "onCreate");
+        DebugLog.d(TAG, "onCreate");
 
         forceShowActionBarOverflowMenu();
         FragmentManager fm = getSupportFragmentManager();
@@ -43,53 +44,53 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        L.d(TAG, "onNewIntent");
+        DebugLog.d(TAG, "onNewIntent");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        L.d(TAG, "onStart");
+        DebugLog.d(TAG, "onStart");
         MainLifecycleDispatcher.get().onActivityStarted(this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        L.d(TAG, "onRestart");
+        DebugLog.d(TAG, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        L.d(TAG, "onResume");
+        DebugLog.d(TAG, "onResume");
         MainLifecycleDispatcher.get().onActivityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        L.d(TAG, "onPause");
+        DebugLog.d(TAG, "onPause");
         MainLifecycleDispatcher.get().onActivityPaused(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        L.d(TAG, "onStop");
+        DebugLog.d(TAG, "onStop");
         MainLifecycleDispatcher.get().onActivityStopped(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        L.d(TAG, "onDestroy");
+        DebugLog.d(TAG, "onDestroy");
         MainLifecycleDispatcher.get().onActivityDestroyed(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        L.d(TAG, "onSaveInstanceState");
+        DebugLog.d(TAG, "onSaveInstanceState");
         mStack.savedState(outState);
         super.onSaveInstanceState(outState);
         // FIXME 兼容API低于11版本
@@ -100,7 +101,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        L.d(TAG, "onConfigurationChanged");
+        DebugLog.d(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
     }
 
@@ -131,7 +132,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        L.d(TAG, "onSupportNavigateUp");
+        DebugLog.d(TAG, "onSupportNavigateUp");
         if (mStack.stackSize() > 1) {
             if (getFragment().onNavigateUp()) {
                 return true;
@@ -146,7 +147,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        L.d(TAG, "onBackPressed");
+        DebugLog.d(TAG, "onBackPressed");
         if (onBackTaskStart()) {
         	return;
         }
@@ -160,14 +161,25 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
         }
         onBackTaskEnd();
     }
+    
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_MENU) {
+				openOptionsMenu();
+				return true;
+			}
+		}
+		return super.onKeyUp(keyCode, event);
+	}
 
     protected boolean onBackTaskStart() {
-    	L.d(TAG, "onBackTaskStart");
+    	DebugLog.d(TAG, "onBackTaskStart");
     	return false;
     }
     
     protected void onBackTaskEnd() {
-        L.d(TAG, "onBackTaskEnd");
+        DebugLog.d(TAG, "onBackTaskEnd");
         super.onBackPressed();
     }
     
@@ -214,6 +226,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity {
                 menuKeyField.setBoolean(config, false);
             }
         } catch (Exception ignored) {
+        	 // Ignore
         }
     }
 }

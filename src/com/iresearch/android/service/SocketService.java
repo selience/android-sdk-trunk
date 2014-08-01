@@ -16,7 +16,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 
-import com.iresearch.android.log.L;
+import com.iresearch.android.log.DebugLog;
 import com.iresearch.android.utils.NetworkUtils;
 
 /**
@@ -40,7 +40,7 @@ public class SocketService extends Service implements Runnable {
 		wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiManager.getConnectionInfo();  //当前连接的WiFi网络
 
-		L.d("start socket listener");
+		DebugLog.d("start socket listener");
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SocketService extends Service implements Runnable {
 		    }
 
 		    while (true) {
-				L.d("Service Listen 4392");
+				DebugLog.d("Service Listen 4392");
 				
 				String ipString = NetworkUtils.ipIntToString(wifiInfo.getIpAddress());
 				String wifiStatus = wifiManager.isWifiEnabled()?"WiFi已开启":"WiFi已关闭";
@@ -132,6 +132,6 @@ public class SocketService extends Service implements Runnable {
 	    stopSelf();
 	    super.onDestroy();
 		
-		L.d("stop socket listener");
+		DebugLog.d("stop socket listener");
 	}
 }
