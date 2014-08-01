@@ -2,14 +2,11 @@ package com.iresearch.android.adapter;
 
 import java.util.List;
 import android.graphics.Bitmap;
-import com.android.volley.VolleyError;
+import com.android.volley.Listener;
 import com.android.volley.core.RequestManager;
 import com.android.volley.image.NetworkImageView;
-import com.android.volley.toolbox.ImageLoader.ImageContainer;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.iresearch.android.R;
 import com.iresearch.android.model.ViewModel;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.extensions.OnRecyclerViewItemClickListener;
 import android.support.v7.extensions.PaletteManager;
 import android.support.v7.graphics.Palette;
@@ -41,15 +38,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setTag(item);
         holder.text.setText(item.getText());
 
-        holder.image.setImageListener(new ImageListener() {
+        holder.image.setImageListener(new Listener<Bitmap>() {
 			@Override
-			public void onSuccess(ImageContainer response, boolean isImmediate) {
-				holder.updatePalette(paletteManager);
-			}
-			
-			@Override
-			public void onError(VolleyError error) {
-				holder.updatePalette(paletteManager);
+			public void onSuccess(Bitmap bitmap) {
+				holder.updatePalette(paletteManager, bitmap);
 			}
 		});
         holder.image.setImageUrl(item.getImage(), RequestManager.loader().useDefaultLoader().obtain());
@@ -95,9 +87,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             image = (NetworkImageView) itemView.findViewById(R.id.image);
         }
 
-        public void updatePalette(PaletteManager paletteManager) {
+        public void updatePalette(PaletteManager paletteManager, Bitmap bitmap) {
             String key = ((ViewModel)itemView.getTag()).getImage();
-            Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
             paletteManager.getPalette(key, bitmap, new PaletteManager.Callback() {
                 @Override
                 public void onPaletteReady(Palette palette) {
