@@ -36,4 +36,12 @@
     <string name="menu_crop_top">Crop Top</string>
     <string name="menu_crop_center">Crop Center</string>
     <string name="menu_crop_bottom">Crop Bottom</string>
+    
+    <string name="empty_message">No items yet</string>
+    <string name="loading_message">Please wait</string>
+    <string name="error_message">Oops! Something wrong happened</string>
+    
+    <string name="empty_button">Try again</string>
+    <string name="loading_button">Cancel</string>
+    <string name="error_button">Try again</string>
 </resources>

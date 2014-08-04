@@ -2,6 +2,7 @@
 package com.iresearch.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.iresearch.android.base.BaseActionBarActivity;
 import com.iresearch.android.base.WebViewFragment;
 import com.iresearch.android.location.LocationHelper;
 import com.iresearch.android.location.LocationHelper.LocationResult;
+import com.iresearch.android.service.NotificationService;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
 import com.iresearch.android.ui.SwipeFragment;
@@ -75,6 +77,9 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
         // 启动定位功能
         mLocationHelper=new LocationHelper();
         mLocationHelper.getLocation(this, this);
+        
+        // 开启通知服务
+        startService(new Intent(this, NotificationService.class));
         
         if (!NetworkUtils.isNetworkAvailable(this)) {
             Toaster.show(this, R.string.network_not_connected);

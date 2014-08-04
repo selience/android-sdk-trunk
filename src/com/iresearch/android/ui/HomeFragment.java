@@ -18,7 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -298,7 +297,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
     
     public static class SettingsActionProvider extends ActionProvider {
         /** An intent for launching the system settings. */
-        private static final Intent sSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        private static final Intent sSettingsIntent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
         
         public SettingsActionProvider(Context context) {
             super(context);
@@ -313,7 +312,13 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
         
         @Override
         public boolean onPerformDefaultAction() {
-            getContext().startActivity(sSettingsIntent);
+        	final Context context = getContext();
+        	if (IntentUtils.isIntentAvailable(context, sSettingsIntent)) {
+        		context.startActivity(sSettingsIntent);
+        	} else {
+        		context.startActivity(IntentUtils.newManageApplicationIntent());
+        	}
+            
             return true;
         }
     }
