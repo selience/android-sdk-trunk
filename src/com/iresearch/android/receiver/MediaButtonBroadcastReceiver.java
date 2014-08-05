@@ -1,6 +1,5 @@
 package com.iresearch.android.receiver;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,13 +12,16 @@ import android.view.KeyEvent;
  * @file MediaButtonBroadcastReceiver.java
  * @create 2013-5-29 下午06:07:50
  * @author lilong
- * @description TODO 广播接收者监测媒体播放按键； 有线和无线耳机上都有媒体播放按键，如播放、暂停、停止、快进和快退，
+ * @description 广播接收者监测媒体播放按键； 有线和无线耳机上都有媒体播放按键，如播放、暂停、停止、快进和快退，
  *              当用户操作这些键时，系统会广播一个含有ACTION_MEDIA_BUTTON动作的intent。
+ * 
+ * <intent-filter>
+ * 		<action android:name="android.intent.action.MEDIA_BUTTON" />
+ * </intent-filter>             
  */
-@SuppressLint("NewApi")
 public class MediaButtonBroadcastReceiver extends BroadcastReceiver {
 
-	public static interface OnMediaButtonStateListener {
+	public interface OnMediaButtonStateListener {
 
         void onMediaButtonStateChanged(Intent intent, KeyEvent event);
     }

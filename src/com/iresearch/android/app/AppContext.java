@@ -17,6 +17,13 @@ import com.iresearch.android.app.compat.ActivityLifecycleCallbacksCompat;
 import com.iresearch.android.app.compat.ApplicationHelper;
 import com.iresearch.android.app.compat.ActivityLifecycleCallbacksAdapter;
 
+/**
+ * 
+ * @file AppContext.java
+ * @create 2012-8-15 下午5:08:28
+ * @author lilong
+ * @description TODO Application基类，存储全局数据
+ */
 public class AppContext extends Application {
     private static final boolean DEBUG = Config.DEBUG;
     

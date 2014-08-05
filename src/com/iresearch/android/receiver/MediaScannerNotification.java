@@ -38,7 +38,7 @@ public class MediaScannerNotification implements MediaScannerConnectionClient {
         }
     }
 
-    public static interface OnMediaScannerStateListener {
+    public interface OnMediaScannerStateListener {
 
         void onMediaScannerConnected();
 

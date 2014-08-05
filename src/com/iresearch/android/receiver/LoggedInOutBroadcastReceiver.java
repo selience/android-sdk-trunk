@@ -3,10 +3,10 @@
  */
 package com.iresearch.android.receiver;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
 
 /**
  * @file LoggedInOutBroadcastReceiver.java
@@ -16,12 +16,13 @@ import android.content.IntentFilter;
  */
 public class LoggedInOutBroadcastReceiver extends BroadcastReceiver {
 
-	public static final String INTENT_ACTION_LOGGED_IN = "com.shandagames.android.intent.action.LOGGED_IN";
-	public static final String INTENT_ACTION_LOGGED_OUT = "com.shandagames.android.intent.action.LOGGED_OUT";
+	public static final String INTENT_ACTION_LOGGED_IN = "android.intent.action.LOGGED_IN";
+	public static final String INTENT_ACTION_LOGGED_OUT = "android.intent.action.LOGGED_OUT";
 
-	public static interface OnLoggedInOutStateListener {
-		public void onLoggedIn();
-		public void onLoggedOut();
+	public interface OnLoggedInOutStateListener {
+		void onLoggedIn();
+
+		void onLoggedOut();
 	}
 	
 	private OnLoggedInOutStateListener onLoggedInOutListener;
@@ -29,9 +30,13 @@ public class LoggedInOutBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (INTENT_ACTION_LOGGED_IN.equals(intent.getAction())) {
-			if (onLoggedInOutListener != null) onLoggedInOutListener.onLoggedIn();
+			if (onLoggedInOutListener != null) { 
+				onLoggedInOutListener.onLoggedIn();
+			}
 		} else if (INTENT_ACTION_LOGGED_OUT.equals(intent.getAction())) {
-			if (onLoggedInOutListener != null) onLoggedInOutListener.onLoggedOut();
+			if (onLoggedInOutListener != null) { 
+				onLoggedInOutListener.onLoggedOut();
+			}
 		}
 	}
 

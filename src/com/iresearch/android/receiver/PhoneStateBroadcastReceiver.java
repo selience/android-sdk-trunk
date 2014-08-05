@@ -6,17 +6,16 @@ import android.telephony.TelephonyManager;
 
 public class PhoneStateBroadcastReceiver extends PhoneStateListener {
 
-	public static interface OnNetworkConnectedListener {
-        public void onNetworkConnecting();
-        public void onNetworkConnected();
-        public void onNetworkDisConnected();
+	public interface OnNetworkConnectedListener {
+        void onNetworkConnecting();
+        void onNetworkConnected();
+        void onNetworkDisConnected();
     }
 	
 	private OnNetworkConnectedListener onNetworkConnectedListener;
 	
 	@Override
 	public void onDataConnectionStateChanged(int state) {
-		// TODO Auto-generated method stub
 		if (onNetworkConnectedListener != null) {
 			switch (state) {
 				case TelephonyManager.DATA_CONNECTING:
