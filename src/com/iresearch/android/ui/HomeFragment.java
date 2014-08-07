@@ -43,6 +43,7 @@ import com.iresearch.android.base.BaseFragment;
 import com.iresearch.android.crop.Crop;
 import com.iresearch.android.log.DebugLog;
 import com.iresearch.android.model.request.TestRequest;
+import com.iresearch.android.service.NotificationService;
 import com.iresearch.android.service.SocketService;
 import com.iresearch.android.tools.accessor.EnvironmentAccessor;
 import com.iresearch.android.ui.AlertDialogFragment.AlertDialogListener;
@@ -220,6 +221,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             f.setOnAlertDialogListener(new DialogListener());
             f.show(getChildFragmentManager());
         } else if (position == 6) {
+        	// 开启通知服务
+            startService(new Intent(mActivity, NotificationService.class));
+            // 构建通知信息
         	NotificationManagerCompat.from(mActivity).cancelAll();
         	NotificationCompat.Builder notificationBuilder = createBuilder();
             Notification notification = notificationBuilder.build();
