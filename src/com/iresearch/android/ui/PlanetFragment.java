@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.iresearch.android.R;
-import com.iresearch.android.base.BaseFragment;
+import com.android.sdk.base.BaseFragment;
 
 public class PlanetFragment extends BaseFragment {
 
@@ -23,7 +23,7 @@ public class PlanetFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-	    View mainView=inflater.inflate(R.layout.swipe_list_item, null);
+	    View mainView=inflater.inflate(R.layout.swipe_list_item, container, false);
 	    TextView textView = (TextView)mainView.findViewById(android.R.id.text1);
 	    textView.setText(getArguments().getString(ARG_PLANET_EXTRAS));
 	    return mainView;

@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.iresearch.android.R;
-import com.iresearch.android.base.BaseActionBarFragment;
+import com.android.sdk.base.BaseActionBarFragment;
 import com.iresearch.android.widget.PagerSlidingTabStrip;
 
 public class SwipeFragment extends BaseActionBarFragment implements OnClickListener {
@@ -31,7 +31,7 @@ public class SwipeFragment extends BaseActionBarFragment implements OnClickListe
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.swipe_viewpager, null);
+        return inflater.inflate(R.layout.swipe_viewpager, container, false);
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.iresearch.android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.iresearch.android.base.BaseActionBarActivity;
-import com.iresearch.android.utils.Toaster;
+import com.android.sdk.base.BaseActionBarActivity;
+import com.android.sdk.utils.Toaster;
 
 public class SendActivity extends BaseActionBarActivity {
 

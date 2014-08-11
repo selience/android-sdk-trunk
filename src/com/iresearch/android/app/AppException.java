@@ -15,8 +15,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import com.iresearch.android.utils.DeviceUtils;
+import com.android.sdk.utils.DeviceUtils;
 import com.iresearch.android.utils.UIUtils;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 import android.provider.Settings.SettingNotFoundException;
 

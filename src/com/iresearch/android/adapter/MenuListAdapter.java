@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import java.util.List;
 import android.widget.TextView;
-import com.iresearch.android.base.BaseGroupAdapter;
+import com.android.sdk.base.BaseGroupAdapter;
 
 public class MenuListAdapter extends BaseGroupAdapter<String> {
 

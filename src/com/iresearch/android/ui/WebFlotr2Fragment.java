@@ -4,7 +4,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import com.iresearch.android.base.WebViewFragment;
+import com.android.sdk.base.WebViewFragment;
 
 public class WebFlotr2Fragment extends WebViewFragment {
 

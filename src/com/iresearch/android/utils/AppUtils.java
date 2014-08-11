@@ -4,8 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import com.android.sdk.app.AppManager;
+import com.android.sdk.utils.IntentUtils;
 import com.iresearch.android.R;
-import com.iresearch.android.app.AppManager;
 
 public class AppUtils {
     

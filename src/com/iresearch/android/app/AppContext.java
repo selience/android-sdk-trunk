@@ -7,15 +7,15 @@ import android.annotation.TargetApi;
 import android.content.pm.PackageInfo;
 import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
+import com.android.sdk.log.DebugLog;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
-import com.iresearch.android.log.DebugLog;
-import com.iresearch.android.utils.ManifestUtils;
-import com.iresearch.android.utils.StorageOptions;
+import com.android.sdk.utils.ManifestUtils;
+import com.android.sdk.utils.StorageOptions;
 import android.content.pm.PackageManager.NameNotFoundException;
-import com.iresearch.android.app.compat.ActivityLifecycleCallbacksCompat;
-import com.iresearch.android.app.compat.ApplicationHelper;
-import com.iresearch.android.app.compat.ActivityLifecycleCallbacksAdapter;
+import com.android.sdk.app.compat.ActivityLifecycleCallbacksCompat;
+import com.android.sdk.app.compat.ApplicationHelper;
+import com.android.sdk.app.compat.ActivityLifecycleCallbacksAdapter;
 
 /**
  * 

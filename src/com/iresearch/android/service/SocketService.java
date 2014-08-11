@@ -7,7 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Locale;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
-
-import com.iresearch.android.log.DebugLog;
-import com.iresearch.android.utils.NetworkUtils;
+import com.android.sdk.log.DebugLog;
+import com.android.sdk.utils.NetworkUtils;
 
 /**
  * @file SocketService.java

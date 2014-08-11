@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 import android.view.View.OnClickListener;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.iresearch.android.R;
-import com.iresearch.android.base.BaseActivity;
+import com.android.sdk.base.BaseActivity;
 import com.iresearch.android.constants.Constants;
 import com.iresearch.android.ui.NativeMapV2Fragment;
 import com.iresearch.android.ui.WebMapFragment;

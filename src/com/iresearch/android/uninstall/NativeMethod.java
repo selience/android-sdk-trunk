@@ -1,6 +1,6 @@
 package com.iresearch.android.uninstall;
 
-import com.iresearch.android.log.DebugLog;
+import com.android.sdk.log.DebugLog;
 
 /**
  * @file NativeMethod.java

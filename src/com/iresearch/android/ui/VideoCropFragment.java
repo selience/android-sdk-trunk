@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.iresearch.android.R;
-import com.iresearch.android.base.BaseActionBarFragment;
+import com.android.sdk.base.BaseActionBarFragment;
 import com.iresearch.android.widget.TextureVideoView;
 
 public class VideoCropFragment extends BaseActionBarFragment implements OnClickListener {

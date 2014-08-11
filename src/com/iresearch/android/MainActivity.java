@@ -17,11 +17,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.android.R;
 import com.iresearch.android.app.AppContext;
-import com.iresearch.android.app.AppManager;
-import com.iresearch.android.base.BaseActionBarActivity;
-import com.iresearch.android.base.WebViewFragment;
-import com.iresearch.android.location.LocationHelper;
-import com.iresearch.android.location.LocationHelper.LocationResult;
+import com.android.sdk.app.AppManager;
+import com.android.sdk.base.BaseActionBarActivity;
+import com.android.sdk.base.WebViewFragment;
+import com.android.sdk.location.LocationHelper;
+import com.android.sdk.location.LocationHelper.LocationResult;
+import com.android.sdk.utils.NetworkUtils;
+import com.android.sdk.utils.Toaster;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
 import com.iresearch.android.ui.SwipeFragment;
@@ -29,8 +31,6 @@ import com.iresearch.android.ui.VideoCropFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
 import com.iresearch.android.ui.WebPageFragment;
 import com.iresearch.android.utils.ClickExitHelper;
-import com.iresearch.android.utils.NetworkUtils;
-import com.iresearch.android.utils.Toaster;
 
 public class MainActivity extends BaseActionBarActivity implements OnItemClickListener, LocationResult {
 

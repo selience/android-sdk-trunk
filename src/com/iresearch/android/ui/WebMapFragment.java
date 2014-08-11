@@ -7,9 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-
 import com.iresearch.android.MapViewerActivity.MapInterface;
-import com.iresearch.android.base.WebViewFragment;
+import com.android.sdk.base.WebViewFragment;
 import com.iresearch.android.constants.Constants;
 
 public class WebMapFragment extends WebViewFragment implements Constants, MapInterface {
