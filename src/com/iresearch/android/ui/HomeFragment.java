@@ -228,7 +228,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
         	NotificationCompat.Builder notificationBuilder = createBuilder();
             Notification notification = notificationBuilder.build();
             NotificationManagerCompat.from(mActivity).notify(1000, notification);
-        } else if (position == 7) { // 扫描二维码
+        } else if (position == 7) { // 人脸面部检测
+            replace(FaceDetectorFragment.class, "FaceDetectorFragment", null);
+        } else if (position == 8) { // 扫描二维码
             Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
             startActivityForResult(openCameraIntent, REQUEST_CODE_QRCODE);
         }

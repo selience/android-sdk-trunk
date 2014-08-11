@@ -22,7 +22,6 @@ import com.iresearch.android.base.BaseActionBarActivity;
 import com.iresearch.android.base.WebViewFragment;
 import com.iresearch.android.location.LocationHelper;
 import com.iresearch.android.location.LocationHelper.LocationResult;
-import com.iresearch.android.service.NotificationService;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
 import com.iresearch.android.ui.SwipeFragment;
