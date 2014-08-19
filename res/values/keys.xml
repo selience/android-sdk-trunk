@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sina_weibo_token">sina_weibo_token</string>
+    <string name="sina_weibo_token_expire">sina_weibo_token_expire</string>
+    
+    <string name="tencent_weibo_token">tencent_weibo_token</string>
+    <string name="tencent_weibo_token_expire">tencent_weibo_token_expire</string>
+</resources>

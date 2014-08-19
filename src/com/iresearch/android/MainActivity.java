@@ -1,16 +1,16 @@
 
 package com.iresearch.android;
 
+import android.view.View;
+import android.os.Bundle;
+import android.view.MenuItem;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.location.Location;
-import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -26,6 +26,7 @@ import com.android.sdk.utils.NetworkUtils;
 import com.android.sdk.utils.Toaster;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
+import com.iresearch.android.ui.ShareFragment;
 import com.iresearch.android.ui.SwipeFragment;
 import com.iresearch.android.ui.VideoCropFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
@@ -125,6 +126,9 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
             case 5:
             	replace(RecyclerViewFragment.class, "RecyclerViewFragment", null);
             	break;
+            case 6:
+                replace(ShareFragment.class, "ShareFragment", null);
+                break;
             default:
                 break;
         }

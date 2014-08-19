@@ -1,15 +1,13 @@
 package com.iresearch.android.app;
 
-import android.os.Build;
-import android.os.StrictMode;
 import android.app.Application;
-import android.annotation.TargetApi;
 import android.content.pm.PackageInfo;
 import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
 import com.android.sdk.log.DebugLog;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
+import com.android.sdk.utils.AppUtils;
 import com.android.sdk.utils.ManifestUtils;
 import com.android.sdk.utils.StorageOptions;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -56,12 +54,10 @@ public class AppContext extends Application {
 	    DebugLog.enableDebugLogging(DEBUG);
 	    StorageOptions.getInstance().init(this);
 	    
+	    AppUtils.initAsyncTask();
 	    ActiveAndroid.initialize(this);
 	    RequestManager.initializeWith(this);
-	    
-		//checkStrictMode();
-		setUpAsyncTask();
-		
+
 		// 注册监听Activity生命周期变化
 		mCallback=new ActivityLifecycleCallbacksAdapter();
 		ApplicationHelper.registerActivityLifecycleCallbacks(this, mCallback);
@@ -91,36 +87,11 @@ public class AppContext extends Application {
 		return instance;
 	}
 	
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	private void checkStrictMode() {
-		// FIXME: StrictMode类在1.6以下的版本中没有，会导致类加载失败。因此将这些代码设成关闭状态，仅在做性能调试时才打开。
-		// NOTE: StrictMode模式需要2.3+ API支持。设置严苛模式；
-		if (DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) { 
-			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-        			.detectAll().penaltyLog()
-        			.penaltyDialog().build());
-		    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-        		    .detectAll().penaltyDeath()
-        		    .penaltyLog().build()); 
-		}
-	}
-	
 	// 防止多进程重复执行初始化操作
 	private boolean isRunning() {
 	    return ManifestUtils.checkIfIsAppRunning(this, "com.iresearch.android");
 	}
 
-	// 初始化AsyncTask任务，修复找不到相关类BUG
-	private void setUpAsyncTask() {
-        try {
-            // AsyncTask class needs to be loaded in UI thread.
-            // So we load it here to comply the rule.
-            Class.forName("android.os.AsyncTask");
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-	
     /**
      * 获取App安装包信息
      * @return

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="share_sina_weibo" type="id" />
+    <item name="share_tencent_weibo" type="id" />
+    
+    
     <!-- zing ids -->
     <item name="quit" type="id"/>
     <item name="decode" type="id"/>

@@ -137,7 +137,7 @@
         
         <activity android:name=".crop.CropImageActivity"/>
         
-        <receiver android:name=".receiver.MediaCardStateBroadcastReceiver">
+        <receiver android:name="com.android.sdk.receiver.MediaCardStateBroadcastReceiver">
         	<intent-filter>
 			     <action android:name="android.intent.action.MEDIA_MOUNTED" />
 			     <action android:name="android.intent.action.MEDIA_EJECT" />
