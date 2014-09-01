@@ -3,7 +3,7 @@ package com.iresearch.android.gson;
 
 import com.android.volley.Listener;
 import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
+import com.android.volley.error.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;

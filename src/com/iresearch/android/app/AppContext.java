@@ -10,6 +10,7 @@ import com.iresearch.android.constants.Config;
 import com.android.sdk.utils.AppUtils;
 import com.android.sdk.utils.ManifestUtils;
 import com.android.sdk.utils.StorageOptions;
+import com.android.sdk.app.AppException;
 import android.content.pm.PackageManager.NameNotFoundException;
 import com.android.sdk.app.compat.ActivityLifecycleCallbacksCompat;
 import com.android.sdk.app.compat.ApplicationHelper;
@@ -69,6 +70,11 @@ public class AppContext extends Application {
 	}
 	
 	@Override
+	public void onLowMemory() {
+	    super.onLowMemory();
+	}
+	
+	@Override
 	public void onTerminate() {
 		// FIXME: 根据android文档，onTerminate不会在真实机器上被执行到
 		// 因此这些清理动作需要再找合适的地方放置，以确保执行。
@@ -94,7 +100,6 @@ public class AppContext extends Application {
 
     /**
      * 获取App安装包信息
-     * @return
      */
     public PackageInfo getPackageInfo() {
         PackageInfo info = null;

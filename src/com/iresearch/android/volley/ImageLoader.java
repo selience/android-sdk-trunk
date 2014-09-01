@@ -15,7 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import com.android.sdk.utils.DeviceUtils;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
+import com.android.volley.error.VolleyError;
 
 /**
  * A class that wraps up remote image loading requests using the Volley library combined with a

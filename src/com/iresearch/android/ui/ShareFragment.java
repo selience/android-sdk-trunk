@@ -22,6 +22,7 @@ import com.android.sdk.log.DebugLog;
 import com.android.sdk.utils.SettingUtils;
 import com.android.sdk.utils.Toaster;
 import com.iresearch.android.R;
+import com.iresearch.android.app.AppContext;
 import com.iresearch.android.thread.RequestExecutor;
 
 public class ShareFragment extends BaseFragment implements OnClickListener {
@@ -29,7 +30,9 @@ public class ShareFragment extends BaseFragment implements OnClickListener {
     public static final int SHARE_SINA_WEIBO = 0x1000;
     
     private static final Token EMPTY_TOKEN = null;
-    private static final String PROTECTED_RESOURCE_URL = "https://api.weibo.com/2/account/get_uid.json";
+    private static final String GET_USER_INFO = "https://api.weibo.com/2/users/show.json";
+    private static final String PUBLISH_WEIBO_TEXT = "https://api.weibo.com/2/statuses/update.json";
+    private static final String PUBLISH_WEIBO_TEXT_WITH_IMAGE = "https://upload.api.weibo.com/2/statuses/upload.json";
     
     private OAuthService mOAuthervice;
     
@@ -104,10 +107,48 @@ public class ShareFragment extends BaseFragment implements OnClickListener {
         replace(WebAuthFragment.class, "WebAuthFragment", bundle, this, SHARE_SINA_WEIBO);
     }
     
+    /*
+     * 获取用户信息
+     */
     private void getUserUid(Token accessToken) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+        OAuthRequest request = new OAuthRequest(Verb.GET, GET_USER_INFO);
+        request.addQuerystringParameter("screen_name", "selience");
         mOAuthervice.signRequest(accessToken, request);
         Response response = request.send();
         Toaster.show(mActivity, response.getCode()+"-"+response.getBody());
+        DebugLog.e(response.getCode()+","+response.getBody());
+        
+        sendMessage(accessToken);
+    }
+    
+    /*
+     * 发布一条微博消息
+     */
+    private void sendMessage(Token accessToken) {
+        OAuthRequest request = new OAuthRequest(Verb.POST, PUBLISH_WEIBO_TEXT);
+        request.addBodyParameter("status", "发布一条测试消息"); // 要发布的微博文本内容，必须做URLencode，内容不超过140个汉字
+        request.addBodyParameter("lat", AppContext.latitude+"");
+        request.addBodyParameter("long", AppContext.longitude+"");
+        mOAuthervice.signRequest(accessToken, request);
+        Response response = request.send();
+        
+        DebugLog.e(response.getCode()+","+response.getBody());
+    }
+    
+    /*
+     * 发布一条微博消息并附带一张图片
+     */
+    private void sendMessageWithImage(Token accessToken) {
+        OAuthRequest request = new OAuthRequest(Verb.POST, PUBLISH_WEIBO_TEXT_WITH_IMAGE);
+        request.addHeader("Content-Type", "multipart/form-data");  // 请求必须用POST方式提交，并且注意采用multipart/form-data编码方式； 
+        
+        request.addBodyParameter("status", "发布一条测试消息"); // 要发布的微博文本内容，必须做URLencode，内容不超过140个汉字
+        request.addBodyParameter("lat", AppContext.latitude+"");
+        request.addBodyParameter("long", AppContext.longitude+"");
+        
+        mOAuthervice.signRequest(accessToken, request);
+        Response response = request.send();
+        
+        DebugLog.e(response.getCode()+","+response.getBody());
     }
 }

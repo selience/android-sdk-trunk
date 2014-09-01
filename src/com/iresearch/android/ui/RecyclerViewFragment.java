@@ -3,9 +3,11 @@ package com.iresearch.android.ui;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
+import android.support.v7.extensions.DividerItemDecoration;
 import android.support.v7.extensions.GridLayoutManager;
 import android.support.v7.extensions.OnRecyclerViewItemClickListener;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class RecyclerViewFragment extends BaseFragment implements OnRecyclerView
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 		mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity));
+		mRecyclerView.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.VERTICAL));
 		return convertView;
 	}
 	

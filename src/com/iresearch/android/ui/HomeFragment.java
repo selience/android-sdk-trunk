@@ -29,7 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.android.volley.Listener;
-import com.android.volley.VolleyError;
+import com.android.volley.error.VolleyError;
 import com.android.volley.core.RequestCallback;
 import com.android.volley.core.RequestManager;
 import com.android.volley.core.RequestOptions;
@@ -48,6 +48,7 @@ import com.iresearch.android.service.SocketService;
 import com.iresearch.android.ui.AlertDialogFragment.AlertDialogListener;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
+import com.android.sdk.utils.DeviceUtils;
 import com.android.sdk.utils.IntentUtils;
 import com.android.sdk.utils.NetworkUtils;
 import com.android.sdk.utils.Toaster;
@@ -222,7 +223,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             f.show(getChildFragmentManager());
         } else if (position == 6) {
         	// 开启通知服务
-            startService(new Intent(mActivity, NotificationService.class));
+            if (DeviceUtils.hasJellyBeanMR2()) {
+                startService(new Intent(mActivity, NotificationService.class));
+            }
             // 构建通知信息
         	NotificationManagerCompat.from(mActivity).cancelAll();
         	NotificationCompat.Builder notificationBuilder = createBuilder();

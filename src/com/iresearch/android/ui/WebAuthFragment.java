@@ -1,7 +1,6 @@
 package com.iresearch.android.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,9 +26,9 @@ public class WebAuthFragment extends WebViewFragment {
             Uri uri = Uri.parse(url);
             String code = uri.getQueryParameter("code");
             if (!TextUtils.isEmpty(code)) {
-                Intent intent = new Intent();
-                intent.putExtra("code", code);
-                getTargetFragment().onActivityResult(ShareFragment.SHARE_SINA_WEIBO, Activity.RESULT_OK, intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("code", code);
+                setResult(ShareFragment.SHARE_SINA_WEIBO, Activity.RESULT_OK, bundle);
                 // 弹出栈顶Fragment
                 popFragment();
             }
