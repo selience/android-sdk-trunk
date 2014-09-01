@@ -21,6 +21,7 @@
         <item>裁剪本地图片</item>
         <item>发送本地通知</item>
         <item>人脸面部检测</item>
+        <item>设置是否全屏</item>
         <item>二维码图片扫描</item>
     </string-array>
     

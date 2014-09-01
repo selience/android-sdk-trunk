@@ -48,6 +48,7 @@ import com.iresearch.android.service.SocketService;
 import com.iresearch.android.ui.AlertDialogFragment.AlertDialogListener;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
+import com.android.sdk.systemuivis.SystemUiHelper;
 import com.android.sdk.utils.DeviceUtils;
 import com.android.sdk.utils.IntentUtils;
 import com.android.sdk.utils.NetworkUtils;
@@ -233,7 +234,16 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
             NotificationManagerCompat.from(mActivity).notify(1000, notification);
         } else if (position == 7) { // 人脸面部检测
             replace(FaceDetectorFragment.class, "FaceDetectorFragment", null);
-        } else if (position == 8) { // 扫描二维码
+        } else if (position == 8) {
+            SystemUiHelper helper = new SystemUiHelper(mActivity,
+                    SystemUiHelper.LEVEL_LEAN_BACK,   // Choose from one of the levels
+                    SystemUiHelper.FLAG_IMMERSIVE_STICKY);  // There are additional flags, usually this will be 0
+            if (helper.isShowing()) {
+                helper.hide();
+            } else {
+                helper.show();
+            }
+        } else if (position == 9) { // 扫描二维码
             Intent openCameraIntent=new Intent(mActivity, CaptureActivity.class);
             startActivityForResult(openCameraIntent, REQUEST_CODE_QRCODE);
         }
