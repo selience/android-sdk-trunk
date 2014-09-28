@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.iresearch.android.R;
-import com.android.sdk.base.BaseFragment;
+import org.mariotaku.android.fragment.BaseFragment;
 
 public class PlanetFragment extends BaseFragment {
 

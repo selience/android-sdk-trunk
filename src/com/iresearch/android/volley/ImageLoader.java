@@ -13,7 +13,7 @@ import android.graphics.drawable.TransitionDrawable;
 import java.util.ArrayList;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
-import com.android.sdk.utils.DeviceUtils;
+import org.mariotaku.android.utils.DeviceUtils;
 import com.android.volley.RequestQueue;
 import com.android.volley.error.VolleyError;
 

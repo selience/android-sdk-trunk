@@ -8,10 +8,10 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.iresearch.android.MapViewerActivity.MapInterface;
-import com.android.sdk.base.WebViewFragment;
+import org.mariotaku.android.fragment.BaseWebViewFragment;
 import com.iresearch.android.constants.Constants;
 
-public class WebMapFragment extends WebViewFragment implements Constants, MapInterface {
+public class WebMapFragment extends BaseWebViewFragment implements Constants, MapInterface {
 
 	private final Uri mUri = Uri.parse("file:///android_asset/map/mapview.html");
 

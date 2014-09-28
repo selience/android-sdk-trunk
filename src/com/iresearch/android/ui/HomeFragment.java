@@ -39,21 +39,21 @@ import com.iresearch.android.R;
 import com.iresearch.android.SendActivity;
 import com.iresearch.android.adapter.MenuListAdapter;
 import com.iresearch.android.app.AppContext;
-import com.android.sdk.base.BaseFragment;
+import org.mariotaku.android.fragment.BaseFragment;
 import com.iresearch.android.crop.Crop;
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.log.DebugLog;
 import com.iresearch.android.model.request.TestRequest;
 import com.iresearch.android.service.NotificationService;
 import com.iresearch.android.service.SocketService;
 import com.iresearch.android.ui.AlertDialogFragment.AlertDialogListener;
 import com.iresearch.android.uninstall.NativeMethod;
 import com.iresearch.android.uninstall.UninstallObserver;
-import com.android.sdk.systemuivis.SystemUiHelper;
-import com.android.sdk.utils.DeviceUtils;
-import com.android.sdk.utils.IntentUtils;
-import com.android.sdk.utils.NetworkUtils;
-import com.android.sdk.utils.Toaster;
-import com.android.sdk.backport.EnvironmentAccessor;
+import org.mariotaku.android.systemuivis.SystemUiHelper;
+import org.mariotaku.android.utils.DeviceUtils;
+import org.mariotaku.android.utils.IntentUtils;
+import org.mariotaku.android.utils.NetworkUtils;
+import org.mariotaku.android.utils.Toaster;
+import org.mariotaku.android.backport.EnvironmentAccessor;
 import com.iresearch.android.zing.view.CaptureActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -384,7 +384,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnI
         @Override
         public void onClickListItem(int tag, int index, Object payload) {
             if (index == 0) { // 启动相机拍照
-                startActivityForResult(IntentUtils.newTakePictureIntent(tempFile), REQUEST_CODE_TAKE_PHOTO);
+                startActivityForResult(IntentUtils.newTakePhotoIntent(tempFile), REQUEST_CODE_TAKE_PHOTO);
             } else { // 相册选择照片
                 startActivityForResult(IntentUtils.newMediaIntent("image/*"), REQUEST_CODE_PICK_IMAGE);
             }

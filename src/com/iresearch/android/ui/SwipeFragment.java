@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.iresearch.android.R;
-import com.android.sdk.base.BaseActionBarFragment;
+import org.mariotaku.android.fragment.BaseActionBarFragment;
 import com.iresearch.android.widget.PagerSlidingTabStrip;
 
 public class SwipeFragment extends BaseActionBarFragment implements OnClickListener {

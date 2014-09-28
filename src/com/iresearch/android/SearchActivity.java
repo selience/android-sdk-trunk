@@ -4,8 +4,8 @@ package com.iresearch.android;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import com.android.sdk.base.BaseActionBarActivity;
-import com.android.sdk.utils.Toaster;
+import org.mariotaku.android.activity.BaseActionBarActivity;
+import org.mariotaku.android.utils.Toaster;
 
 public class SearchActivity extends BaseActionBarActivity {
 

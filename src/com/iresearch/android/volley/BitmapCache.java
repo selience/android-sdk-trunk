@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.log.DebugLog;
 
 /**
  * This class holds our bitmap caches (memory and disk).

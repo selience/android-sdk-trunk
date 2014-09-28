@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.iresearch.android.R;
-import com.android.sdk.base.BaseFragment;
+import org.mariotaku.android.fragment.BaseFragment;
 import com.iresearch.android.model.ViewModel;
 import com.iresearch.android.adapter.RecyclerViewAdapter;
 

@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.iresearch.android.R;
-import com.android.sdk.base.BaseActivity;
+import org.mariotaku.android.activity.BaseFragmentActivity;
 import com.iresearch.android.constants.Constants;
 import com.iresearch.android.ui.NativeMapV2Fragment;
 import com.iresearch.android.ui.WebMapFragment;
@@ -21,7 +21,7 @@ import com.iresearch.android.ui.WebMapFragment;
  * @author lilong@qiyi.com
  * @description TODO http://www.androidhive.info/2013/08/android-working-with-google-maps-v2/
  */
-public class MapViewerActivity extends BaseActivity implements Constants, OnClickListener {
+public class MapViewerActivity extends BaseFragmentActivity implements Constants, OnClickListener {
     private static final String FRAGMENT_TAG = "MapFragment";
     
     private Fragment mMapFragment=null;

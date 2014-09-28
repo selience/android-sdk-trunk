@@ -14,8 +14,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
-import com.android.sdk.log.DebugLog;
-import com.android.sdk.utils.NetworkUtils;
+import org.mariotaku.android.log.DebugLog;
+import org.mariotaku.android.utils.NetworkUtils;
 
 /**
  * @file SocketService.java

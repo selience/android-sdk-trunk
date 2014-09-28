@@ -8,10 +8,10 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
-import com.android.sdk.base.WebViewFragment;
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.fragment.BaseWebViewFragment;
+import org.mariotaku.android.log.DebugLog;
 
-public class WebPageFragment extends WebViewFragment {
+public class WebPageFragment extends BaseWebViewFragment {
 
     private WebView mWebview = null;
     

@@ -4,17 +4,17 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import com.activeandroid.ActiveAndroid;
 import com.android.volley.Volley;
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.log.DebugLog;
 import com.android.volley.core.RequestManager;
 import com.iresearch.android.constants.Config;
-import com.android.sdk.utils.AppUtils;
-import com.android.sdk.utils.ManifestUtils;
-import com.android.sdk.utils.StorageOptions;
-import com.android.sdk.app.AppException;
+import org.mariotaku.android.utils.ManifestUtils;
+import org.mariotaku.android.utils.StorageOptions;
+import org.mariotaku.android.utils.Utils;
+import org.mariotaku.android.app.AppException;
 import android.content.pm.PackageManager.NameNotFoundException;
-import com.android.sdk.app.compat.ActivityLifecycleCallbacksCompat;
-import com.android.sdk.app.compat.ApplicationHelper;
-import com.android.sdk.app.compat.ActivityLifecycleCallbacksAdapter;
+import org.mariotaku.android.app.compat.ActivityLifecycleCallbacksCompat;
+import org.mariotaku.android.app.compat.ApplicationHelper;
+import org.mariotaku.android.app.compat.ActivityLifecycleCallbacksAdapter;
 
 /**
  * 
@@ -55,7 +55,7 @@ public class AppContext extends Application {
 	    DebugLog.enableDebugLogging(DEBUG);
 	    StorageOptions.getInstance().init(this);
 	    
-	    AppUtils.initAsyncTask();
+	    Utils.initializeAsyncTask();
 	    ActiveAndroid.initialize(this);
 	    RequestManager.initializeWith(this);
 

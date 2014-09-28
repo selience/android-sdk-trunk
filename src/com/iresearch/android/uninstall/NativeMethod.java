@@ -1,6 +1,6 @@
 package com.iresearch.android.uninstall;
 
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.log.DebugLog;
 
 /**
  * @file NativeMethod.java

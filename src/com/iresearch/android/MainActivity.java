@@ -17,16 +17,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.iresearch.android.R;
 import com.iresearch.android.app.AppContext;
-import com.android.sdk.app.AppManager;
-import com.android.sdk.base.BaseActionBarActivity;
-import com.android.sdk.base.WebViewFragment;
-import com.android.sdk.location.LocationHelper;
-import com.android.sdk.location.LocationHelper.LocationResult;
-import com.android.sdk.utils.NetworkUtils;
-import com.android.sdk.utils.Toaster;
+import org.mariotaku.android.app.AppManager;
+import org.mariotaku.android.activity.BaseActionBarActivity;
+import org.mariotaku.android.fragment.BaseWebViewFragment;
+import org.mariotaku.android.location.LocationHelper;
+import org.mariotaku.android.location.LocationHelper.LocationResult;
+import org.mariotaku.android.utils.NetworkUtils;
+import org.mariotaku.android.utils.Toaster;
 import com.iresearch.android.ui.HomeFragment;
 import com.iresearch.android.ui.RecyclerViewFragment;
-import com.iresearch.android.ui.ShareFragment;
 import com.iresearch.android.ui.SwipeFragment;
 import com.iresearch.android.ui.VideoCropFragment;
 import com.iresearch.android.ui.WebFlotr2Fragment;
@@ -119,16 +118,13 @@ public class MainActivity extends BaseActionBarActivity implements OnItemClickLi
             case 4: {
                 Bundle bundle = new Bundle();
                 String url = "http://blog.sina.com.cn/selienceblog";
-                bundle.putString(WebViewFragment.INTENT_KEY_URI, url);
+                bundle.putString(BaseWebViewFragment.INTENT_KEY_URI, url);
                 replace(WebPageFragment.class, "WebPageFragment", bundle);
                 break;
             }
             case 5:
             	replace(RecyclerViewFragment.class, "RecyclerViewFragment", null);
             	break;
-            case 6:
-                replace(ShareFragment.class, "ShareFragment", null);
-                break;
             default:
                 break;
         }

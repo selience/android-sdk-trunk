@@ -6,7 +6,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.android.sdk.adapter.BaseGroupAdapter;
+import org.mariotaku.android.adapter.BaseGroupAdapter;
 
 public class MenuListAdapter extends BaseGroupAdapter<String, MenuListAdapter.ViewHolder> {
 

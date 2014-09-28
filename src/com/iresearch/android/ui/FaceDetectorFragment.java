@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import com.iresearch.android.R;
-import com.android.sdk.base.BaseFragment;
-import com.android.sdk.facecropper.FaceCropper;
+import org.mariotaku.android.fragment.BaseFragment;
+import org.mariotaku.android.facecropper.FaceCropper;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class FaceDetectorFragment extends BaseFragment implements OnSeekBarChangeListener {

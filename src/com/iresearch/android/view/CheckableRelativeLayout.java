@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
-import com.android.sdk.log.DebugLog;
+import org.mariotaku.android.log.DebugLog;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
 

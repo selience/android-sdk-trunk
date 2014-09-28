@@ -4,9 +4,9 @@ import java.util.Random;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import com.android.sdk.base.WebViewFragment;
+import org.mariotaku.android.fragment.BaseWebViewFragment;
 
-public class WebFlotr2Fragment extends WebViewFragment {
+public class WebFlotr2Fragment extends BaseWebViewFragment {
 
     private String data;
     private String option;
